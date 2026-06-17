@@ -32,3 +32,6 @@ next-env.d.ts
 
 # local tooling (installed UI/UX skill, editor/agent config)
 /.claude/
+
+# local screenshot/debug helpers
+/tmp-*

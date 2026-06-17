@@ -1,53 +1,49 @@
 "use client";
 
-import React, { useRef } from "react";
-import { useGSAP } from "@gsap/react";
-import { gsap, prefersReducedMotion } from "@/components/motion/gsap";
+import React from "react";
 import { Button } from "@/components/ui/Button";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { CodeBlock } from "@/components/ui/CodeBlock";
 import { Sticker } from "@/components/marketing/Sticker";
-import { Marquee } from "@/components/marketing/Marquee";
 import { PricingTiers } from "@/components/marketing/PricingTiers";
 import { KineticHeading } from "@/components/motion/KineticHeading";
-import { ScrambleText } from "@/components/motion/ScrambleText";
+import { FlipWords } from "@/components/motion/FlipWords";
 import { StatStrip } from "./StatStrip";
 import { WhyAccordion } from "./WhyAccordion";
-import { ChatPreview } from "./ChatPreview";
-
-const SERVICES = [
-  { tag: "WhatsApp", title: "WhatsApp-Chatbots", desc: "Reservierungen, Bestellungen, Gästelisten und FAQ — direkt im Chat, rund um die Uhr.", featured: true },
-  { tag: "Web", title: "Website-Design", desc: "Schnelle, klare Seiten für deinen Betrieb: Speisekarte, Öffnungszeiten, Buchung." },
-  { tag: "Bots", title: "Digitale Assistenten", desc: "Maßgeschneiderte Automatisierungen — vom Türsteher-Check bis zum Newsletter." },
-  { tag: "Setup", title: "Beratung & Setup", desc: "Wir analysieren deinen Ablauf und verdrahten alles mit deiner WhatsApp-Nummer." },
-  { tag: "Support", title: "Wartung & Support", desc: "Updates, Monitoring und schnelle Hilfe, wenn der Laden voll ist." },
-  { tag: "Schnittstellen", title: "Integrationen", desc: "Kasse, Tischplan, Kalender und Newsletter sauber miteinander verbunden." },
-];
-
-const TESTIMONIALS = [
-  { quote: "Seit dem Bot verpassen wir keine Tisch-Anfrage mehr — auch nicht um Mitternacht. Mein Team tippt deutlich weniger.", name: "Marko R.", role: "Inhaber, Trattoria" },
-  { quote: "Die Gästeliste am Einlass läuft jetzt komplett über WhatsApp. Türsteher happy, Gäste happy.", name: "Lena S.", role: "Booking, Club" },
-  { quote: "Schnell aufgesetzt, klar erklärt, und wenn was ist, ist Stefan sofort erreichbar.", name: "Daniel K.", role: "Barbetrieb" },
-];
+import { ServicesBento } from "./ServicesBento";
+import { RobotPresenter } from "./RobotPresenter";
+import { HeroSpline } from "./HeroSpline";
+import { MascotRobot } from "./MascotRobot";
+import { RobotGuide } from "./RobotGuide";
+import { IntegrationsStrip } from "@/components/marketing/IntegrationsStrip";
+import { TestimonialsMarquee } from "./TestimonialsMarquee";
+import { UseCaseTabs } from "./UseCaseTabs";
 
 const BLOG_POSTS = [
-  { tag: "Guide", title: "Warum ein WhatsApp-Bot mehr Reservierungen bringt", read: "5 Min", hue: "var(--color-accent-violet-deep)" },
-  { tag: "Praxis", title: "Gästeliste am Einlass: vom Klemmbrett zum Chat", read: "4 Min", hue: "var(--surface-night)" },
+  {
+    tag: "Guide",
+    title: "Warum ein WhatsApp-Bot mehr Reservierungen bringt",
+    excerpt: "Gäste fragen dann, wenn sie Lust haben — nicht zu Bürozeiten. Wer sofort antwortet, gewinnt den Tisch.",
+    read: "5 Min",
+    hue: "linear-gradient(135deg, #422082, #7a3ff0)",
+  },
+  {
+    tag: "Praxis",
+    title: "Gästeliste am Einlass: vom Klemmbrett zum Chat",
+    excerpt: "Wie ein Club die komplette Gästeliste auf WhatsApp umgestellt hat — inkl. QR-Code am Einlass.",
+    read: "4 Min",
+    hue: "linear-gradient(135deg, #150f23, #422082)",
+  },
+  {
+    tag: "Setup",
+    title: "In Tagen live: so läuft ein Bot-Projekt ab",
+    excerpt: "Von der ersten Nachricht bis zur Live-Schaltung — was wir von dir brauchen und was wir übernehmen.",
+    read: "3 Min",
+    hue: "linear-gradient(135deg, #5a2db0, #fa7faa)",
+  },
 ];
-
-const INDUSTRIES = ["Restaurants", "Bars", "Clubs", "Cafés", "Events", "Foodtrucks", "Pop-ups"];
-
-function Stars() {
-  return (
-    <div style={{ display: "flex", gap: 2, color: "var(--color-accent-pink)", fontSize: 15 }} aria-hidden="true">
-      {"★★★★★".split("").map((s, i) => (
-        <span key={i}>{s}</span>
-      ))}
-    </div>
-  );
-}
 
 const sectionStyle: React.CSSProperties = {
   maxWidth: "var(--container-max)",
@@ -59,64 +55,31 @@ const centerHead: React.CSSProperties = { textAlign: "center", maxWidth: 640, ma
 const h2Style: React.CSSProperties = { font: "var(--type-display-large)", fontSize: "clamp(28px, 4vw, 44px)", margin: "var(--space-md) 0 0" };
 
 export function HomeScreen() {
-  const root = useRef<HTMLDivElement>(null);
-
-  useGSAP(
-    () => {
-      if (prefersReducedMotion()) return;
-      gsap
-        .timeline({ defaults: { ease: "power3.out" } })
-        .to(".hero-sub", { autoAlpha: 1, y: 0, duration: 0.5 }, 0.5)
-        .to(".hero-cta", { autoAlpha: 1, y: 0, duration: 0.5 }, "-=0.25")
-        .to(".hero-art", { autoAlpha: 1, y: 0, duration: 0.7 }, "-=0.55");
-    },
-    { scope: root }
-  );
-
   return (
-    <div ref={root} style={{ color: "var(--on-primary)" }}>
-      {/* ── Hero ─────────────────────────────────────────────── */}
-      <div className="bw-container bw-section" style={{ padding: "64px var(--space-xl) var(--space-section)", position: "relative" }}>
-        <div className="bw-hero-grid" style={{ display: "grid", gridTemplateColumns: "1.05fr 0.95fr", gap: "var(--space-section)", alignItems: "center" }}>
-          <div style={{ position: "relative" }}>
-            <Eyebrow polarity="dark">
-              <ScrambleText text="WhatsApp-Chatbots für Gastro & Clubs" />
-            </Eyebrow>
-            <KineticHeading
-              trigger="load"
-              style={{ font: "var(--type-display-hero)", fontSize: "clamp(40px, 6.4vw, 76px)", lineHeight: 1.05, margin: "16px 0 0", maxWidth: 620 }}
-              tokens={[{ w: "Digitale" }, { w: "Assistenten," }, { w: "die" }, { w: "mitarbeiten", kw: true, after: "." }]}
-            />
-            <p
-              className="hero-sub anim-fade-up"
-              style={{ font: "var(--type-body-lg)", color: "var(--on-dark-muted)", maxWidth: 480, margin: "var(--space-xl) 0 0", textShadow: "0 2px 22px rgba(0,0,0,0.6)" }}
-            >
-              Dein Gast schreibt um 23:40 „Habt ihr morgen noch einen Tisch?&quot; — der
-              NiteNexo-Assistent antwortet, nimmt die Reservierung auf und trägt sie ein, bevor du
-              das Handy gesehen hast.
-            </p>
-            <div className="hero-cta anim-fade-up" style={{ display: "flex", gap: "var(--space-md)", marginTop: "var(--space-xl)", flexWrap: "wrap" }}>
-              <Button variant="inverted" glow magnetic href="/kontakt">
-                Projekt starten
-              </Button>
-              <Button variant="ghost-on-dark" magnetic href="/leistungen">
-                Leistungen ansehen
-              </Button>
-            </div>
-          </div>
-          <div className="hero-art anim-fade" style={{ display: "flex", justifyContent: "center" }}>
-            <ChatPreview />
-          </div>
-        </div>
+    <div style={{ color: "var(--on-primary)" }}>
+      {/* Mitreisender Roboter — fliegt rein, gleitet durch die Seite und zeigt
+          abwechselnd auf die Textblöcke (nur Desktop + Bewegung erlaubt). */}
+      <RobotGuide />
 
+      {/* ── Hero — interaktiver 3D-Roboter (Spline) ──────────── */}
+      <HeroSpline />
+
+      {/* ── Stats ────────────────────────────────────────────── */}
+      <div className="bw-container" style={{ padding: "0 var(--space-xl) var(--space-section)" }}>
         <StatStrip />
       </div>
 
-      {/* ── Marquee ──────────────────────────────────────────── */}
-      <Marquee />
+      {/* ── Flip-words Statement-Band (animierte CTA-Text-Komponente) ── */}
+      <div style={{ borderTop: "1px solid var(--hairline-violet)", borderBottom: "1px solid var(--hairline-violet)", background: "rgba(21,15,35,0.5)", backdropFilter: "blur(6px)" }}>
+        <div className="bw-container" style={{ padding: "var(--space-xxl) var(--space-xl)", textAlign: "center" }}>
+          <p style={{ font: "var(--type-display-large)", fontSize: "clamp(22px, 3.2vw, 38px)", margin: 0, color: "var(--on-primary)", lineHeight: 1.3 }}>
+            Dein Assistent übernimmt <FlipWords words={["Reservierungen", "Bestellungen", "Gästelisten", "den Einlass", "die FAQ"]} />.
+          </p>
+        </div>
+      </div>
 
       {/* ── Über NiteNexo ───────────────────────────────────── */}
-      <section style={sectionStyle}>
+      <section style={sectionStyle} data-guide="right">
         <div className="bw-about-grid" style={{ display: "grid", gridTemplateColumns: "0.95fr 1.05fr", gap: "var(--space-section)", alignItems: "center" }}>
           <div style={{ position: "relative", display: "flex", justifyContent: "center" }} data-reveal>
             <Card variant="spotlight-violet" style={{ width: "100%", maxWidth: 420 }}>
@@ -126,6 +89,7 @@ export function HomeScreen() {
                 <span style={{ color: "var(--on-dark-muted)" }}>✓ Reservierungen aktiv</span>{"\n"}
                 <span style={{ color: "var(--on-dark-muted)" }}>✓ Gästeliste verbunden</span>{"\n"}
                 <span style={{ color: "var(--color-accent-violet-mid)" }}>→ live auf +43…</span>
+                <span className="bw-caret" aria-hidden="true" />
               </CodeBlock>
             </Card>
             <span className="bw-float bw-float-slow bw-hide-mobile" style={{ position: "absolute", bottom: -48, right: -8 }}>
@@ -155,41 +119,28 @@ export function HomeScreen() {
         </div>
       </section>
 
-      {/* ── Branchen-Strip ──────────────────────────────────── */}
-      <div style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "0 var(--space-xl) var(--space-section)", textAlign: "center" }}>
-        <Eyebrow polarity="dark" style={{ marginBottom: "var(--space-lg)" }}>
-          Gebaut für den Betrieb vor Ort
-        </Eyebrow>
-        <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "var(--space-md)" }}>
-          {INDUSTRIES.map((b) => (
-            <span key={b} style={{ font: "var(--type-body-md)", color: "var(--on-dark-muted)", padding: "var(--space-sm) var(--space-lg)", border: "1px solid var(--hairline-violet)", borderRadius: "var(--rounded-full)" }}>
-              {b}
-            </span>
-          ))}
-        </div>
-      </div>
+      {/* ── Use-Case-Tabs (21st.dev, animiert) ───────────────── */}
+      <UseCaseTabs />
 
       {/* ── Leistungen-Grid ─────────────────────────────────── */}
-      <section style={{ ...sectionStyle, paddingTop: 0 }}>
+      <section style={{ ...sectionStyle, paddingTop: 0 }} data-guide="left">
         <div style={centerHead} data-reveal>
           <Eyebrow polarity="dark">Leistungen</Eyebrow>
           <h2 style={{ ...h2Style, fontSize: "clamp(28px, 4vw, 44px)" }}>Was wir für deinen Laden bauen.</h2>
         </div>
-        <div className="bw-services-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "var(--space-lg)" }}>
-          {SERVICES.map((s) => (
-            <Card key={s.title} reveal tilt variant={s.featured ? "spotlight-violet" : "default"} polarity="dark" style={{ display: "flex", flexDirection: "column", gap: "var(--space-md)" }}>
-              <div>
-                <Badge variant="violet-tag">{s.tag}</Badge>
-              </div>
-              <h3 style={{ font: "var(--type-heading-md)", margin: 0 }}>{s.title}</h3>
-              <p style={{ font: "var(--type-body-md)", color: "var(--on-dark-muted)", margin: 0, flex: 1 }}>{s.desc}</p>
-            </Card>
-          ))}
-        </div>
+        <ServicesBento />
       </section>
 
+      {/* ── Funktioniert mit (Logo-Marquee, 21st.dev) ────────── */}
+      <IntegrationsStrip />
+
+      {/* ── Roboter-Presenter (Vordergrund, zeigt Schritte) ──── */}
+      <div data-guide="right">
+        <RobotPresenter />
+      </div>
+
       {/* ── Preise ──────────────────────────────────────────── */}
-      <div>
+      <div data-guide="left">
         <div style={sectionStyle}>
           <div style={centerHead} data-reveal>
             <Eyebrow polarity="dark">Preise</Eyebrow>
@@ -207,8 +158,8 @@ export function HomeScreen() {
         </div>
       </div>
 
-      {/* ── Warum NiteNexo ──────────────────────────────────── */}
-      <section style={sectionStyle}>
+      {/* ── Warum NiteNexo (SVG-Maskottchen → Reise-Roboter blendet aus) ── */}
+      <section style={sectionStyle} data-guide="hide">
         <div className="bw-why-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-section)", alignItems: "center" }}>
           <div data-reveal>
             <Eyebrow polarity="dark">Warum NiteNexo</Eyebrow>
@@ -217,46 +168,23 @@ export function HomeScreen() {
             </h2>
             <WhyAccordion />
           </div>
-          <div data-reveal>
-            <CodeBlock style={{ padding: "var(--space-xl)" }}>
-              <span style={{ color: "var(--on-dark-muted)" }}>{"// dein Ablauf, automatisiert"}</span>{"\n"}
-              <span style={{ color: "var(--color-accent-pink)" }}>on</span> nachricht(gast) {"{"}{"\n"}
-              {"  "}wenn (frage == <strong>&quot;tisch frei?&quot;</strong>) {"{"}{"\n"}
-              {"    "}pruefe(verfügbarkeit){"\n"}
-              {"    "}antworte.<strong>sofort</strong>(){"\n"}
-              {"  "}{"}"}{"\n"}
-              {"}"}{"\n"}
-              <span style={{ color: "var(--color-accent-violet-mid)" }}>→ läuft, während du arbeitest</span>
-            </CodeBlock>
+          <div data-reveal style={{ minHeight: 400, display: "flex", alignItems: "center" }}>
+            <MascotRobot autoWave />
           </div>
         </div>
       </section>
 
-      {/* ── Testimonials ────────────────────────────────────── */}
-      <div>
-        <div style={sectionStyle}>
+      {/* ── Testimonials (full-bleed marquee) ────────────────── */}
+      <div style={{ paddingTop: "var(--space-section)", paddingBottom: "var(--space-section)" }} data-guide="right">
+        <div className="bw-container" style={{ padding: "0 var(--space-xl)" }}>
           <div style={centerHead} data-reveal>
             <Eyebrow polarity="dark">Stimmen aus dem Betrieb</Eyebrow>
             <h2 style={{ ...h2Style, fontSize: "clamp(28px, 4vw, 44px)" }}>Was Betreiber:innen sagen.</h2>
           </div>
-          <div className="bw-testi-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "var(--space-lg)" }}>
-            {TESTIMONIALS.map((t, i) => (
-              <Card key={i} reveal tilt polarity="dark" style={{ display: "flex", flexDirection: "column", gap: "var(--space-lg)" }}>
-                <Stars />
-                <p style={{ font: "var(--type-body-md)", color: "var(--on-primary)", margin: 0, flex: 1, lineHeight: 1.6 }}>„{t.quote}&ldquo;</p>
-                <div style={{ display: "flex", alignItems: "center", gap: "var(--space-md)", paddingTop: "var(--space-md)", borderTop: "1px solid var(--hairline-violet)" }}>
-                  <span style={{ width: 40, height: 40, borderRadius: "50%", background: "var(--color-accent-violet-deep)", display: "inline-flex", alignItems: "center", justifyContent: "center", font: "var(--type-body-strong)", color: "var(--on-primary)" }}>
-                    {t.name.charAt(0)}
-                  </span>
-                  <div>
-                    <div style={{ font: "var(--type-body-strong)" }}>{t.name}</div>
-                    <div style={{ font: "var(--type-caption)", color: "var(--on-dark-muted)" }}>{t.role}</div>
-                  </div>
-                </div>
-              </Card>
-            ))}
-          </div>
-          <p style={{ textAlign: "center", font: "var(--type-caption)", color: "var(--on-dark-faint)", marginTop: "var(--space-xl)" }}>
+        </div>
+        <TestimonialsMarquee />
+        <div className="bw-container" style={{ padding: "var(--space-xl) var(--space-xl) 0" }}>
+          <p style={{ textAlign: "center", font: "var(--type-caption)", color: "var(--on-dark-faint)", margin: 0 }}>
             Beispielstimmen — echte Referenzen geben wir dir gern im Gespräch.
           </p>
         </div>
@@ -270,28 +198,38 @@ export function HomeScreen() {
             <h2 style={{ ...h2Style, fontSize: "clamp(28px, 4vw, 44px)" }}>Kurz erklärt.</h2>
           </div>
         </div>
-        <div className="bw-blog-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-lg)" }}>
+        <div className="bw-blog-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "var(--space-lg)" }}>
           {BLOG_POSTS.map((p, i) => (
             <Card key={i} reveal tilt polarity="dark" style={{ padding: 0, overflow: "hidden", display: "flex", flexDirection: "column" }}>
-              <div style={{ height: 180, background: p.hue, position: "relative", display: "flex", alignItems: "flex-end", padding: "var(--space-lg)" }}>
-                <span style={{ position: "absolute", inset: 0, background: "url(/assets/starfield.png)", backgroundSize: "cover", opacity: 0.5 }} />
+              <div style={{ height: 170, position: "relative", overflow: "hidden", display: "flex", alignItems: "flex-end", padding: "var(--space-lg)" }}>
+                <span className="bw-blog-media" style={{ position: "absolute", inset: 0, background: p.hue }} />
+                <span className="bw-blog-media" style={{ position: "absolute", inset: 0, background: "url(/assets/starfield.png)", backgroundSize: "cover", opacity: 0.45 }} />
                 <Badge variant="violet-tag" style={{ position: "relative" }}>
                   {p.tag}
                 </Badge>
               </div>
-              <div style={{ padding: "var(--space-xl)", display: "flex", flexDirection: "column", gap: "var(--space-md)", flex: 1 }}>
+              <div style={{ padding: "var(--space-xl)", display: "flex", flexDirection: "column", gap: "var(--space-sm)", flex: 1 }}>
                 <h3 style={{ font: "var(--type-heading-md)", margin: 0 }}>{p.title}</h3>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "auto" }}>
+                <p style={{ font: "var(--type-body-md)", color: "var(--on-dark-muted)", margin: 0, flex: 1 }}>{p.excerpt}</p>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "var(--space-sm)", paddingTop: "var(--space-md)", borderTop: "1px solid var(--hairline-violet)" }}>
                   <span style={{ font: "var(--type-caption)", color: "var(--on-dark-muted)" }}>{p.read} Lesezeit</span>
+                  <span style={{ display: "inline-flex", alignItems: "center", gap: 6, font: "var(--type-button-cap-light)", letterSpacing: "var(--tracking-caps)", textTransform: "uppercase", color: "var(--color-accent-lime)" }}>
+                    Lesen <span className="bw-blog-arrow" aria-hidden="true">→</span>
+                  </span>
                 </div>
               </div>
             </Card>
           ))}
         </div>
+        <div style={{ textAlign: "center", marginTop: "var(--space-xxl)" }}>
+          <Button variant="ghost-on-dark" href="/kontakt">
+            Mehr aus der Werkstatt
+          </Button>
+        </div>
       </section>
 
       {/* ── Großer CTA ──────────────────────────────────────── */}
-      <div>
+      <div data-guide="left">
         <div style={{ ...sectionStyle, textAlign: "center", position: "relative" }}>
           <span className="bw-float" style={{ display: "inline-block", marginBottom: "var(--space-lg)" }}>
             <Sticker name="bot" size={96} tilt={-8} />

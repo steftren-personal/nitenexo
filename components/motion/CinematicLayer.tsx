@@ -22,37 +22,6 @@ export function CinematicLayer() {
       const fine = window.matchMedia("(pointer: fine)").matches;
       const cleanups: Array<() => void> = [];
 
-      // ── Glowing cursor ──
-      if (fine) {
-        let cursor = document.querySelector<HTMLDivElement>(".bw-cursor");
-        if (!cursor) {
-          cursor = document.createElement("div");
-          cursor.className = "bw-cursor";
-          document.body.appendChild(cursor);
-        }
-        const c = cursor;
-        const xTo = gsap.quickTo(c, "x", { duration: 0.4, ease: "power3" });
-        const yTo = gsap.quickTo(c, "y", { duration: 0.4, ease: "power3" });
-        const move = (e: PointerEvent) => {
-          xTo(e.clientX);
-          yTo(e.clientY);
-        };
-        const hot = (on: boolean) => () => c.classList.toggle("is-hot", on);
-        window.addEventListener("pointermove", move, { passive: true });
-        const hotEls = gsap.utils.toArray<HTMLElement>("a, button, [data-magnetic], [data-tilt]");
-        hotEls.forEach((el) => {
-          const on = hot(true);
-          const off = hot(false);
-          el.addEventListener("pointerenter", on);
-          el.addEventListener("pointerleave", off);
-          cleanups.push(() => {
-            el.removeEventListener("pointerenter", on);
-            el.removeEventListener("pointerleave", off);
-          });
-        });
-        cleanups.push(() => window.removeEventListener("pointermove", move));
-      }
-
       // ── Magnetic CTAs ──
       if (fine) {
         gsap.utils.toArray<HTMLElement>("[data-magnetic]").forEach((el) => {

@@ -215,11 +215,90 @@ h1, h2, h3, h4, p, ul, pre {
 .bw-mq-item { display: inline-flex; align-items: center; gap: 12px; padding: 20px 30px; font: var(--type-heading-md); color: var(--on-dark-muted); white-space: nowrap; }
 .bw-mq-dot { color: var(--color-accent-lime); font-size: 14px; }
 @keyframes bwMarquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.bw-marquee:hover .bw-marquee-track { animation-play-state: paused; }
+
+/* "Works with" logo strip */
+.bw-logos { background: transparent; border: none; }
+.bw-logo-item { display: inline-flex; align-items: center; gap: 12px; padding: 0 34px; font: var(--type-heading-sm); color: var(--on-dark-muted); white-space: nowrap; }
+.bw-logo-item img { height: 30px; width: auto; filter: grayscale(1) opacity(0.7); transition: filter 0.3s ease; }
+.bw-logo-item:hover img { filter: none; }
+.bw-logo-text { color: var(--color-accent-violet-mid); }
+
+/* Testimonials marquee */
+.bw-testi-marquee { overflow: hidden; }
+.bw-testi-track { display: flex; width: max-content; animation: bwMarquee 42s linear infinite; }
+.bw-testi-marquee:hover .bw-testi-track { animation-play-state: paused; }
+.bw-testi-card { flex: 0 0 auto; width: 360px; margin-right: var(--space-lg); white-space: normal; }
 
 /* ── Floating stickers (brand-sanctioned subtle float) ──────────────────── */
 .bw-float { animation: bwFloat 5.5s ease-in-out infinite; will-change: transform; }
 .bw-float-slow { animation-duration: 7.5s; animation-delay: -1.5s; }
 @keyframes bwFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
+
+/* ── Full-bleed page background (replaces the video; borderless) ────────── */
+.bw-page-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-color: var(--surface-canvas-dark);
+  background-image:
+    radial-gradient(55% 45% at 18% 8%, rgba(90, 45, 176, 0.34), transparent 60%),
+    radial-gradient(48% 42% at 86% 16%, rgba(250, 127, 170, 0.16), transparent 60%),
+    radial-gradient(60% 55% at 62% 94%, rgba(122, 63, 240, 0.24), transparent 62%),
+    url("/assets/starfield.png");
+  background-size: cover, cover, cover, cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Hide the Spline free-plan watermark anchor (we don't link to spline anywhere). */
+a[href*="spline.design"] { display: none !important; }
+
+/* ── Traveling guide robot (desktop + motion only) ──────────────────────── */
+.robot-guide { display: none; }
+@media (min-width: 1024px) {
+  /* gsap-enabled is only on <html> when motion is allowed → reduced-motion
+     visitors keep the inline hero robot, never the fixed traveler. */
+  html.gsap-enabled .robot-guide { display: block; }
+  /* !important beats the hero box's inline display:flex so only the
+     traveling canvas robot shows on desktop (never two robots). */
+  html.gsap-enabled .hs-robot-inline { display: none !important; }
+}
+.rg-travel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 20; /* above content, below the sticky navbar (z-index 40) */
+  width: clamp(190px, 20vw, 290px);
+  pointer-events: none;
+  visibility: hidden; /* GSAP autoAlpha reveals it on the fly-in */
+  will-change: transform, opacity;
+}
+.rg-flip,
+.rg-bob,
+.rg-pop { position: relative; will-change: transform; }
+.rg-canvas { display: block; width: 100%; height: auto; }
+.rg-glow {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 118%;
+  aspect-ratio: 1 / 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(194, 239, 78, 0.16), rgba(122, 63, 240, 0.14) 45%, transparent 70%);
+  filter: blur(46px);
+  pointer-events: none;
+}
+
+/* Spotlight (21st.dev/aceternity) + spinner */
+@keyframes spotlight {
+  0% { opacity: 0; transform: translate(-72%, -62%) scale(0.5); }
+  100% { opacity: 1; transform: translate(-50%, -40%) scale(1); }
+}
+.animate-spotlight { animation: spotlight 2.2s ease 0.6s 1 forwards; }
+@keyframes bwSpin { to { transform: rotate(360deg); } }
 
 /* ── Hero robot (Higgsfield render) ─────────────────────────────────────── */
 .hero-robot { position: relative; display: flex; align-items: center; justify-content: center; }
@@ -245,6 +324,28 @@ h1, h2, h3, h4, p, ul, pre {
 .bw-pulse-dot { animation: bwPulse 2s ease-in-out infinite; }
 @keyframes bwPulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.35); opacity: 0.5; } }
 
+/* ── Services bento grid (21st.dev pattern, brand-styled) ───────────────── */
+.bw-bento {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-lg);
+  grid-auto-rows: minmax(208px, 1fr);
+}
+.bw-bento-featured { grid-column: span 2; grid-row: span 2; }
+.bw-bento-tile { transition: border-color 0.3s ease, box-shadow 0.3s ease; will-change: transform; }
+@media (hover: hover) {
+  .bw-bento-tile:hover { border-color: rgba(194, 239, 78, 0.4) !important; box-shadow: 0 0 34px rgba(122, 63, 240, 0.22); }
+  .bw-bento-tile:hover .bento-icon { color: var(--color-accent-lime) !important; }
+}
+@media (max-width: 980px) {
+  .bw-bento { grid-template-columns: repeat(2, 1fr); }
+  .bw-bento-featured { grid-column: span 2; grid-row: span 1; }
+}
+@media (max-width: 640px) {
+  .bw-bento { grid-template-columns: 1fr; }
+  .bw-bento-featured { grid-column: span 1; }
+}
+
 /* ── Card hover lift ────────────────────────────────────────────────────── */
 .bw-services-grid > *, .bw-blog-grid > *, .bw-pricing-grid > *, .bw-testi-grid > * {
   transition: transform 0.18s ease-out, border-color 0.18s ease-out;
@@ -254,6 +355,21 @@ h1, h2, h3, h4, p, ul, pre {
     transform: translateY(-6px);
   }
 }
+
+/* ── Blog cards: media zoom + arrow slide on hover ──────────────────────── */
+.bw-blog-media { transition: transform 0.6s cubic-bezier(0.16, 0.84, 0.44, 1); will-change: transform; }
+.bw-blog-arrow { transition: transform 0.3s ease; }
+@media (hover: hover) {
+  .bw-blog-grid > *:hover .bw-blog-media { transform: scale(1.09); }
+  .bw-blog-grid > *:hover .bw-blog-arrow { transform: translateX(5px); }
+}
+
+/* Blinking caret for code blocks */
+.bw-caret {
+  display: inline-block; width: 9px; height: 1.05em; margin-left: 4px; vertical-align: -2px;
+  background: var(--color-accent-lime); animation: bwCaret 1.05s steps(1) infinite;
+}
+@keyframes bwCaret { 0%, 50% { opacity: 1; } 50.01%, 100% { opacity: 0; } }
 
 /* ── Kinetic headline (masked words rise in, driven by GSAP) ────────────── */
 .kw-mask { display: inline-block; overflow: hidden; vertical-align: bottom; padding: 0.16em 0.04em; margin: -0.16em -0.02em; }
@@ -301,23 +417,6 @@ html.gsap-enabled [data-reveal] { opacity: 0; transform: translateY(24px); }
    below are harmless when the JS doesn't run.
    ══════════════════════════════════════════════════════════════════════════ */
 
-/* Glowing cursor (created on pointer:fine devices only) */
-.bw-cursor {
-  position: fixed; top: 0; left: 0; width: 26px; height: 26px;
-  margin: -13px 0 0 -13px; border-radius: 50%;
-  pointer-events: none; z-index: 90; opacity: 0;
-  background: radial-gradient(circle, rgba(194, 239, 78, 0.85), rgba(194, 239, 78, 0) 70%);
-  mix-blend-mode: screen; will-change: transform;
-  transition: opacity 0.3s ease, width 0.25s ease, height 0.25s ease, margin 0.25s ease, background 0.25s ease;
-}
-.bw-cursor.is-hot {
-  width: 64px; height: 64px; margin: -32px 0 0 -32px;
-  background: radial-gradient(circle, rgba(122, 63, 240, 0.5), rgba(122, 63, 240, 0) 70%);
-}
-@media (pointer: fine) {
-  html.gsap-enabled .bw-cursor { opacity: 1; }
-}
-
 /* 3D tilt + moving glare highlight */
 [data-tilt] { transform-style: preserve-3d; }
 .bw-glare {
@@ -339,5 +438,5 @@ html.gsap-enabled [data-reveal] { opacity: 0; transform: translateY(24px); }
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
   }
-  .bw-cursor, .bw-grain { display: none !important; }
+  .bw-grain { display: none !important; }
 }
