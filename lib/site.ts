@@ -7,6 +7,7 @@ export const NAV_ITEMS: NavItem[] = [
   { label: "Leistungen", href: "/leistungen" },
   { label: "Preise", href: "/preise" },
   { label: "Kontakt", href: "/kontakt" },
+  { label: "Login", href: "/login" },
 ];
 
 export const CTA_HREF = "/kontakt";
