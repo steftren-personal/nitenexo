@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { Logo } from "./Logo";
 import { Button } from "@/components/ui/Button";
 import { NAV_ITEMS, CTA_HREF } from "@/lib/site";
+import { createClient } from "@/lib/supabase/client";
 
 /**
  * NiteNexo NavBar — sticky, polarity-aware. Blurs + shrinks once scrolled,
@@ -18,10 +19,32 @@ export function NavBar({ polarity = "dark" }: { polarity?: "dark" | "light" }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const lastY = useRef(0);
 
   const linkColor = dark ? "var(--on-dark-muted)" : "var(--color-ink-deep)";
   const activeColor = dark ? "var(--on-primary)" : "var(--color-accent-violet)";
+
+  useEffect(() => {
+    const checkSession = () => {
+      fetch("/api/me")
+        .then((res) => res.json())
+        .then((body) => {
+          setLoggedIn(!!body.loggedIn);
+          setIsAdmin(!!body.isAdmin);
+        });
+    };
+
+    checkSession();
+    const supabase = createClient();
+    const { data: listener } = supabase.auth.onAuthStateChange(() => checkSession());
+    return () => listener.subscription.unsubscribe();
+  }, []);
+
+  const navItems = NAV_ITEMS.map((item) =>
+    item.href === "/login" && loggedIn ? { label: "Konto", href: "/konto" } : item
+  ).concat(isAdmin ? [{ label: "Admin", href: "/admin/termine" }] : []);
 
   useEffect(() => {
     const onScroll = () => {
@@ -83,7 +106,7 @@ export function NavBar({ polarity = "dark" }: { polarity?: "dark" | "light" }) {
         </Link>
 
         <div className="bw-nav-links" style={{ display: "flex", alignItems: "center", gap: "var(--space-xl)" }}>
-          {NAV_ITEMS.map((it) => {
+          {navItems.map((it) => {
             const active = isActive(it.href);
             return (
               <Link
@@ -154,7 +177,7 @@ export function NavBar({ polarity = "dark" }: { polarity?: "dark" | "light" }) {
             borderBottom: dark ? "1px solid var(--hairline-violet)" : "1px solid var(--hairline-cloud)",
           }}
         >
-          {NAV_ITEMS.concat([{ label: "Projekt starten", href: CTA_HREF }]).map((it, i) => (
+          {navItems.concat([{ label: "Projekt starten", href: CTA_HREF }]).map((it, i) => (
             <Link
               key={i}
               href={it.href}

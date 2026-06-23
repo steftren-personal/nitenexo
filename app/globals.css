@@ -394,7 +394,8 @@ html.gsap-enabled [data-reveal] { opacity: 0; transform: translateY(24px); }
   .bw-nav-links, .bw-nav-cta { display: none !important; }
   .bw-nav-burger { display: inline-flex !important; }
   .bw-nav-mobile { display: flex !important; }
-  .bw-hero-grid, .bw-about-grid, .bw-why-grid, .bw-leistung-row, .bw-kontakt-grid {
+  .bw-hero-grid, .bw-about-grid, .bw-why-grid, .bw-leistung-row, .bw-kontakt-grid,
+  .bw-termine-grid, .bw-admin-grid {
     grid-template-columns: 1fr !important;
     gap: var(--space-xxl) !important;
   }
