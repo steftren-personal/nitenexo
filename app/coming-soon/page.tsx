@@ -133,6 +133,14 @@ export default function ComingSoonPage() {
           }}
         >
           © {new Date().getFullYear()} NiteNexo Solutions · Wien
+          {" · "}
+          <a href="/impressum" style={{ color: "var(--on-dark-muted)", textDecoration: "underline", textUnderlineOffset: "3px" }}>
+            Impressum
+          </a>
+          {" · "}
+          <a href="/datenschutz" style={{ color: "var(--on-dark-muted)", textDecoration: "underline", textUnderlineOffset: "3px" }}>
+            Datenschutz
+          </a>
         </p>
       </div>
     </>
