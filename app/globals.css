@@ -292,6 +292,129 @@ a[href*="spline.design"] { display: none !important; }
   pointer-events: none;
 }
 
+/* ── Cinematic video hero (sticky scroll-scrub) ─────────────────────────── */
+/* `.pvh` is just the scroll driver; `.pvh-stage` sticks full-screen inside it.
+   On desktop the section is tall (the journey length) and pulls the next hero
+   up under its end (negative margin) so the hero is revealed exactly as the
+   video dissolves — no empty trailing screen, seamless colour hand-off. */
+.pvh {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+}
+.pvh-stage {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  z-index: 25; /* above the traveling robot (z20); navbar (z40) stays on top */
+  pointer-events: none; /* purely visual — never block the hero behind it */
+  background: transparent;
+}
+@media (min-width: 1024px) {
+  html.gsap-enabled .pvh { height: 320vh; margin-bottom: -100vh; }
+  html.gsap-enabled .pvh-stage { position: sticky; top: 0; }
+}
+.pvh-video,
+.pvh-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.pvh-video { object-fit: cover; object-position: center; } /* mobile / fallback, behind canvas */
+@media (min-width: 1024px) {
+  /* desktop+motion uses the canvas frames; hide the video so its poster doesn't
+     block the page gradient from showing through during the end zoom-through. */
+  html.gsap-enabled .pvh-video { display: none; }
+}
+.pvh-canvas {
+  transform-origin: center; /* end "pull into the page" zoom */
+  will-change: transform;
+}
+.pvh-scrim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(105deg, rgba(10, 7, 18, 0.9) 0%, rgba(10, 7, 18, 0.62) 38%, rgba(10, 7, 18, 0.2) 64%, rgba(10, 7, 18, 0) 100%),
+    linear-gradient(0deg, rgba(10, 7, 18, 0.55) 0%, transparent 32%);
+}
+.pvh-copy {
+  position: absolute;
+  left: clamp(24px, 7vw, 120px);
+  top: 0;
+  bottom: 0;
+  width: min(640px, 76vw);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  z-index: 2;
+  will-change: transform, opacity;
+}
+.pvh-tag {
+  display: inline-block;
+  font: var(--type-button-cap-light);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--color-accent-lime);
+  margin-bottom: var(--space-md);
+}
+.pvh-title {
+  font: var(--type-display-hero);
+  font-size: clamp(34px, 5.4vw, 72px);
+  line-height: 1.04;
+  color: #fff;
+  margin: 0;
+  text-wrap: balance;
+}
+.pvh-kw { color: var(--color-accent-lime); }
+/* Benefit statements that fly toward the viewer out of the depth */
+.pvh-fly {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  width: min(900px, 86vw);
+  text-align: center;
+  font: var(--type-display-hero);
+  font-size: clamp(30px, 5vw, 64px);
+  line-height: 1.05;
+  color: #fff;
+  opacity: 0;
+  z-index: 3;
+  pointer-events: none;
+  text-shadow: 0 2px 34px rgba(0, 0, 0, 0.6);
+  will-change: transform, opacity, filter;
+}
+.pvh-hint {
+  position: absolute;
+  left: 50%;
+  bottom: 26px;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  z-index: 2;
+  color: rgba(255, 255, 255, 0.7);
+  font: var(--type-caption);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+}
+.pvh-hint-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(rgba(255, 255, 255, 0.75), transparent);
+  transform-origin: top;
+  animation: pvhHint 1.8s ease-in-out infinite;
+}
+@keyframes pvhHint {
+  0%, 100% { transform: scaleY(0.5); opacity: 0.4; }
+  50% { transform: scaleY(1); opacity: 0.9; }
+}
+
 /* Spotlight (21st.dev/aceternity) + spinner */
 @keyframes spotlight {
   0% { opacity: 0; transform: translate(-72%, -62%) scale(0.5); }

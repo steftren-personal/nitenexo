@@ -17,6 +17,7 @@ import { RobotPresenter } from "./RobotPresenter";
 import { HeroSpline } from "./HeroSpline";
 import { MascotRobot } from "./MascotRobot";
 import { RobotGuide } from "./RobotGuide";
+import { PinnedVideoHero } from "./PinnedVideoHero";
 import { IntegrationsStrip } from "@/components/marketing/IntegrationsStrip";
 import { TestimonialsMarquee } from "./TestimonialsMarquee";
 import { UseCaseTabs } from "./UseCaseTabs";
@@ -57,6 +58,9 @@ const h2Style: React.CSSProperties = { font: "var(--type-display-large)", fontSi
 export function HomeScreen() {
   return (
     <div style={{ color: "var(--on-primary)" }}>
+      {/* Gepinnter cineastischer Video-Hero (Scroll-Scrub + Text-Kapitel). */}
+      <PinnedVideoHero />
+
       {/* Mitreisender Roboter — fliegt rein, gleitet durch die Seite und zeigt
           abwechselnd auf die Textblöcke (nur Desktop + Bewegung erlaubt). */}
       <RobotGuide />
