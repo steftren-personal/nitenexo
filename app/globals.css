@@ -261,10 +261,35 @@ a[href*="spline.design"] { display: none !important; }
   /* gsap-enabled is only on <html> when motion is allowed → reduced-motion
      visitors keep the inline hero robot, never the fixed traveler. */
   html.gsap-enabled .robot-guide { display: block; }
-  /* !important beats the hero box's inline display:flex so only the
-     traveling canvas robot shows on desktop (never two robots). */
-  html.gsap-enabled .hs-robot-inline { display: none !important; }
 }
+/* With motion on, the static inline hero robot is replaced everywhere: desktop
+   has the traveling guide, phones get the edge RobotStops. !important beats the
+   hero box's inline display:flex. Reduced-motion/no-JS keeps the inline robot. */
+html.gsap-enabled .hs-robot-inline { display: none !important; }
+
+/* ── Mobile robot stops (in-flow edge appearances, phones + motion only) ── */
+.robot-stop { display: none; }
+@media (max-width: 1023px) {
+  html.gsap-enabled .robot-stop { display: block; }
+}
+.robot-stop {
+  position: relative;
+  height: 190px; /* tall enough for the full robot… */
+  overflow: hidden; /* …and clips the flown-out robot so it never widens the page */
+  pointer-events: none;
+}
+.rs-bot {
+  position: absolute;
+  top: 6px;
+  width: 132px;
+  visibility: hidden; /* GSAP autoAlpha flies it in */
+  will-change: transform, opacity;
+}
+.robot-stop[data-side="right"] .rs-bot { right: 4px; }
+.robot-stop[data-side="left"] .rs-bot { left: 4px; }
+/* mirror via an inner wrapper so GSAP owns the outer transform */
+.robot-stop[data-side="left"] .rs-flip { transform: scaleX(-1); }
+.rs-canvas { display: block; width: 100%; height: auto; }
 .rg-travel {
   position: fixed;
   top: 0;
@@ -305,16 +330,17 @@ a[href*="spline.design"] { display: none !important; }
 .pvh-stage {
   position: relative;
   height: 100vh;
+  height: 100svh; /* stable on phones while the URL bar collapses */
   width: 100%;
   overflow: hidden;
   z-index: 25; /* above the traveling robot (z20); navbar (z40) stays on top */
   pointer-events: none; /* purely visual — never block the hero behind it */
   background: transparent;
 }
-@media (min-width: 1024px) {
-  html.gsap-enabled .pvh { height: 320vh; margin-bottom: -100vh; }
-  html.gsap-enabled .pvh-stage { position: sticky; top: 0; }
-}
+/* Scroll journey on ALL sizes when motion is allowed (reduced motion keeps the
+   plain 100vh section with the playing video). */
+html.gsap-enabled .pvh { height: 320vh; margin-bottom: -100vh; }
+html.gsap-enabled .pvh-stage { position: sticky; top: 0; }
 .pvh-video,
 .pvh-canvas {
   position: absolute;
@@ -323,16 +349,30 @@ a[href*="spline.design"] { display: none !important; }
   height: 100%;
   display: block;
 }
-.pvh-video { object-fit: cover; object-position: center; } /* mobile / fallback, behind canvas */
-@media (min-width: 1024px) {
-  /* desktop+motion uses the canvas frames; hide the video so its poster doesn't
-     block the page gradient from showing through during the end zoom-through. */
-  html.gsap-enabled .pvh-video { display: none; }
-}
+.pvh-video { object-fit: cover; object-position: center; } /* reduced-motion fallback, behind canvas */
+/* With motion on, the canvas frames drive the scene on every size — hide the
+   video so its poster doesn't block the gradient during the end zoom-through. */
+html.gsap-enabled .pvh-video { display: none; }
 .pvh-canvas {
   transform-origin: center; /* end "pull into the page" zoom */
   will-change: transform;
+  /* Poster behind the pixels: while frames are still downloading the canvas is
+     transparent — show the bar instead of the page content pulled up behind. */
+  background: #0a0712 url("/assets/club-hero-poster.jpg") center / cover no-repeat;
 }
+/* The robot guiding you through the journey (drawn from the shared frame set) */
+.pvh-bot {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: clamp(110px, 18vw, 230px);
+  z-index: 2;
+  opacity: 0;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+.pvh-bot-flip { will-change: transform; }
+.pvh-bot-canvas { display: block; width: 100%; height: auto; }
 .pvh-scrim {
   position: absolute;
   inset: 0;

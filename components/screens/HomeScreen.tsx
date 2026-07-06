@@ -17,6 +17,7 @@ import { RobotPresenter } from "./RobotPresenter";
 import { HeroSpline } from "./HeroSpline";
 import { MascotRobot } from "./MascotRobot";
 import { RobotGuide } from "./RobotGuide";
+import { RobotStop } from "./RobotStop";
 import { PinnedVideoHero } from "./PinnedVideoHero";
 import { IntegrationsStrip } from "@/components/marketing/IntegrationsStrip";
 import { TestimonialsMarquee } from "./TestimonialsMarquee";
@@ -82,6 +83,9 @@ export function HomeScreen() {
         </div>
       </div>
 
+      {/* Handy: Roboter-Auftritt am rechten Rand */}
+      <RobotStop side="right" />
+
       {/* ── Über NiteNexo ───────────────────────────────────── */}
       <section style={sectionStyle} data-guide="right">
         <div className="bw-about-grid" style={{ display: "grid", gridTemplateColumns: "0.95fr 1.05fr", gap: "var(--space-section)", alignItems: "center" }}>
@@ -142,6 +146,9 @@ export function HomeScreen() {
       <div data-guide="right">
         <RobotPresenter />
       </div>
+
+      {/* Handy: Roboter-Auftritt am linken Rand */}
+      <RobotStop side="left" />
 
       {/* ── Preise ──────────────────────────────────────────── */}
       <div data-guide="left">
@@ -231,6 +238,9 @@ export function HomeScreen() {
           </Button>
         </div>
       </section>
+
+      {/* Handy: Roboter-Auftritt am rechten Rand vor dem CTA */}
+      <RobotStop side="right" />
 
       {/* ── Großer CTA ──────────────────────────────────────── */}
       <div data-guide="left">

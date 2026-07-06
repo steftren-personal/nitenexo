@@ -16,7 +16,10 @@ import { gsap, ScrollTrigger, prefersReducedMotion } from "@/components/motion/g
  * Desktop + motion only; phones / reduced-motion play the clip natively.
  */
 const FRAME_COUNT = 60;
-const framePath = (i: number) => `/assets/club-frames/c${String(i + 1).padStart(3, "0")}.webp`;
+// Phones get a 720px frame set (~1MB) so the journey works there too without
+// blowing the data budget; desktop keeps the sharp 1100px set.
+const framePath = (i: number) =>
+  `/assets/${typeof window !== "undefined" && window.innerWidth < 768 ? "club-frames-sm" : "club-frames"}/c${String(i + 1).padStart(3, "0")}.webp`;
 const VIDEO = "/assets/club-hero.mp4";
 const POSTER = "/assets/club-hero-poster.jpg";
 
@@ -24,6 +27,20 @@ const FLY = [
   { text: "Antwortet in Sekunden.", s: 0.08, e: 0.42 },
   { text: "Rund um die Uhr.", s: 0.38, e: 0.66 },
   { text: "Ohne dass dein Team tippt.", s: 0.6, e: 0.9 },
+];
+
+// The robot travels WITH you through the bar: keyframes over journey progress
+// (x/y as fractions of the stage, s = scale, a = opacity). He enters from the
+// right, glides across, then leads the final zoom-through and fades out.
+const BOT_COUNT = 60;
+const botPath = (i: number) => `/assets/robot-frames/f${String(i + 1).padStart(3, "0")}.webp`;
+const BOT_WPS = [
+  { p: 0.05, x: 1.15, y: 0.6, s: 0.75, a: 0 },
+  { p: 0.16, x: 0.8, y: 0.58, s: 0.9, a: 1 },
+  { p: 0.4, x: 0.18, y: 0.66, s: 1.0, a: 1 },
+  { p: 0.64, x: 0.78, y: 0.68, s: 1.1, a: 1 },
+  { p: 0.82, x: 0.5, y: 0.56, s: 1.45, a: 1 },
+  { p: 0.92, x: 0.5, y: 0.46, s: 1.9, a: 0 },
 ];
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
@@ -44,7 +61,9 @@ export function PinnedVideoHero() {
       const flyEls = gsap.utils.toArray<HTMLElement>(".pvh-fly", el);
       const video = el.querySelector<HTMLVideoElement>(".pvh-video");
 
-      if (!stage || !canvas || !ctx || !opener || prefersReducedMotion() || window.innerWidth < 1024) {
+      // Scroll-driven journey on ALL sizes now (phones included); only
+      // reduced-motion visitors get the plain playing video instead.
+      if (!stage || !canvas || !ctx || !opener || prefersReducedMotion()) {
         video?.play?.().catch(() => {});
         return;
       }
@@ -74,9 +93,42 @@ export function PinnedVideoHero() {
       sizeCanvas();
       for (let i = 0; i < FRAME_COUNT; i++) {
         const img = new Image();
-        if (i === 0) img.onload = () => drawFrame(0);
+        // Redraw when a frame arrives late and it's the one currently needed —
+        // otherwise slow connections leave the canvas transparent (page content
+        // behind would peek into the journey).
+        img.onload = () => {
+          if (i === Math.round(gsap.utils.clamp(0, 1, dispP) * (FRAME_COUNT - 1))) drawFrame(i);
+        };
         img.src = framePath(i);
         frames[i] = img;
+      }
+
+      // ── Journey robot: frames + draw ────────────────────────────────────
+      const botEl = el.querySelector<HTMLElement>(".pvh-bot");
+      const botFlip = el.querySelector<HTMLElement>(".pvh-bot-flip");
+      const botCanvas = el.querySelector<HTMLCanvasElement>(".pvh-bot-canvas");
+      const botCtx = botCanvas?.getContext("2d");
+      const botFrames: HTMLImageElement[] = [];
+      let botDrawn = -1;
+      const drawBot = (idx: number) => {
+        if (!botCanvas || !botCtx) return;
+        const img = botFrames[idx];
+        if (!img || !img.complete || !img.naturalWidth) return;
+        if (botCanvas.width !== img.naturalWidth) {
+          botCanvas.width = img.naturalWidth;
+          botCanvas.height = img.naturalHeight;
+        }
+        botCtx.clearRect(0, 0, botCanvas.width, botCanvas.height);
+        botCtx.drawImage(img, 0, 0);
+        botDrawn = idx;
+      };
+      if (botCanvas && botCtx) {
+        for (let i = 0; i < BOT_COUNT; i++) {
+          const img = new Image();
+          if (i === 0) img.onload = () => drawBot(0);
+          img.src = botPath(i);
+          botFrames[i] = img;
+        }
       }
 
       // ── Scroll → camera position + flying text + end zoom-through dissolve ──
@@ -91,6 +143,8 @@ export function PinnedVideoHero() {
         opener.style.transform = `translateY(${(-p * 40).toFixed(1)}px)`;
         if (hint) hint.style.opacity = p < 0.05 ? "1" : "0";
 
+        // Phones: cap the fly-through growth so the text never leaves the screen.
+        const maxScl = window.innerWidth < 768 ? 1.28 : 1.9;
         flyEls.forEach((fl, i) => {
           const { s, e } = FLY[i];
           const local = (p - s) / (e - s);
@@ -98,7 +152,7 @@ export function PinnedVideoHero() {
             fl.style.opacity = "0";
             return;
           }
-          const scl = lerp(0.62, 1.9, local);
+          const scl = lerp(0.62, maxScl, local);
           const fadeIn = clamp01(local / 0.3);
           const fadeOut = 1 - clamp01((local - 0.6) / 0.4);
           const op = Math.min(fadeIn, fadeOut);
@@ -107,6 +161,29 @@ export function PinnedVideoHero() {
           fl.style.filter = `blur(${blur.toFixed(1)}px)`;
           fl.style.transform = `translate(-50%, -50%) scale(${scl.toFixed(3)})`;
         });
+
+        // Journey robot: glide along his waypoints, gesture with the scroll,
+        // face the direction he's moving.
+        if (botEl && botFlip) {
+          let bi = 0;
+          while (bi < BOT_WPS.length - 1 && p >= BOT_WPS[bi + 1].p) bi++;
+          const wa = BOT_WPS[bi];
+          const wb = BOT_WPS[Math.min(bi + 1, BOT_WPS.length - 1)];
+          const seg = wb.p - wa.p;
+          const bt = seg > 0 ? clamp01((p - wa.p) / seg) : 0;
+          const bx = lerp(wa.x, wb.x, bt) * stage.clientWidth;
+          const by = lerp(wa.y, wb.y, bt) * stage.clientHeight;
+          const bs = lerp(wa.s, wb.s, bt);
+          const ba = p < BOT_WPS[0].p ? 0 : lerp(wa.a, wb.a, bt);
+          botEl.style.opacity = ba.toFixed(3);
+          botEl.style.transform = `translate(calc(${bx.toFixed(1)}px - 50%), calc(${by.toFixed(1)}px - 50%)) scale(${bs.toFixed(3)})`;
+          botFlip.style.transform = wb.x > wa.x ? "scaleX(-1)" : "none"; // face travel direction
+          const period = 2 * BOT_COUNT - 2;
+          let ph = (p * 2.2 * period) % period;
+          if (ph < 0) ph += period;
+          const bIdx = Math.floor(ph < BOT_COUNT ? ph : period - ph);
+          if (bIdx !== botDrawn) drawBot(bIdx);
+        }
 
         // End: scene rushes forward and dissolves (canvas + scrim fade) → the
         // page gradient + hero behind show through in the same colour.
@@ -161,6 +238,13 @@ export function PinnedVideoHero() {
         </video>
         <canvas className="pvh-canvas" aria-hidden="true" />
         <div className="pvh-scrim" aria-hidden="true" />
+
+        {/* Reise-Roboter — begleitet die Kamerafahrt */}
+        <div className="pvh-bot" aria-hidden="true">
+          <div className="pvh-bot-flip">
+            <canvas className="pvh-bot-canvas" />
+          </div>
+        </div>
 
         <div className="pvh-copy">
           <span className="pvh-tag">WhatsApp-Assistent für Gastro &amp; Clubs</span>
