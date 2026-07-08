@@ -28,7 +28,7 @@ export default function ImpressumPage() {
 
       <LegalSection title="Kontakt">
         <p style={{ margin: 0 }}>
-          E-Mail: <a href="mailto:stef.tren@gmail.com" style={legalLink}>stef.tren@gmail.com</a>
+          E-Mail: <a href="mailto:info@nitenexo.at" style={legalLink}>info@nitenexo.at</a>
           <br />
           Telefon: <a href="tel:+436609390787" style={legalLink}>+43 660 9390787</a>
         </p>

@@ -12,7 +12,7 @@ export const NAV_ITEMS: NavItem[] = [
 export const CTA_HREF = "/kontakt";
 
 export const CONTACT = {
-  email: "stef.tren@gmail.com",
+  email: "info@nitenexo.at",
   phone: "+43 660 9390787",
   phoneHref: "tel:+436609390787",
   name: "Stefan Trendafilov",

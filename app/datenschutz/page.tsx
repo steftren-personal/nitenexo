@@ -21,7 +21,7 @@ export default function DatenschutzPage() {
           <br />
           Schumanngasse 9/13, 1180 Wien, Österreich
           <br />
-          E-Mail: <a href="mailto:stef.tren@gmail.com" style={legalLink}>stef.tren@gmail.com</a> · Telefon:{" "}
+          E-Mail: <a href="mailto:info@nitenexo.at" style={legalLink}>info@nitenexo.at</a> · Telefon:{" "}
           <a href="tel:+436609390787" style={legalLink}>+43 660 9390787</a>
         </p>
       </LegalSection>
@@ -106,7 +106,7 @@ export default function DatenschutzPage() {
         />
         <p style={{ margin: 0 }}>
           Zur Ausübung genügt eine formlose Nachricht an{" "}
-          <a href="mailto:stef.tren@gmail.com" style={legalLink}>stef.tren@gmail.com</a>.
+          <a href="mailto:info@nitenexo.at" style={legalLink}>info@nitenexo.at</a>.
         </p>
       </LegalSection>
 

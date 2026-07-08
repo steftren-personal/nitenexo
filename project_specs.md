@@ -33,7 +33,7 @@ Chrome on every page: sticky polarity-aware **NavBar** (blurs + shrinks on scrol
 down / shows on scroll up, mobile burger), **Footer** (lime squiggle + 3 link columns + contact +
 legal row), and a persistent **CookieBanner** (localStorage consent).
 
-Real contact details: stef.tren@gmail.com · +43 660 9390787 · Schumanngasse 9/13, 1180 Wien.
+Real contact details: info@nitenexo.at · +43 660 9390787 · Schumanngasse 9/13, 1180 Wien.
 
 ## Data / storage / third parties
 None. Contact form does not transmit or store data (clearly labelled as a demo). No Stripe/Supabase.
