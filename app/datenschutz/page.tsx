@@ -19,7 +19,7 @@ export default function DatenschutzPage() {
         <p style={{ margin: 0 }}>
           Stefan Trendafilov (NiteNexo Solutions)
           <br />
-          Schumanngasse 9/13, 1180 Wien, Österreich
+          Schumanngasse 9, 1180 Wien, Österreich
           <br />
           E-Mail: <a href="mailto:info@nitenexo.at" style={legalLink}>info@nitenexo.at</a> · Telefon:{" "}
           <a href="tel:+436609390787" style={legalLink}>+43 660 9390787</a>

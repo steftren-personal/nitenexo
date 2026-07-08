@@ -17,6 +17,6 @@ export const CONTACT = {
   phoneHref: "tel:+436609390787",
   name: "Stefan Trendafilov",
   brand: "NiteNexo Solutions",
-  street: "Schumanngasse 9/13",
+  street: "Schumanngasse 9",
   city: "1180 Wien, Österreich",
 };
