@@ -20,7 +20,7 @@ export default function ImpressumPage() {
           <br />
           NiteNexo Solutions (Geschäftsbezeichnung)
           <br />
-          Schumanngasse 9/13
+          Schumanngasse 9
           <br />
           1180 Wien, Österreich
         </p>
