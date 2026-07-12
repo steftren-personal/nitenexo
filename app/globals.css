@@ -317,11 +317,12 @@ html.gsap-enabled .hs-robot-inline { display: none !important; }
   pointer-events: none;
 }
 
-/* ── Cinematic video hero (sticky scroll-scrub) ─────────────────────────── */
-/* `.pvh` is just the scroll driver; `.pvh-stage` sticks full-screen inside it.
-   On desktop the section is tall (the journey length) and pulls the next hero
-   up under its end (negative margin) so the hero is revealed exactly as the
-   video dissolves — no empty trailing screen, seamless colour hand-off. */
+/* ── Cinematic video hero (stepped presentation overlay) ────────────────── */
+/* Without JS/motion, `.pvh` is a plain in-flow 100vh section playing the clip.
+   With motion, JS adds `pvh--overlay`: the section collapses out of the flow
+   and `.pvh-stage` becomes a fixed full-viewport overlay — the page hero sits
+   at the very top of the document beneath it, so the end dissolve lands
+   exactly on the hero with zero dead space, seamless colour hand-off. */
 .pvh {
   position: relative;
   width: 100%;
@@ -337,10 +338,11 @@ html.gsap-enabled .hs-robot-inline { display: none !important; }
   pointer-events: none; /* purely visual — never block the hero behind it */
   background: transparent;
 }
-/* Scroll journey on ALL sizes when motion is allowed (reduced motion keeps the
-   plain 100vh section with the playing video). */
-html.gsap-enabled .pvh { height: 320vh; margin-bottom: -100vh; }
-html.gsap-enabled .pvh-stage { position: sticky; top: 0; }
+/* Stepped journey on ALL sizes when motion is allowed (reduced motion keeps
+   the plain 100vh section with the playing video). One scroll gesture = one
+   station; the JS drives the travel and locks page scroll while presenting. */
+html.gsap-enabled .pvh--overlay { height: 0; }
+html.gsap-enabled .pvh--overlay .pvh-stage { position: fixed; inset: 0; }
 .pvh-video,
 .pvh-canvas {
   position: absolute;

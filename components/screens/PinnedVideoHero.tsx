@@ -2,18 +2,22 @@
 
 import React, { useRef } from "react";
 import { useGSAP } from "@gsap/react";
-import { gsap, ScrollTrigger, prefersReducedMotion } from "@/components/motion/gsap";
+import { gsap, prefersReducedMotion } from "@/components/motion/gsap";
 
 /**
- * PinnedVideoHero — a scroll-DRIVEN camera journey through an upscale cocktail
- * bar. A tall `.pvh` section drives the scroll; `.pvh-stage` sticks full-screen
- * inside it and scrolling moves the camera forward (clip pre-split into frames
- * drawn to a <canvas> with eased frame-walk → smooth on stepped input). Benefit
- * statements fly toward you out of the depth; at the end the scene zooms +
- * dissolves to reveal the page hero, which sits directly behind (the section's
- * negative bottom margin pulls it up) → a seamless crossfade in the same colour.
+ * PinnedVideoHero — a stepped, presentation-style camera journey through an
+ * upscale cocktail bar. With motion allowed the stage becomes a fixed
+ * full-viewport overlay (the `.pvh` section collapses out of the flow) and
+ * page scrolling locks: ONE gesture (wheel / swipe / key) advances ONE
+ * station and the camera travels there on its own (clip pre-split into
+ * frames drawn to a <canvas>, ~1.4s eased tween per hop). Benefit statements
+ * fly toward you out of the depth; after the last station the scene zooms +
+ * dissolves onto the page hero — which sits at the very top of the document
+ * beneath the overlay — and scrolling unlocks with zero dead space. Wheeling
+ * up at the very top steps back into the journey.
  *
- * Desktop + motion only; phones / reduced-motion play the clip natively.
+ * Reduced-motion visitors get the plain in-flow 100vh section playing the
+ * clip natively — no overlay, no scroll lock.
  */
 const FRAME_COUNT = 60;
 // Phones get a 720px frame set (~1MB) so the journey works there too without
@@ -28,6 +32,12 @@ const FLY = [
   { text: "Rund um die Uhr.", s: 0.38, e: 0.66 },
   { text: "Ohne dass dein Team tippt.", s: 0.6, e: 0.9 },
 ];
+
+// Camera stations, one gesture apart: opener, the three benefit texts at
+// full readability, and the end zoom-through onto the hero.
+const STATIONS = [0, 0.26, 0.52, 0.76, 1];
+const TRAVEL_S = 0.9; // seconds the camera takes to reach the next station
+const SWIPE_MIN = 24; // px of touch travel that counts as one gesture
 
 // The robot travels WITH you through the bar: keyframes over journey progress
 // (x/y as fractions of the stage, s = scale, a = opacity). He enters from the
@@ -45,6 +55,9 @@ const BOT_WPS = [
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
+// Dev-only hook so automated tests can assert station arrivals.
+type PvhWindow = Window & { __pvhStation?: number };
+
 export function PinnedVideoHero() {
   const root = useRef<HTMLElement>(null);
 
@@ -61,15 +74,24 @@ export function PinnedVideoHero() {
       const flyEls = gsap.utils.toArray<HTMLElement>(".pvh-fly", el);
       const video = el.querySelector<HTMLVideoElement>(".pvh-video");
 
-      // Scroll-driven journey on ALL sizes now (phones included); only
-      // reduced-motion visitors get the plain playing video instead.
+      // Stepped journey on ALL sizes (phones included); only reduced-motion
+      // visitors get the plain playing video instead.
       if (!stage || !canvas || !ctx || !opener || prefersReducedMotion()) {
         video?.play?.().catch(() => {});
         return;
       }
       video?.pause?.();
 
-      // ── Frame preload + cover-fit draw (sized to the stage, not the tall section) ──
+      // Presentation mode: the section collapses (height 0) and the stage
+      // becomes a fixed full-viewport overlay — the page hero sits at the top
+      // of the document beneath it, ready for the end crossfade.
+      el.classList.add("pvh--overlay");
+
+      // Camera position along the journey. A gesture tweens it to the next
+      // station, so `state.p` is the single source of truth for render().
+      const state = { p: 0 };
+
+      // ── Frame preload + cover-fit draw (sized to the overlay stage) ──────
       const frames: HTMLImageElement[] = [];
       const sizeCanvas = () => {
         const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -97,7 +119,7 @@ export function PinnedVideoHero() {
         // otherwise slow connections leave the canvas transparent (page content
         // behind would peek into the journey).
         img.onload = () => {
-          if (i === Math.round(gsap.utils.clamp(0, 1, dispP) * (FRAME_COUNT - 1))) drawFrame(i);
+          if (i === Math.round(gsap.utils.clamp(0, 1, state.p) * (FRAME_COUNT - 1))) drawFrame(i);
         };
         img.src = framePath(i);
         frames[i] = img;
@@ -131,9 +153,7 @@ export function PinnedVideoHero() {
         }
       }
 
-      // ── Scroll → camera position + flying text + end zoom-through dissolve ──
-      let targetP = 0;
-      let dispP = 0;
+      // ── Camera position → frames + flying text + end zoom-through ────────
       const clamp01 = (v: number) => gsap.utils.clamp(0, 1, v);
       const render = (p: number) => {
         drawFrame(Math.round(clamp01(p) * (FRAME_COUNT - 1)));
@@ -162,7 +182,7 @@ export function PinnedVideoHero() {
           fl.style.transform = `translate(-50%, -50%) scale(${scl.toFixed(3)})`;
         });
 
-        // Journey robot: glide along his waypoints, gesture with the scroll,
+        // Journey robot: glide along his waypoints, gesture with the travel,
         // face the direction he's moving.
         if (botEl && botFlip) {
           let bi = 0;
@@ -194,37 +214,171 @@ export function PinnedVideoHero() {
         if (scrim) scrim.style.opacity = (1 - fade).toFixed(3);
       };
 
-      const tick = (_t: number, dt: number) => {
-        dispP += (targetP - dispP) * (1 - Math.exp(-dt / 110));
-        if (Math.abs(targetP - dispP) < 0.0004) dispP = targetP;
-        render(dispP);
-      };
-      gsap.ticker.add(tick);
+      // ── Stepped driver: one gesture = one station, travelled on its own ──
+      let station = 0;
+      let travel: gsap.core.Tween | null = null;
+      let active = false;
 
-      const st = ScrollTrigger.create({
-        trigger: el,
-        start: "top top",
-        end: "bottom bottom",
-        invalidateOnRefresh: true,
-        onUpdate: (self) => {
-          targetP = self.progress;
-        },
-        onLeave: () => {
-          stage.style.visibility = "hidden"; // past the journey → don't sit over the hero
-        },
-        onEnterBack: () => {
-          stage.style.visibility = "visible";
-        },
-        onRefresh: () => {
-          sizeCanvas();
-          render(dispP);
-        },
-      });
-      render(0);
+      const flagStation = () => {
+        if (process.env.NODE_ENV !== "production") (window as PvhWindow).__pvhStation = station;
+      };
+
+      const lock = () => {
+        document.documentElement.style.overflow = "hidden";
+        document.documentElement.style.overscrollBehavior = "none";
+        document.body.style.overscrollBehavior = "none";
+      };
+      const unlock = () => {
+        document.documentElement.style.overflow = "";
+        document.documentElement.style.overscrollBehavior = "";
+        document.body.style.overscrollBehavior = "";
+      };
+
+      // While presenting, the stage swallows clicks so the hidden hero behind
+      // can't be hit by accident; released again the moment the intro ends.
+      const engage = () => {
+        active = true;
+        lock();
+        stage.style.visibility = "visible";
+        stage.style.pointerEvents = "auto";
+      };
+      const release = () => {
+        active = false;
+        unlock();
+        stage.style.visibility = "hidden"; // already alpha-0 — free the viewport
+        stage.style.pointerEvents = "";
+      };
+
+      // A gesture landing in the LATER part of a travel is remembered and runs
+      // right after arrival (feels responsive, chains stations fluidly); events
+      // in the early part are the same physical flick's inertia and are dropped
+      // so one swipe never jumps two stations.
+      let queued: 1 | -1 | null = null;
+
+      const goTo = (idx: number) => {
+        station = idx;
+        travel = gsap.to(state, {
+          p: STATIONS[idx],
+          duration: TRAVEL_S,
+          ease: "power2.inOut",
+          onUpdate: () => render(state.p),
+          onComplete: () => {
+            travel = null;
+            flagStation();
+            if (station === STATIONS.length - 1) {
+              queued = null;
+              release(); // journey done → page scrolls on
+              return;
+            }
+            if (queued !== null) {
+              const dir = queued;
+              queued = null;
+              step(dir);
+            }
+          },
+        });
+      };
+
+      const step = (dir: 1 | -1) => {
+        if (travel) {
+          if (travel.progress() > 0.45) queued = dir; // deliberate follow-up → chain it
+          return;
+        }
+        const next = station + dir;
+        if (next < 0 || next > STATIONS.length - 1) return;
+        goTo(next);
+      };
+
+      // Back at the very top and scrolling up → re-enter the journey at the
+      // last station and step backwards from there.
+      const reenter = () => {
+        engage();
+        step(-1);
+      };
+
+      // ── Input while locked: wheel / swipe / keys, page scroll suppressed ──
+      const onWheel = (e: WheelEvent) => {
+        if (active) {
+          e.preventDefault();
+          step(e.deltaY > 0 ? 1 : -1);
+        } else if (e.deltaY < 0 && window.scrollY <= 1 && !travel) {
+          e.preventDefault();
+          reenter();
+        }
+      };
+
+      let touchY: number | null = null;
+      const onTouchStart = (e: TouchEvent) => {
+        touchY = e.touches[0].clientY;
+      };
+      const onTouchMove = (e: TouchEvent) => {
+        if (touchY === null) return;
+        const dy = touchY - e.touches[0].clientY; // >0 = finger up = advance
+        if (active) {
+          e.preventDefault(); // the page must not scroll while presenting
+          if (Math.abs(dy) < SWIPE_MIN) return;
+          touchY = e.touches[0].clientY; // one long swipe still means one step
+          step(dy > 0 ? 1 : -1); // step() itself queues follow-ups mid-travel
+        } else if (dy < -SWIPE_MIN && window.scrollY <= 1 && !travel) {
+          e.preventDefault();
+          touchY = e.touches[0].clientY;
+          reenter();
+        }
+      };
+      const onTouchEnd = () => {
+        touchY = null;
+      };
+
+      const onKey = (e: KeyboardEvent) => {
+        if (!active || e.metaKey || e.ctrlKey || e.altKey) return;
+        if (e.key === "ArrowDown" || e.key === "PageDown" || e.key === " ") {
+          e.preventDefault();
+          step(1);
+        } else if (e.key === "ArrowUp" || e.key === "PageUp") {
+          e.preventDefault();
+          step(-1);
+        }
+      };
+
+      const onResize = () => {
+        sizeCanvas();
+        render(state.p);
+      };
+
+      window.addEventListener("wheel", onWheel, { passive: false });
+      window.addEventListener("touchstart", onTouchStart, { passive: false });
+      window.addEventListener("touchmove", onTouchMove, { passive: false });
+      window.addEventListener("touchend", onTouchEnd);
+      window.addEventListener("keydown", onKey);
+      window.addEventListener("resize", onResize);
+
+      // ── Kick-off ──────────────────────────────────────────────────────────
+      if (window.scrollY > 1) {
+        // Page restored mid-scroll (reload) → don't trap the visitor; the
+        // intro counts as seen and re-entry from the top still works.
+        state.p = 1;
+        station = STATIONS.length - 1;
+        render(1);
+        stage.style.visibility = "hidden";
+      } else {
+        engage();
+        render(0);
+      }
+      flagStation();
 
       return () => {
-        gsap.ticker.remove(tick);
-        st.kill();
+        travel?.kill();
+        window.removeEventListener("wheel", onWheel);
+        window.removeEventListener("touchstart", onTouchStart);
+        window.removeEventListener("touchmove", onTouchMove);
+        window.removeEventListener("touchend", onTouchEnd);
+        window.removeEventListener("keydown", onKey);
+        window.removeEventListener("resize", onResize);
+        unlock();
+        stage.style.visibility = "";
+        stage.style.pointerEvents = "";
+        el.classList.remove("pvh--overlay");
+        if (process.env.NODE_ENV !== "production") delete (window as PvhWindow).__pvhStation;
       };
     },
     { scope: root }
