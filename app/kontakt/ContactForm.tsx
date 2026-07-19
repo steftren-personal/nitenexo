@@ -10,13 +10,15 @@ import { Select } from "@/components/forms/Select";
 import { Button } from "@/components/ui/Button";
 
 /**
- * Contact form panel — client-side only (a demo: no data is sent or stored).
- * Requires DSGVO consent before "sending". Fields stagger in on mount and the
+ * Contact form panel — posts to /api/contact which sends the enquiry via SMTP.
+ * Requires DSGVO consent before sending. Fields stagger in on mount and the
  * success state crossfades.
  */
 export function ContactForm() {
   const root = useRef<HTMLDivElement>(null);
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [consent, setConsent] = useState(false);
   const [tried, setTried] = useState(false);
 
@@ -36,11 +38,41 @@ export function ContactForm() {
     { scope: root, dependencies: [sent] }
   );
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setTried(true);
-    if (!consent) return;
-    setSent(true);
+    setError(null);
+    if (!consent || sending) return;
+
+    const form = e.currentTarget;
+    const data = new FormData(form);
+    setSending(true);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          firstName: data.get("firstName"),
+          lastName: data.get("lastName"),
+          email: data.get("email"),
+          company: data.get("company"),
+          service: data.get("service"),
+          message: data.get("message"),
+          website: data.get("website"), // honeypot
+          consent,
+        }),
+      });
+      if (res.ok) {
+        setSent(true);
+      } else {
+        const body = await res.json().catch(() => null);
+        setError(body?.error ?? "Etwas ist schiefgelaufen. Bitte versuch es später erneut.");
+      }
+    } catch {
+      setError("Keine Verbindung möglich. Bitte prüf dein Internet und versuch es erneut.");
+    } finally {
+      setSending(false);
+    }
   };
 
   const textareaStyle: React.CSSProperties = {
@@ -77,22 +109,29 @@ export function ContactForm() {
         <form onSubmit={submit} style={{ display: "flex", flexDirection: "column", gap: "var(--space-lg)" }}>
           <div className="kt-field anim-fade-up bw-form-row" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-lg)" }}>
             <Field label="Vorname">
-              <Input placeholder="Maria" required />
+              <Input name="firstName" placeholder="Maria" required />
             </Field>
             <Field label="Nachname">
-              <Input placeholder="Keller" required />
+              <Input name="lastName" placeholder="Keller" required />
             </Field>
           </div>
           <Field className="kt-field anim-fade-up" label="E-Mail">
-            <Input type="email" placeholder="maria@club.at" required />
+            <Input name="email" type="email" placeholder="maria@club.at" required />
           </Field>
           <Field className="kt-field anim-fade-up" label="Betrieb">
-            <Input placeholder="Club Nachtschicht, Wien" />
+            <Input name="company" placeholder="Club Nachtschicht, Wien" />
           </Field>
+          {/* Honeypot: invisible to humans, bots fill it and get silently dropped. */}
+          <div style={{ position: "absolute", left: "-9999px", top: "auto" }} aria-hidden="true">
+            <label>
+              Website
+              <input name="website" type="text" tabIndex={-1} autoComplete="off" />
+            </label>
+          </div>
           <div className="kt-field anim-fade-up" style={{ background: "var(--surface-canvas-dark)", padding: "var(--space-lg)", borderRadius: "var(--rounded-md)" }}>
             <Field label="Welche Leistung interessiert dich?" polarity="dark">
-              <Select defaultValue="WhatsApp-Chatbot">
-                <option>WhatsApp-Chatbot</option>
+              <Select name="service" defaultValue="Digitales Gäste-Tool">
+                <option>Digitales Gäste-Tool</option>
                 <option>Website-Design</option>
                 <option>Digitaler Assistent</option>
                 <option>Beratung &amp; Setup</option>
@@ -101,7 +140,7 @@ export function ContactForm() {
             </Field>
           </div>
           <Field className="kt-field anim-fade-up" label="Nachricht">
-            <textarea rows={4} placeholder="Wie läuft dein Laden? Was kostet dich Zeit?" style={textareaStyle} />
+            <textarea name="message" rows={4} placeholder="Wie läuft dein Laden? Was kostet dich Zeit?" style={textareaStyle} />
           </Field>
 
           <label className="kt-field anim-fade-up" style={{ display: "flex", gap: "var(--space-md)", alignItems: "flex-start", cursor: "pointer" }}>
@@ -124,13 +163,15 @@ export function ContactForm() {
               Bitte stimme der Datenschutzerklärung zu, um fortzufahren.
             </div>
           )}
+          {error && (
+            <div role="alert" style={{ font: "var(--type-caption)", color: "var(--color-accent-pink)" }}>
+              {error}
+            </div>
+          )}
 
-          <Button className="kt-field anim-fade-up" variant="primary" type="submit">
-            Anfrage senden
+          <Button className="kt-field anim-fade-up" variant="primary" type="submit" disabled={sending}>
+            {sending ? "Wird gesendet…" : "Anfrage senden"}
           </Button>
-          <p className="kt-field anim-fade-up" style={{ font: "var(--type-caption)", color: "var(--color-accent-violet-mid)", margin: 0 }}>
-            Dies ist ein Demo-Formular — es werden keine Daten übertragen oder gespeichert.
-          </p>
         </form>
       )}
     </div>

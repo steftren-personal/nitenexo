@@ -12,11 +12,13 @@
     "@gsap/react": "^2.1.2",
     "gsap": "^3.13.0",
     "next": "^15.3.0",
+    "nodemailer": "^9.0.3",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
   "devDependencies": {
     "@types/node": "^20.14.0",
+    "@types/nodemailer": "^8.0.1",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
     "autoprefixer": "^10.4.20",
