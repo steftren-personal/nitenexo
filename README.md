@@ -1,7 +1,7 @@
 # NiteNexo Solutions — Website
 
-Marketing-Website für **NiteNexo Solutions** (WhatsApp-Chatbots, Website-Design und
-digitale Assistenten für Gastronomie, Bars und Clubs).
+Marketing-Website für **NiteNexo Solutions** (Website-Design, digitale Gäste-Tools und
+Automatisierungen für Gastronomie, Bars und Clubs).
 
 ## Tech Stack
 

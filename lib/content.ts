@@ -14,7 +14,7 @@ export const PRICING_TIERS: Tier[] = [
     name: "Starter",
     price: "€49",
     cadence: "/ Monat",
-    features: ["Einmaliges Setup ab €290", "1 WhatsApp-Bot", "FAQ & Öffnungszeiten", "Reservierungen", "E-Mail-Support"],
+    features: ["Einmaliges Setup ab €290", "1 digitales Gäste-Tool", "FAQ & Öffnungszeiten", "Reservierungen", "E-Mail-Support"],
     ctaLabel: "Projekt starten",
   },
   {

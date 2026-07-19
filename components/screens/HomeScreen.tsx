@@ -18,22 +18,22 @@ import { WhyAccordion } from "./WhyAccordion";
 import { ChatPreview } from "./ChatPreview";
 
 const SERVICES = [
-  { tag: "WhatsApp", title: "WhatsApp-Chatbots", desc: "Reservierungen, Bestellungen, Gästelisten und FAQ — direkt im Chat, rund um die Uhr.", featured: true },
+  { tag: "Digital", title: "Digitale Gäste-Tools", desc: "Reservierungen, Gästelisten und Anfragen digital abgewickelt — rund um die Uhr erreichbar.", featured: true },
   { tag: "Web", title: "Website-Design", desc: "Schnelle, klare Seiten für deinen Betrieb: Speisekarte, Öffnungszeiten, Buchung." },
-  { tag: "Bots", title: "Digitale Assistenten", desc: "Maßgeschneiderte Automatisierungen — vom Türsteher-Check bis zum Newsletter." },
-  { tag: "Setup", title: "Beratung & Setup", desc: "Wir analysieren deinen Ablauf und verdrahten alles mit deiner WhatsApp-Nummer." },
+  { tag: "Automation", title: "Automatisierungen", desc: "Maßgeschneiderte Abläufe — vom Einlass-Check bis zum Newsletter." },
+  { tag: "Setup", title: "Beratung & Setup", desc: "Wir analysieren deinen Ablauf und richten alles fertig ein — du musst nichts Technisches können." },
   { tag: "Support", title: "Wartung & Support", desc: "Updates, Monitoring und schnelle Hilfe, wenn der Laden voll ist." },
   { tag: "Schnittstellen", title: "Integrationen", desc: "Kasse, Tischplan, Kalender und Newsletter sauber miteinander verbunden." },
 ];
 
 const TESTIMONIALS = [
-  { quote: "Seit dem Bot verpassen wir keine Tisch-Anfrage mehr — auch nicht um Mitternacht. Mein Team tippt deutlich weniger.", name: "Marko R.", role: "Inhaber, Trattoria" },
-  { quote: "Die Gästeliste am Einlass läuft jetzt komplett über WhatsApp. Türsteher happy, Gäste happy.", name: "Lena S.", role: "Booking, Club" },
+  { quote: "Wir verpassen keine Tisch-Anfrage mehr — auch nicht um Mitternacht. Mein Team tippt deutlich weniger.", name: "Marko R.", role: "Inhaber, Trattoria" },
+  { quote: "Die Gästeliste am Einlass läuft jetzt komplett digital. Türsteher happy, Gäste happy.", name: "Lena S.", role: "Booking, Club" },
   { quote: "Schnell aufgesetzt, klar erklärt, und wenn was ist, ist Stefan sofort erreichbar.", name: "Daniel K.", role: "Barbetrieb" },
 ];
 
 const BLOG_POSTS = [
-  { tag: "Guide", title: "Warum ein WhatsApp-Bot mehr Reservierungen bringt", read: "5 Min", hue: "var(--color-accent-violet-deep)" },
+  { tag: "Guide", title: "Warum digitale Reservierungen mehr Buchungen bringen", read: "5 Min", hue: "var(--color-accent-violet-deep)" },
   { tag: "Praxis", title: "Gästeliste am Einlass: vom Klemmbrett zum Chat", read: "4 Min", hue: "var(--surface-night)" },
 ];
 
@@ -80,7 +80,7 @@ export function HomeScreen() {
         <div className="bw-hero-grid" style={{ display: "grid", gridTemplateColumns: "1.05fr 0.95fr", gap: "var(--space-section)", alignItems: "center" }}>
           <div style={{ position: "relative" }}>
             <Eyebrow polarity="dark">
-              <ScrambleText text="WhatsApp-Chatbots für Gastro & Clubs" />
+              <ScrambleText text="Digitale Lösungen für Gastro & Clubs" />
             </Eyebrow>
             <KineticHeading
               trigger="load"
@@ -138,9 +138,9 @@ export function HomeScreen() {
               Ein digitaler Mitarbeiter, der nie Pause macht.
             </h2>
             <p style={{ font: "var(--type-body-lg)", color: "var(--on-dark-muted)", margin: 0, maxWidth: 520 }}>
-              NiteNexo Solutions ist eine kleine Digital-Werkstatt aus Wien. Wir bauen
-              WhatsApp-Chatbots, Websites und maßgeschneiderte Automatisierungen für Gastronomie, Bars
-              und Clubs — für Betriebe mit wenig Zeit und viel Andrang über WhatsApp und Instagram.
+              NiteNexo Solutions ist eine kleine Digital-Werkstatt aus Wien. Wir bauen Websites,
+              digitale Gäste-Tools und maßgeschneiderte Automatisierungen für Gastronomie, Bars
+              und Clubs — für Betriebe mit wenig Zeit und viel Andrang.
             </p>
             <p style={{ font: "var(--type-body-lg)", color: "var(--on-dark-muted)", margin: "var(--space-lg) 0 0", maxWidth: 520 }}>
               Kein Agentur-Sprech, keine Monatsprojekte. Du erklärst uns deinen Ablauf, wir verdrahten

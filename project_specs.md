@@ -2,8 +2,8 @@
 
 ## What the app does and who uses it
 Marketing website for **NiteNexo Solutions** (Stefan Trendafilov, Wien) — a small digital
-workshop building **WhatsApp chatbots, websites and custom digital assistants** for hospitality,
-bars and clubs. Visitors are venue owners — little time, non-technical, high WhatsApp/Instagram
+workshop building **websites, digital guest tools and custom automations** for hospitality,
+bars and clubs. Visitors are venue owners — little time, non-technical, high inbound
 volume. Public, read-only site with a demo contact form. German copy, informal "Du".
 
 Visual language: the **Botwerk Design System** (violet-midnight + lime, two-polarity surfaces).
@@ -19,7 +19,7 @@ is only the underlying component library.
 - Hosting: Vercel. No backend / Supabase / auth — contact form is a client-only demo (no data sent).
 
 ## Pages and user flows (all public)
-- `/` **Start** (dark): hero (aurora bg, kinetic headline w/ lime keyword, animated WhatsApp chat
+- `/` **Start** (dark): hero (aurora bg, kinetic headline w/ lime keyword, animated chat
   mockup, count-up stat strip) → marquee → About (code block + plug sticker) → industries pills →
   services grid (6, one spotlight) → pricing tiers → "Warum NiteNexo" accordion + code block →
   testimonials → blog teasers → big kinetic CTA → footer.

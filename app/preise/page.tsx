@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 const FAQ = [
   { q: "Was kostet die Einrichtung?", a: "Das Setup startet ab €290 einmalig — abhängig von Umfang und Anbindungen. Den genauen Preis nennen wir dir nach einem kurzen Gespräch." },
   { q: "Bin ich an eine Laufzeit gebunden?", a: "Nein. Die monatlichen Pakete sind jederzeit zum Monatsende kündbar." },
-  { q: "Brauche ich technisches Wissen?", a: "Nein. Wir richten alles ein und verknüpfen es mit deiner WhatsApp-Nummer. Dein Team bekommt eine kurze Einschulung." },
+  { q: "Brauche ich technisches Wissen?", a: "Nein. Wir richten alles komplett ein. Dein Team bekommt eine kurze Einschulung." },
   { q: "Wem gehören die Gästedaten?", a: "Dir. Wir setzen datensparsam auf, Server in der EU. Details findest du in der Datenschutzerklärung." },
 ];
 
