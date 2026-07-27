@@ -68,11 +68,13 @@ type SendMailArgs = {
   to: string | string[];
   subject: string;
   text: string;
+  html?: string;
   replyTo?: string;
 };
 
 // Send a mail using the shared transport. Throws on failure — callers decide how to handle it.
-export async function sendMail({ to, subject, text, replyTo }: SendMailArgs): Promise<void> {
+// `text` is always required as a fallback for clients that don't render HTML.
+export async function sendMail({ to, subject, text, html, replyTo }: SendMailArgs): Promise<void> {
   const config = getSmtpConfig();
   if (!config) {
     throw new Error("SMTP configuration is missing or incomplete");
@@ -85,5 +87,6 @@ export async function sendMail({ to, subject, text, replyTo }: SendMailArgs): Pr
     replyTo,
     subject,
     text,
+    ...(html ? { html } : {}),
   });
 }
