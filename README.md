@@ -20,7 +20,7 @@ für Gastronomie, Bars und Clubs.
 Marketing-Website für **NiteNexo Solutions** (Stefan Trendafilov, Wien) — eine kleine
 Digital-Werkstatt, die WhatsApp-Chatbots, Websites und maßgeschneiderte digitale Assistenten
 für die Nachtgastronomie baut. Die Seite ist öffentlich, mehrsprachig auf Deutsch (lockeres „Du")
-und enthält ein Demo-Kontaktformular (sendet bewusst keine Daten).
+und enthält ein Kontaktformular sowie eine Terminbuchung für angemeldete Nutzer.
 
 ## Highlights
 
@@ -61,33 +61,47 @@ npm run start   # Build lokal starten
 
 ## Seitenübersicht
 
-| Route          | Inhalt                                                       |
-| -------------- | ----------------------------------------------------------- |
-| `/`            | Start — dunkel, animierter Roboter-Hintergrund              |
-| `/leistungen`  | Leistungen im Detail                                        |
-| `/preise`      | Preispakete + FAQ                                           |
-| `/kontakt`     | Kontakt — Demo-Formular (überträgt keine Daten)             |
-| `/impressum`   | Rechtliches (Österreich, § 5 ECG)                          |
-| `/datenschutz` | Datenschutzerklärung (DSGVO)                                |
+| Route            | Inhalt                                                     |
+| ---------------- | ---------------------------------------------------------- |
+| `/`              | Start — dunkel, animierter Roboter-Hintergrund             |
+| `/leistungen`    | Leistungen im Detail                                        |
+| `/preise`        | Preispakete + FAQ                                           |
+| `/kontakt`       | Kontakt — Formular, versendet per SMTP                     |
+| `/login`         | Anmeldung (Supabase Auth)                                   |
+| `/registrieren`  | Registrierung inkl. E-Mail-Bestätigung                     |
+| `/termine`       | Terminbuchung (nur angemeldet)                              |
+| `/konto`         | Eigenes Konto (nur angemeldet)                              |
+| `/admin/termine` | Terminverwaltung (nur Admins)                               |
+| `/impressum`     | Rechtliches (Österreich, § 5 ECG)                          |
+| `/datenschutz`   | Datenschutzerklärung (DSGVO)                                |
 
 ## Projektstruktur
 
 ```
 app/          Seiten (Routes), Layout & globale Styles
+  └─ api/        Server-Endpunkte (Kontakt, Termine, Admin)
 components/    Wiederverwendbare Bausteine
   ├─ ui/         Buttons, Cards, Badges …
   ├─ forms/      Formularelemente
+  ├─ booking/    Slot-Auswahl, Terminlisten
   ├─ marketing/  NavBar, Footer, Pricing, CookieBanner …
   ├─ screens/    Seiten-Abschnitte (Hero, Chat-Vorschau …)
   └─ motion/     GSAP-Animationslogik
-lib/          Inhalts- & Konfigurationsdaten
+lib/          Inhalts- & Konfigurationsdaten, Supabase-Clients, Mailversand
+supabase/     Datenbank-Migrationen
 public/       Bilder, Video & statische Dateien
 ```
 
+## E-Mail-Versand
+
+Das Kontaktformular verschickt echte E-Mails über SMTP (z. B. Google Workspace). Damit das funktioniert, müssen `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS` und `CONTACT_TO` gesetzt sein.
+
+Eine vollständige, anfängertaugliche Anleitung (inkl. App-Passwort erstellen, Vercel-Setup und Verteiler mit mehreren Empfängern) gibt es in [`docs/EMAIL-SETUP.md`](./docs/EMAIL-SETUP.md).
+
 ## Hinweise
 
-- Das Kontaktformular ist eine **Demo** und überträgt oder speichert keine Daten.
 - Deployment erfolgt über **Vercel** (Next.js).
+- Mailversand läuft über reines SMTP — kein Anbieter-Lock-in, siehe [`docs/EMAIL-SETUP.md`](./docs/EMAIL-SETUP.md).
 
 ---
 

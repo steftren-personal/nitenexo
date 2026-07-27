@@ -25,12 +25,14 @@ is only the underlying component library.
   `@supabase/supabase-js` and `@supabase/ssr`. RLS enabled on every table.
 - Appointments handled through Next.js API routes (`/app/api/appointments`) calling a server-side
   Supabase client — never the browser client for writes.
-- Hosting: Vercel. Public marketing contact form stays a client-only demo (no data sent) —
+- Hosting: Vercel. Contact form posts to /api/contact and sends over SMTP —
   unrelated to the authenticated appointment booking flow.
 - **No Stripe / payments in this phase.** Booking is free; flagged as a future addition.
-- Transactional email: **Resend** (or Supabase's built-in SMTP if it covers this) sends a booking
+- Transactional email: **plain SMTP** via `lib/mailer.ts` (nodemailer, currently Google Workspace).
+  Deliberately no vendor API — the provider is swappable through env vars alone. Sends a booking
   confirmation with an `.ics` calendar attachment right after a slot is booked, so it lands directly
   in the user's Google/Apple calendar. Cancellation also sends a short confirmation email.
+  Contact form enquiries go to a comma-separated distribution list (`CONTACT_TO`).
 
 ## Pages and user flows
 
@@ -41,7 +43,7 @@ is only the underlying component library.
   testimonials → blog teasers → big kinetic CTA → footer.
 - `/leistungen` **Leistungen** (dark): hero + 5 alternating detail rows (text ↔ checklist card) + CTA.
 - `/preise` **Preise** (light): 3 pricing tiers (Pro featured/inverted) + Kleinunternehmer note + FAQ.
-- `/kontakt` **Kontakt** (light): 2-col form (with DSGVO consent checkbox + demo notice) + contact column.
+- `/kontakt` **Kontakt** (light): 2-col form (with DSGVO consent checkbox ) + contact column.
 - `/impressum` **Impressum** (light): § 5 ECG / § 25 MedienG disclosure.
 - `/datenschutz` **Datenschutz** (light): DSGVO privacy policy.
 - `/login` **Login**: email + password, link to `/registrieren`, "Passwort vergessen" via Supabase
@@ -63,10 +65,11 @@ Chrome on every page: sticky polarity-aware **NavBar** (blurs + shrinks on scrol
 down / shows on scroll up, mobile burger), **Footer** (lime squiggle + 3 link columns + contact +
 legal row), and a persistent **CookieBanner** (localStorage consent).
 
-Real contact details: stef.tren@gmail.com · +43 660 9390787 · Schumanngasse 9/13, 1180 Wien.
+Real contact details: info@nitenexo.at · +43 660 9390787 · Schumanngasse 9, 1180 Wien.
 
 ## Data / storage / third parties
-Public contact form still does not transmit or store data (clearly labelled as a demo) — unchanged.
+Public contact form posts to `/api/contact`, which sends the enquiry over SMTP to the `CONTACT_TO`
+distribution list and a confirmation to the sender. Nothing is stored in the database.
 
 **Supabase Postgres**, RLS on every table:
 - `auth.users` — Supabase-managed (email, password hash, confirmed_at).
@@ -85,8 +88,8 @@ succeed — the second insert fails at the database level, not just in app logic
 route catches that failure and returns "Slot bereits vergeben" so the UI can refresh and show the
 next open slot.
 
-Third-party services in this phase: Supabase (DB + Auth) and Resend (transactional email). No
-Stripe, no payments.
+Third-party services in this phase: Supabase (DB + Auth) and an SMTP mail provider (Google
+Workspace). No Stripe, no payments. Mail deliberately uses plain SMTP so no vendor is locked in.
 
 ## Animations (GSAP-led, brand-restrained, respects reduced motion)
 Scroll progress bar; staggered scroll reveals (fade + rise) on cards/headings; hero entrance

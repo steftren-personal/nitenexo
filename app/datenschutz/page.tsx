@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { LegalLayout, LegalSection, LegalList, PH, legalLink } from "@/components/marketing/Legal";
+import { LegalLayout, LegalSection, LegalList, legalLink } from "@/components/marketing/Legal";
 
 export const metadata: Metadata = {
   title: "Datenschutzerklärung — NiteNexo Solutions",
@@ -19,9 +19,9 @@ export default function DatenschutzPage() {
         <p style={{ margin: 0 }}>
           Stefan Trendafilov (NiteNexo Solutions)
           <br />
-          Schumanngasse 9/13, 1180 Wien, Österreich
+          Schumanngasse 9, 1180 Wien, Österreich
           <br />
-          E-Mail: <a href="mailto:stef.tren@gmail.com" style={legalLink}>stef.tren@gmail.com</a> · Telefon:{" "}
+          E-Mail: <a href="mailto:info@nitenexo.at" style={legalLink}>info@nitenexo.at</a> · Telefon:{" "}
           <a href="tel:+436609390787" style={legalLink}>+43 660 9390787</a>
         </p>
       </LegalSection>
@@ -44,8 +44,10 @@ export default function DatenschutzPage() {
         <p style={{ margin: 0 }}>
           Diese Daten dienen der technischen Bereitstellung, Sicherheit und Stabilität der Website.
           Rechtsgrundlage ist unser berechtigtes Interesse gemäß Art. 6 Abs. 1 lit. f DSGVO.
-          Hosting-Anbieter: <PH>Anbieter & Auftragsverarbeitungsvertrag ergänzen</PH> (Server
-          innerhalb der EU).
+          Hosting-Anbieter: Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, USA. Die
+          Verarbeitung erfolgt auf Grundlage eines Auftragsverarbeitungsvertrags (Data Processing
+          Agreement); eine mögliche Datenübermittlung in die USA ist durch die
+          EU-Standardvertragsklauseln abgesichert.
         </p>
       </LegalSection>
 
@@ -106,7 +108,7 @@ export default function DatenschutzPage() {
         />
         <p style={{ margin: 0 }}>
           Zur Ausübung genügt eine formlose Nachricht an{" "}
-          <a href="mailto:stef.tren@gmail.com" style={legalLink}>stef.tren@gmail.com</a>.
+          <a href="mailto:info@nitenexo.at" style={legalLink}>info@nitenexo.at</a>.
         </p>
       </LegalSection>
 

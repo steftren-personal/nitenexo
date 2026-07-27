@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { LegalLayout, LegalSection, LegalList, PH, legalLink } from "@/components/marketing/Legal";
+import { LegalLayout, LegalSection, LegalList, legalLink } from "@/components/marketing/Legal";
 
 export const metadata: Metadata = {
   title: "Impressum — NiteNexo Solutions",
@@ -20,7 +20,7 @@ export default function ImpressumPage() {
           <br />
           NiteNexo Solutions (Geschäftsbezeichnung)
           <br />
-          Schumanngasse 9/13
+          Schumanngasse 9
           <br />
           1180 Wien, Österreich
         </p>
@@ -28,7 +28,7 @@ export default function ImpressumPage() {
 
       <LegalSection title="Kontakt">
         <p style={{ margin: 0 }}>
-          E-Mail: <a href="mailto:stef.tren@gmail.com" style={legalLink}>stef.tren@gmail.com</a>
+          E-Mail: <a href="mailto:info@nitenexo.at" style={legalLink}>info@nitenexo.at</a>
           <br />
           Telefon: <a href="tel:+436609390787" style={legalLink}>+43 660 9390787</a>
         </p>
@@ -48,8 +48,9 @@ export default function ImpressumPage() {
       <LegalSection title="Gewerbe & Behörden">
         <LegalList
           items={[
-            "Berufsbezeichnung: IT-Dienstleister (Gewerbe ausgeübt in Österreich)",
-            <span key="wk">Mitglied der Wirtschaftskammer Wien, <PH>Fachgruppe ergänzen</PH></span>,
+            "Gewerbewortlaut: Dienstleistungen in der automatischen Datenverarbeitung und Informationstechnik",
+            "GISA-Zahl: 39706034",
+            "Mitglied der Wirtschaftskammer Wien, Fachgruppe Unternehmensberatung, Buchhaltung und Informationstechnologie (UBIT)",
             "Anwendbare Rechtsvorschrift: Gewerbeordnung (GewO), abrufbar unter www.ris.bka.gv.at",
             "Gewerbebehörde: Magistratisches Bezirksamt des XVIII. Wiener Gemeindebezirks",
           ]}

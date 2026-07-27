@@ -1,14 +1,11 @@
-import { Resend } from "resend";
 import { createEvent } from "ics";
 import { renderEmailShell } from "./email-template";
+import { getSmtpConfig, sendMail } from "./mailer";
 
-const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
-
-// Resend's shared test domain — works without DNS setup, but only delivers to
-// the email address used to sign up for Resend. Switch to a verified
-// @nitenexo.at address (via EMAIL_FROM) once the domain is bought and hosted.
-const FROM = process.env.EMAIL_FROM ?? "NiteNexo Solutions <onboarding@resend.dev>";
+// Booking mails go out over plain SMTP (see lib/mailer.ts) — no vendor API, so
+// the provider can be swapped through env vars alone.
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+const ORGANIZER_EMAIL = process.env.SMTP_USER ?? "info@nitenexo.at";
 
 function buildIcs(startsAt: string, endsAt: string) {
   const start = new Date(startsAt);
@@ -20,7 +17,7 @@ function buildIcs(startsAt: string, endsAt: string) {
     end: [end.getUTCFullYear(), end.getUTCMonth() + 1, end.getUTCDate(), end.getUTCHours(), end.getUTCMinutes()],
     startInputType: "utc",
     endInputType: "utc",
-    organizer: { name: "NiteNexo Solutions", email: "stef.tren@gmail.com" },
+    organizer: { name: "NiteNexo Solutions", email: ORGANIZER_EMAIL },
   });
   return value;
 }
@@ -40,7 +37,9 @@ function buildGoogleCalendarUrl(startsAt: string, endsAt: string) {
 }
 
 export async function sendBookingConfirmation(to: string, startsAt: string, endsAt: string) {
-  if (!resend) return;
+  // No SMTP configured (e.g. local dev without secrets) — skip silently, the
+  // booking itself already succeeded.
+  if (!getSmtpConfig()) return;
 
   const start = new Date(startsAt);
   const end = new Date(endsAt);
@@ -61,17 +60,30 @@ export async function sendBookingConfirmation(to: string, startsAt: string, ends
 
   const ics = buildIcs(startsAt, endsAt);
 
-  await resend.emails.send({
-    from: FROM,
+  const text = [
+    `Dein Beratungstermin steht.`,
+    ``,
+    `Datum & Uhrzeit: ${datum}, ${uhrzeit} Uhr`,
+    ``,
+    `Zum Google Kalender hinzufügen:`,
+    buildGoogleCalendarUrl(startsAt, endsAt),
+    ``,
+    `Nutzt du Apple Mail oder Outlook? Der Termin liegt zusätzlich als Kalenderdatei im Anhang.`,
+  ].join("\n");
+
+  await sendMail({
     to,
     subject: "Dein Termin ist bestätigt",
+    text,
     html,
-    attachments: ics ? [{ filename: "termin.ics", content: Buffer.from(ics) }] : undefined,
+    attachments: ics
+      ? [{ filename: "termin.ics", content: Buffer.from(ics), contentType: "text/calendar" }]
+      : undefined,
   });
 }
 
 export async function sendCancellationEmail(to: string, startsAt: string) {
-  if (!resend) return;
+  if (!getSmtpConfig()) return;
 
   const datum = new Date(startsAt).toLocaleString("de-AT", { dateStyle: "full", timeStyle: "short" });
 
@@ -84,10 +96,17 @@ export async function sendCancellationEmail(to: string, startsAt: string) {
     ctaHref: `${SITE_URL}/termine`,
   });
 
-  await resend.emails.send({
-    from: FROM,
+  const text = [
+    `Dein Termin wurde storniert.`,
+    ``,
+    `Dein Beratungstermin am ${datum} wurde storniert.`,
+    `Du kannst jederzeit einen neuen Termin buchen: ${SITE_URL}/termine`,
+  ].join("\n");
+
+  await sendMail({
     to,
     subject: "Dein Termin wurde storniert",
+    text,
     html,
   });
 }
