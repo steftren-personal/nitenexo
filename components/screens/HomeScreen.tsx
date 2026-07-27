@@ -103,8 +103,8 @@ export function HomeScreen() {
             </h2>
             <p style={{ font: "var(--type-body-lg)", color: "var(--on-dark-muted)", margin: 0, maxWidth: 520 }}>
               NiteNexo Solutions ist eine kleine Digital-Werkstatt aus Wien. Wir bauen
-              WhatsApp-Chatbots, Websites und maßgeschneiderte Automatisierungen für Gastronomie, Bars
-              und Clubs — für Betriebe mit wenig Zeit und viel Andrang über WhatsApp und Instagram.
+              Websites, WhatsApp-Chatbots und maßgeschneiderte Automatisierungen für Gastronomie, Bars
+              und Clubs — für Betriebe mit wenig Zeit und viel Andrang.
             </p>
             <p style={{ font: "var(--type-body-lg)", color: "var(--on-dark-muted)", margin: "var(--space-lg) 0 0", maxWidth: 520 }}>
               Kein Agentur-Sprech, keine Monatsprojekte. Du erklärst uns deinen Ablauf, wir verdrahten

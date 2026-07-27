@@ -11,21 +11,21 @@ import { KeywordHighlight } from "@/components/ui/KeywordHighlight";
 export const metadata: Metadata = {
   title: "Leistungen — NiteNexo Solutions",
   description:
-    "WhatsApp-Chatbots, Website-Design, digitale Assistenten, Beratung & Setup sowie Wartung & Support für Gastronomie, Bars und Clubs.",
+    "WhatsApp-Chatbots, Website-Design, Automatisierungen, Beratung & Setup sowie Wartung & Support für Gastronomie, Bars und Clubs.",
 };
 
 const LEISTUNGEN = [
   {
     tag: "Kernprodukt",
     title: "WhatsApp-Chatbots",
-    lead: "Dein meistgenutzter Kanal wird zum Mitarbeiter. Reservierungen, Bestellungen, Gästelisten und FAQ laufen direkt im Chat — rund um die Uhr, ohne dass dein Team tippt.",
+    lead: "Dein meistgenutzter Kanal wird zum Mitarbeiter. Reservierungen, Gästelisten und FAQ laufen direkt im Chat — rund um die Uhr, ohne dass dein Team tippt.",
     points: ["Tischreservierung mit Verfügbarkeitsprüfung", "Bestellungen & Vorbestellungen", "Gästeliste & Einlass-Check", "FAQ: Öffnungszeiten, Anfahrt, Karte", "Automatische Bestätigungen & Erinnerungen"],
   },
   {
     tag: "Web",
     title: "Website-Design für Gastro & Clubs",
     lead: "Schnelle, klare Seiten, die auf dem Handy genauso gut aussehen wie am Laptop. Speisekarte, Öffnungszeiten und Buchung — ohne Schnickschnack, ohne Ladezeiten.",
-    points: ["Mobile-first und blitzschnell", "Speisekarte & Galerie pflegbar", "Reservierung direkt eingebunden", "Instagram- & WhatsApp-Anbindung", "Suchmaschinen-Grundlagen inklusive"],
+    points: ["Mobile-first und blitzschnell", "Speisekarte & Galerie pflegbar", "Reservierung direkt eingebunden", "Social-Media-Anbindung", "Suchmaschinen-Grundlagen inklusive"],
   },
   {
     tag: "Automatisierung",
@@ -36,8 +36,8 @@ const LEISTUNGEN = [
   {
     tag: "Start",
     title: "Beratung & Setup",
-    lead: "Wir schauen uns deinen echten Ablauf an und richten alles ein — verdrahtet mit deiner WhatsApp-Nummer. Du musst nichts Technisches können.",
-    points: ["Ablauf-Analyse vor Ort oder per Call", "Einrichtung & Verknüpfung deiner Nummer", "Test mit echten Beispiel-Anfragen", "Schulung für dein Team", "Live-Schaltung in wenigen Tagen"],
+    lead: "Wir schauen uns deinen echten Ablauf an und richten alles ein. Du musst nichts Technisches können.",
+    points: ["Ablauf-Analyse vor Ort oder per Call", "Komplette Einrichtung durch uns", "Test mit echten Beispiel-Anfragen", "Schulung für dein Team", "Live-Schaltung in wenigen Tagen"],
   },
   {
     tag: "Betrieb",

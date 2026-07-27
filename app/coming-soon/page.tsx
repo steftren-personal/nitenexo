@@ -114,8 +114,8 @@ export default function ComingSoonPage() {
             transition: "opacity 0.75s ease 0.4s, transform 0.75s ease 0.4s",
           }}
         >
-          NiteNexo Solutions baut WhatsApp-Chatbots, Websites und digitale
-          Assistenten für Gastronomie, Bars und Clubs.
+          NiteNexo Solutions baut Websites, digitale Gäste-Tools und
+          Automatisierungen für Gastronomie, Bars und Clubs.
         </p>
 
         <p

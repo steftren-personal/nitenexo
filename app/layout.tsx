@@ -22,7 +22,7 @@ const rubik = Rubik({
 export const metadata: Metadata = {
   title: "NiteNexo Solutions — Digitale Assistenten für Gastro & Clubs",
   description:
-    "NiteNexo Solutions baut WhatsApp-Chatbots, Websites und digitale Assistenten für Gastronomie, Bars und Clubs. Reservierungen, Bestellungen und Gästelisten — direkt im Chat.",
+    "NiteNexo Solutions baut Websites, WhatsApp-Chatbots und digitale Automatisierungen für Gastronomie, Bars und Clubs. Reservierungen, Anfragen und Gästelisten — digital und unkompliziert.",
 };
 
 // Adds `gsap-enabled` to <html> before paint, but only when motion is allowed.

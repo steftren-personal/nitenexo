@@ -8,7 +8,7 @@ const CHAT_ROWS: Row[] = [
   { who: "gast", text: "Habt ihr morgen 20 Uhr noch einen Tisch für 4?", t: "23:39" },
   { who: "bot", text: "Klar! Tisch für 4 um 20:00 ist frei. Soll ich reservieren?", t: "23:39" },
   { who: "gast", text: "Ja bitte, auf Stefan.", t: "23:40" },
-  { who: "bot", text: "Erledigt. Bestätigung kommt per WhatsApp. Bis morgen!", t: "23:40" },
+  { who: "bot", text: "Erledigt. Bestätigung kommt sofort aufs Handy. Bis morgen!", t: "23:40" },
 ];
 
 function Bubble({ r }: { r: Row }) {
@@ -70,7 +70,7 @@ function TypingBubble({ bot }: { bot: boolean }) {
 }
 
 /**
- * Animated WhatsApp mockup. Messages play in sequence (with typing indicators)
+ * Animated chat mockup. Messages play in sequence (with typing indicators)
  * the first time the card scrolls into view. Micro-motion is CSS-driven.
  */
 export function ChatPreview() {
