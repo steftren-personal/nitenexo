@@ -196,26 +196,33 @@ export function HomeScreen() {
           <div>
             <Eyebrow polarity="dark">Aus der Werkstatt</Eyebrow>
             <h2 style={{ ...h2Style, fontSize: "clamp(28px, 4vw, 44px)" }}>Kurz erklärt.</h2>
+            <p style={{ font: "var(--type-body-md)", color: "var(--on-dark-muted)", margin: "var(--space-md) 0 0", maxWidth: 520 }}>
+              Kurze Guides aus der Praxis — die ersten Artikel erscheinen bald.
+            </p>
           </div>
         </div>
         <div className="bw-blog-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "var(--space-lg)" }}>
+          {/* Coming soon: no tilt and slightly dimmed so the cards don't invite
+              a click there is nothing behind yet (#26). */}
           {BLOG_POSTS.map((p, i) => (
-            <Card key={i} reveal tilt polarity="dark" style={{ padding: 0, overflow: "hidden", display: "flex", flexDirection: "column" }}>
-              <div style={{ height: 170, position: "relative", overflow: "hidden", display: "flex", alignItems: "flex-end", padding: "var(--space-lg)" }}>
+            <Card key={i} reveal polarity="dark" aria-disabled="true" style={{ padding: 0, overflow: "hidden", display: "flex", flexDirection: "column", opacity: 0.85 }}>
+              <div style={{ height: 170, position: "relative", overflow: "hidden", display: "flex", alignItems: "flex-end", gap: "var(--space-sm)", padding: "var(--space-lg)" }}>
                 <span className="bw-blog-media" style={{ position: "absolute", inset: 0, background: p.hue }} />
                 <span className="bw-blog-media" style={{ position: "absolute", inset: 0, background: "url(/assets/starfield.png)", backgroundSize: "cover", opacity: 0.45 }} />
                 <Badge variant="violet-tag" style={{ position: "relative" }}>
                   {p.tag}
                 </Badge>
+                <Badge variant="violet-tag" style={{ position: "relative" }}>
+                  Bald verfügbar
+                </Badge>
               </div>
               <div style={{ padding: "var(--space-xl)", display: "flex", flexDirection: "column", gap: "var(--space-sm)", flex: 1 }}>
                 <h3 style={{ font: "var(--type-heading-md)", margin: 0 }}>{p.title}</h3>
                 <p style={{ font: "var(--type-body-md)", color: "var(--on-dark-muted)", margin: 0, flex: 1 }}>{p.excerpt}</p>
+                {/* No "Lesen" CTA while the articles don't exist — a link into
+                    nowhere is exactly what #26 asked us to remove. */}
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "var(--space-sm)", paddingTop: "var(--space-md)", borderTop: "1px solid var(--hairline-violet)" }}>
-                  <span style={{ font: "var(--type-caption)", color: "var(--on-dark-muted)" }}>{p.read} Lesezeit</span>
-                  <span style={{ display: "inline-flex", alignItems: "center", gap: 6, font: "var(--type-button-cap-light)", letterSpacing: "var(--tracking-caps)", textTransform: "uppercase", color: "var(--color-accent-lime)" }}>
-                    Lesen <span className="bw-blog-arrow" aria-hidden="true">→</span>
-                  </span>
+                  <span style={{ font: "var(--type-caption)", color: "var(--on-dark-muted)" }}>{p.read} Lesezeit · in Arbeit</span>
                 </div>
               </div>
             </Card>
@@ -223,7 +230,7 @@ export function HomeScreen() {
         </div>
         <div style={{ textAlign: "center", marginTop: "var(--space-xxl)" }}>
           <Button variant="ghost-on-dark" href="/kontakt">
-            Mehr aus der Werkstatt
+            Frag uns direkt
           </Button>
         </div>
       </section>
