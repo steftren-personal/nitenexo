@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import nodemailer from "nodemailer";
+import { getSmtpConfig, sendMail } from "@/lib/mailer";
 
 // Simple in-memory rate limit: max 3 requests per IP per 10 minutes.
 // Good enough on Vercel (per-instance), backed up by the honeypot below.
@@ -71,21 +71,14 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: validationError }, { status: 400 });
   }
 
-  const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, CONTACT_TO } = process.env;
-  if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS || !CONTACT_TO) {
+  const smtpConfig = getSmtpConfig();
+  if (!smtpConfig) {
     console.error("[api/contact] missing SMTP configuration");
     return NextResponse.json(
       { error: "Der Versand ist derzeit nicht verfügbar. Bitte schreib uns direkt an info@nitenexo.at." },
       { status: 503 }
     );
   }
-
-  const transporter = nodemailer.createTransport({
-    host: SMTP_HOST,
-    port: Number(SMTP_PORT ?? 465),
-    secure: Number(SMTP_PORT ?? 465) === 465,
-    auth: { user: SMTP_USER, pass: SMTP_PASS },
-  });
 
   const text = [
     `Neue Anfrage über das Kontaktformular`,
@@ -100,9 +93,8 @@ export async function POST(request: NextRequest) {
   ].join("\n");
 
   try {
-    await transporter.sendMail({
-      from: `"NiteNexo Website" <${SMTP_USER}>`,
-      to: CONTACT_TO,
+    await sendMail({
+      to: smtpConfig.contactTo,
       replyTo: payload.email,
       subject: `Neue Anfrage von ${payload.firstName} ${payload.lastName}`,
       text,
@@ -113,6 +105,29 @@ export async function POST(request: NextRequest) {
       { error: "Die Nachricht konnte nicht gesendet werden. Bitte versuch es später erneut oder schreib an info@nitenexo.at." },
       { status: 502 }
     );
+  }
+
+  // Auto-reply to the sender is best-effort — the main mail already arrived, so a
+  // failure here must never turn into an error response for the user.
+  if (process.env.CONTACT_AUTOREPLY !== "false") {
+    const autoReplyText = [
+      `Hallo ${payload.firstName},`,
+      ``,
+      `danke für deine Anfrage bei NiteNexo. Wir melden uns innerhalb eines Werktags bei dir.`,
+      ``,
+      `Liebe Grüße`,
+      `Dein NiteNexo Team`,
+    ].join("\n");
+
+    try {
+      await sendMail({
+        to: payload.email!,
+        subject: "Danke für deine Anfrage bei NiteNexo",
+        text: autoReplyText,
+      });
+    } catch (err) {
+      console.error("[api/contact] auto-reply failed:", err instanceof Error ? err.message : err);
+    }
   }
 
   console.log("[api/contact] mail sent");

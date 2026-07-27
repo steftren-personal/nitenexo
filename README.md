@@ -32,10 +32,15 @@ npm run start
 - `/` — Start (dunkel, animierter Roboter-Hintergrund)
 - `/leistungen` — Leistungen
 - `/preise` — Preise
-- `/kontakt` — Kontakt (Demo-Formular, sendet keine Daten)
+- `/kontakt` — Kontakt (Formular, versendet per SMTP)
 - `/impressum`, `/datenschutz` — Rechtliches (Österreich)
+
+## E-Mail-Versand
+
+Das Kontaktformular verschickt echte E-Mails über SMTP (z. B. Google Workspace). Damit das funktioniert, müssen `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS` und `CONTACT_TO` gesetzt sein.
+
+Eine vollständige, anfängertaugliche Anleitung (inkl. App-Passwort erstellen, Vercel-Setup und Verteiler mit mehreren Empfängern) gibt es in [`docs/EMAIL-SETUP.md`](./docs/EMAIL-SETUP.md).
 
 ## Hinweise
 
-- Das Kontaktformular ist eine Demo und überträgt/speichert keine Daten.
 - Deployment: Vercel (Next.js).
