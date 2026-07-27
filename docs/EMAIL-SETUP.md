@@ -105,6 +105,17 @@ Wichtig: Wenn die Bestätigungsmail mal fehlschlägt, ist das kein Problem — e
 | Mail kommt nirgends an | `CONTACT_TO` leer oder falsch geschrieben | Adresse(n) in `CONTACT_TO` prüfen — bei mehreren müssen sie mit Komma getrennt sein |
 | "Zu viele Anfragen" beim Testen | Schutz gegen Spam: max. 3 Anfragen pro Absender in 10 Minuten | Kurz warten und erneut testen — das ist gewolltes Verhalten |
 
+## 7b. Login-Mails von Supabase (Registrierung & Passwort vergessen)
+
+Neben der Kontaktformular-Mail oben gibt es noch zwei andere Mails, die nichts mit dem Kontaktformular zu tun haben: die Registrierungs-Bestätigung und das Passwort-zurücksetzen. Die verschickt nicht eure Website, sondern Supabase selbst — dafür müsst ihr die passenden Vorlagen einmal im Supabase-Dashboard hinterlegen.
+
+Im Supabase-Dashboard unter **Authentication → Email Templates** findet ihr mehrere Vorlagen (z. B. "Confirm signup", "Reset Password", "Magic Link" ...). Für NiteNexo sind aktuell zwei davon relevant:
+
+- **Confirm signup** — die Mail, die jemand nach der Registrierung bekommt. Die gebrandete HTML-Vorlage dafür liegt im Repo unter `email-templates/supabase-email-bestaetigen.html`.
+- **Reset Password** — die Mail für "Passwort vergessen". Die Vorlage dafür liegt unter `email-templates/supabase-passwort-zuruecksetzen.html`.
+
+Zum Einrichten einfach den Inhalt der jeweiligen `.html`-Datei komplett kopieren und im Supabase-Dashboard in das passende Vorlagenfeld einfügen, dann speichern.
+
 ## 8. Anbieter wechseln
 
 Die Website nutzt bewusst reines SMTP statt eines bestimmten Anbieter-Dienstes (wie z. B. eine Versand-API von SendGrid oder Postmark). Das war eine bewusste Entscheidung, um nicht von einem einzelnen Anbieter abhängig zu sein.
