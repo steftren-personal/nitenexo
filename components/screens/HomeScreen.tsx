@@ -27,21 +27,24 @@ const BLOG_POSTS = [
     title: "Warum ein WhatsApp-Bot mehr Reservierungen bringt",
     excerpt: "Gäste fragen dann, wenn sie Lust haben — nicht zu Bürozeiten. Wer sofort antwortet, gewinnt den Tisch.",
     read: "5 Min",
-    hue: "linear-gradient(135deg, #422082, #7a3ff0)",
+    img: "/assets/blog-night-1.webp",
+    hue: "linear-gradient(135deg, rgba(66,32,130,0.55), rgba(122,63,240,0.35))",
   },
   {
     tag: "Praxis",
     title: "Gästeliste am Einlass: vom Klemmbrett zum Chat",
     excerpt: "Wie ein Club die komplette Gästeliste auf WhatsApp umgestellt hat — inkl. QR-Code am Einlass.",
     read: "4 Min",
-    hue: "linear-gradient(135deg, #150f23, #422082)",
+    img: "/assets/blog-night-2.webp",
+    hue: "linear-gradient(135deg, rgba(21,15,35,0.6), rgba(66,32,130,0.35))",
   },
   {
     tag: "Setup",
     title: "In Tagen live: so läuft ein Bot-Projekt ab",
     excerpt: "Von der ersten Nachricht bis zur Live-Schaltung — was wir von dir brauchen und was wir übernehmen.",
     read: "3 Min",
-    hue: "linear-gradient(135deg, #5a2db0, #fa7faa)",
+    img: "/assets/blog-night-3.webp",
+    hue: "linear-gradient(135deg, rgba(90,45,176,0.45), rgba(250,127,170,0.3))",
   },
 ];
 
@@ -203,8 +206,10 @@ export function HomeScreen() {
           {BLOG_POSTS.map((p, i) => (
             <Card key={i} reveal tilt polarity="dark" style={{ padding: 0, overflow: "hidden", display: "flex", flexDirection: "column" }}>
               <div style={{ height: 170, position: "relative", overflow: "hidden", display: "flex", alignItems: "flex-end", padding: "var(--space-lg)" }}>
+                {/* Stills aus dem Intro-Film — die ganze Seite spielt in derselben Nacht. */}
+                <span className="bw-blog-media" style={{ position: "absolute", inset: 0, background: `url(${p.img}) center / cover no-repeat` }} />
                 <span className="bw-blog-media" style={{ position: "absolute", inset: 0, background: p.hue }} />
-                <span className="bw-blog-media" style={{ position: "absolute", inset: 0, background: "url(/assets/starfield.png)", backgroundSize: "cover", opacity: 0.45 }} />
+                <span style={{ position: "absolute", inset: 0, background: "linear-gradient(0deg, rgba(10,7,18,0.55), transparent 55%)" }} />
                 <Badge variant="violet-tag" style={{ position: "relative" }}>
                   {p.tag}
                 </Badge>
