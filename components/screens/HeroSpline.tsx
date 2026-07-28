@@ -39,7 +39,7 @@ export function HeroSpline() {
         <div className="bw-hero-grid" style={{ display: "grid", gridTemplateColumns: "1.02fr 0.98fr", gap: "var(--space-xl)", alignItems: "center" }}>
           <div style={{ position: "relative" }}>
             <Eyebrow polarity="dark">
-              <ScrambleText text="WhatsApp-Chatbots für Gastro & Clubs" />
+              <ScrambleText text="Chatbots für Gastro & Clubs — spezialisiert auf WhatsApp" />
             </Eyebrow>
             <KineticHeading
               trigger="load"

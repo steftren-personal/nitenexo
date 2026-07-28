@@ -13,7 +13,7 @@ const WHY_ROWS = [
   },
   {
     title: "Sicher & DSGVO-konform",
-    body: "Datensparsam aufgesetzt, Server in der EU, klare Datenschutzerklärung. Deine Gästedaten bleiben deine.",
+    body: "Datenbank in Frankfurt, datensparsam aufgesetzt, Auftragsverarbeitungsvertrag inklusive. WhatsApp läuft über Meta, der Mailversand über Google — beide mit EU-Vertragspartner und Standardvertragsklauseln. Deine Gästedaten bleiben deine.",
   },
 ];
 

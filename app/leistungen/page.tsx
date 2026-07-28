@@ -11,14 +11,14 @@ import { KeywordHighlight } from "@/components/ui/KeywordHighlight";
 export const metadata: Metadata = {
   title: "Leistungen — NiteNexo Solutions",
   description:
-    "WhatsApp-Chatbots, Website-Design, digitale Assistenten, Beratung & Setup sowie Wartung & Support für Gastronomie, Bars und Clubs.",
+    "Chatbots — spezialisiert auf WhatsApp —, Website-Design, digitale Assistenten, Beratung & Setup sowie Wartung & Support für Gastronomie, Bars und Clubs.",
 };
 
 const LEISTUNGEN = [
   {
     tag: "Kernprodukt",
-    title: "WhatsApp-Chatbots",
-    lead: "Dein meistgenutzter Kanal wird zum Mitarbeiter. Reservierungen, Bestellungen, Gästelisten und FAQ laufen direkt im Chat — rund um die Uhr, ohne dass dein Team tippt.",
+    title: "Chatbots",
+    lead: "Dein meistgenutzter Kanal wird zum Mitarbeiter. Reservierungen, Bestellungen, Gästelisten und FAQ laufen direkt im Chat — rund um die Uhr, ohne dass dein Team tippt. Unsere Spezialität ist WhatsApp; auf Wunsch auch Instagram oder direkt auf deiner Website.",
     points: ["Tischreservierung mit Verfügbarkeitsprüfung", "Bestellungen & Vorbestellungen", "Gästeliste & Einlass-Check", "FAQ: Öffnungszeiten, Anfahrt, Karte", "Automatische Bestätigungen & Erinnerungen"],
   },
   {
@@ -36,8 +36,8 @@ const LEISTUNGEN = [
   {
     tag: "Start",
     title: "Beratung & Setup",
-    lead: "Wir schauen uns deinen echten Ablauf an und richten alles ein — verdrahtet mit deiner WhatsApp-Nummer. Du musst nichts Technisches können.",
-    points: ["Ablauf-Analyse vor Ort oder per Call", "Einrichtung & Verknüpfung deiner Nummer", "Test mit echten Beispiel-Anfragen", "Schulung für dein Team", "Live-Schaltung in wenigen Tagen"],
+    lead: "Wir schauen uns deinen echten Ablauf an und richten alles ein — verdrahtet mit deinen Kanälen. Du musst nichts Technisches können.",
+    points: ["Ablauf-Analyse vor Ort oder per Call", "Einrichtung & Verknüpfung deiner Kanäle", "Test mit echten Beispiel-Anfragen", "Schulung für dein Team", "Live-Schaltung in wenigen Tagen"],
   },
   {
     tag: "Betrieb",
@@ -60,8 +60,8 @@ export default function LeistungenPage() {
               Alles, damit dein Team <KeywordHighlight>weniger tippt</KeywordHighlight>.
             </h1>
             <p style={{ font: "var(--type-body-lg)", color: "var(--on-dark-muted)", maxWidth: 560, margin: "var(--space-lg) 0 0" }}>
-              Von WhatsApp-Chatbots über Websites bis zu maßgeschneiderten Automatisierungen — wir
-              bauen die digitalen Mitarbeiter für deinen Betrieb.
+              Von Chatbots — spezialisiert auf WhatsApp — über Websites bis zu maßgeschneiderten
+              Automatisierungen: wir bauen die digitalen Mitarbeiter für deinen Betrieb.
             </p>
             <span className="bw-float bw-hide-mobile" style={{ position: "absolute", right: 24, top: 56 }}>
               <Sticker name="plug" size={104} tilt={10} />

@@ -38,7 +38,7 @@ export default function ImpressumPage() {
         <LegalList
           items={[
             "Unternehmensform: Einzelunternehmen",
-            "Unternehmensgegenstand: IT-Dienstleistungen — WhatsApp-Chatbots, Website-Design und digitale Assistenten",
+            "Unternehmensgegenstand: IT-Dienstleistungen — Chatbots (Schwerpunkt WhatsApp), Website-Design und digitale Assistenten",
             "UID-Nummer: nicht vorhanden — Kleinunternehmer gemäß § 6 Abs 1 Z 27 UStG (keine Umsatzsteuer)",
             "Firmenbuch: keine Eintragung (nicht eintragungspflichtiges Einzelunternehmen)",
           ]}

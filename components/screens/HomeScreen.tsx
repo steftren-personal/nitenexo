@@ -4,10 +4,11 @@ import React from "react";
 import { Button } from "@/components/ui/Button";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Card } from "@/components/ui/Card";
-import { Badge } from "@/components/ui/Badge";
 import { CodeBlock } from "@/components/ui/CodeBlock";
 import { Sticker } from "@/components/marketing/Sticker";
-import { PricingTiers } from "@/components/marketing/PricingTiers";
+import { PricingModel } from "@/components/marketing/PricingModel";
+import { ArticleCard } from "@/components/marketing/ArticleCard";
+import { ARTICLES } from "@/lib/werkstatt";
 import { KineticHeading } from "@/components/motion/KineticHeading";
 import { FlipWords } from "@/components/motion/FlipWords";
 import { StatStrip } from "./StatStrip";
@@ -20,33 +21,6 @@ import { NightFilm } from "./NightFilm";
 import { IntegrationsStrip } from "@/components/marketing/IntegrationsStrip";
 import { TestimonialsMarquee } from "./TestimonialsMarquee";
 import { UseCaseTabs } from "./UseCaseTabs";
-
-const BLOG_POSTS = [
-  {
-    tag: "Guide",
-    title: "Warum ein WhatsApp-Bot mehr Reservierungen bringt",
-    excerpt: "Gäste fragen dann, wenn sie Lust haben — nicht zu Bürozeiten. Wer sofort antwortet, gewinnt den Tisch.",
-    read: "5 Min",
-    img: "/assets/blog-night-1.webp",
-    hue: "linear-gradient(135deg, rgba(66,32,130,0.55), rgba(122,63,240,0.35))",
-  },
-  {
-    tag: "Praxis",
-    title: "Gästeliste am Einlass: vom Klemmbrett zum Chat",
-    excerpt: "Wie ein Club die komplette Gästeliste auf WhatsApp umgestellt hat — inkl. QR-Code am Einlass.",
-    read: "4 Min",
-    img: "/assets/blog-night-2.webp",
-    hue: "linear-gradient(135deg, rgba(21,15,35,0.6), rgba(66,32,130,0.35))",
-  },
-  {
-    tag: "Setup",
-    title: "In Tagen live: so läuft ein Bot-Projekt ab",
-    excerpt: "Von der ersten Nachricht bis zur Live-Schaltung — was wir von dir brauchen und was wir übernehmen.",
-    read: "3 Min",
-    img: "/assets/blog-night-3.webp",
-    hue: "linear-gradient(135deg, rgba(90,45,176,0.45), rgba(250,127,170,0.3))",
-  },
-];
 
 const sectionStyle: React.CSSProperties = {
   maxWidth: "var(--container-max)",
@@ -104,9 +78,10 @@ export function HomeScreen() {
               Ein digitaler Mitarbeiter, der nie Pause macht.
             </h2>
             <p style={{ font: "var(--type-body-lg)", color: "var(--on-dark-muted)", margin: 0, maxWidth: 520 }}>
-              NiteNexo Solutions ist eine kleine Digital-Werkstatt aus Wien. Wir bauen
-              WhatsApp-Chatbots, Websites und maßgeschneiderte Automatisierungen für Gastronomie, Bars
-              und Clubs — für Betriebe mit wenig Zeit und viel Andrang über WhatsApp und Instagram.
+              NiteNexo Solutions ist eine kleine Digital-Werkstatt aus Wien. Wir bauen Chatbots,
+              Websites und maßgeschneiderte Automatisierungen für Gastronomie, Bars und Clubs — für
+              Betriebe mit wenig Zeit und viel Andrang über WhatsApp und Instagram. Unsere
+              Spezialität ist WhatsApp, weil dort die meisten Anfragen landen.
             </p>
             <p style={{ font: "var(--type-body-lg)", color: "var(--on-dark-muted)", margin: "var(--space-lg) 0 0", maxWidth: 520 }}>
               Kein Agentur-Sprech, keine Monatsprojekte. Du erklärst uns deinen Ablauf, wir verdrahten
@@ -146,13 +121,14 @@ export function HomeScreen() {
         <div style={sectionStyle}>
           <div style={centerHead} data-reveal>
             <Eyebrow polarity="dark">Preise</Eyebrow>
-            <h2 style={{ ...h2Style, fontSize: "clamp(28px, 4vw, 44px)", marginBottom: "var(--space-md)" }}>Faire Pakete für jede Größe.</h2>
+            <h2 style={{ ...h2Style, fontSize: "clamp(28px, 4vw, 44px)", marginBottom: "var(--space-md)" }}>Jeder Betrieb ist anders — der Preis auch.</h2>
             <p style={{ font: "var(--type-body-md)", color: "var(--on-dark-muted)", margin: 0 }}>
-              Einmalige Einrichtung, danach monatlich. Keine versteckten Kosten, jederzeit kündbar.
+              Keine Pakete von der Stange. Festpreis für die Einrichtung, dazu eine monatliche
+              Pauschale, die zu deinem Assistenten passt.
             </p>
           </div>
-          <PricingTiers />
-          <div style={{ textAlign: "center", marginTop: "var(--space-xxl)" }}>
+          <PricingModel polarity="dark" />
+          <div style={{ textAlign: "center", marginTop: "var(--space-lg)" }}>
             <Button variant="ghost-on-dark" href="/preise">
               Alle Details ansehen
             </Button>
@@ -203,32 +179,12 @@ export function HomeScreen() {
           </div>
         </div>
         <div className="bw-blog-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "var(--space-lg)" }}>
-          {BLOG_POSTS.map((p, i) => (
-            <Card key={i} reveal tilt polarity="dark" style={{ padding: 0, overflow: "hidden", display: "flex", flexDirection: "column" }}>
-              <div style={{ height: 170, position: "relative", overflow: "hidden", display: "flex", alignItems: "flex-end", padding: "var(--space-lg)" }}>
-                {/* Stills aus dem Intro-Film — die ganze Seite spielt in derselben Nacht. */}
-                <span className="bw-blog-media" style={{ position: "absolute", inset: 0, background: `url(${p.img}) center / cover no-repeat` }} />
-                <span className="bw-blog-media" style={{ position: "absolute", inset: 0, background: p.hue }} />
-                <span style={{ position: "absolute", inset: 0, background: "linear-gradient(0deg, rgba(10,7,18,0.55), transparent 55%)" }} />
-                <Badge variant="violet-tag" style={{ position: "relative" }}>
-                  {p.tag}
-                </Badge>
-              </div>
-              <div style={{ padding: "var(--space-xl)", display: "flex", flexDirection: "column", gap: "var(--space-sm)", flex: 1 }}>
-                <h3 style={{ font: "var(--type-heading-md)", margin: 0 }}>{p.title}</h3>
-                <p style={{ font: "var(--type-body-md)", color: "var(--on-dark-muted)", margin: 0, flex: 1 }}>{p.excerpt}</p>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "var(--space-sm)", paddingTop: "var(--space-md)", borderTop: "1px solid var(--hairline-violet)" }}>
-                  <span style={{ font: "var(--type-caption)", color: "var(--on-dark-muted)" }}>{p.read} Lesezeit</span>
-                  <span style={{ display: "inline-flex", alignItems: "center", gap: 6, font: "var(--type-button-cap-light)", letterSpacing: "var(--tracking-caps)", textTransform: "uppercase", color: "var(--color-accent-lime)" }}>
-                    Lesen <span className="bw-blog-arrow" aria-hidden="true">→</span>
-                  </span>
-                </div>
-              </div>
-            </Card>
+          {ARTICLES.map((a) => (
+            <ArticleCard key={a.slug} article={a} />
           ))}
         </div>
         <div style={{ textAlign: "center", marginTop: "var(--space-xxl)" }}>
-          <Button variant="ghost-on-dark" href="/kontakt">
+          <Button variant="ghost-on-dark" href="/werkstatt">
             Mehr aus der Werkstatt
           </Button>
         </div>

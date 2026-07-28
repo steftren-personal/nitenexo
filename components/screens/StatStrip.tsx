@@ -80,7 +80,7 @@ export function StatStrip() {
     >
       <StatNumber prefix="<" target={30} suffix="s" label="bis zur ersten Antwort" />
       <StatText value="24/7" label="erreichbar, auch nachts" />
-      <StatNumber target={100} suffix="%" label="DSGVO-konform" />
+      <StatText value="EU" label="Daten in Frankfurt" />
     </div>
   );
 }

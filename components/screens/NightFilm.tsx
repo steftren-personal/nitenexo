@@ -370,7 +370,7 @@ export function NightFilm() {
         <div className="nf-flash" aria-hidden="true" />
 
         <div className="nf-copy">
-          <span className="nf-tag">WhatsApp-Assistent für Gastro &amp; Clubs</span>
+          <span className="nf-tag">Chatbots für Gastro &amp; Clubs</span>
           <h2 className="nf-title">
             Eine Nacht.
             <br />
