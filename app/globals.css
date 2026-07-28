@@ -255,135 +255,65 @@ h1, h2, h3, h4, p, ul, pre {
 /* Hide the Spline free-plan watermark anchor (we don't link to spline anywhere). */
 a[href*="spline.design"] { display: none !important; }
 
-/* ── Traveling guide robot (desktop + motion only) ──────────────────────── */
-.robot-guide { display: none; }
-@media (min-width: 1024px) {
-  /* gsap-enabled is only on <html> when motion is allowed → reduced-motion
-     visitors keep the inline hero robot, never the fixed traveler. */
-  html.gsap-enabled .robot-guide { display: block; }
-}
-/* With motion on, the static inline hero robot is replaced everywhere: desktop
-   has the traveling guide, phones get the edge RobotStops. !important beats the
-   hero box's inline display:flex. Reduced-motion/no-JS keeps the inline robot. */
-html.gsap-enabled .hs-robot-inline { display: none !important; }
+/* The mascot lives inside the intro film footage now — no floating page
+   robots. (RobotGuide / RobotStop / inline hero robot were removed.) */
 
-/* ── Mobile robot stops (in-flow edge appearances, phones + motion only) ── */
-.robot-stop { display: none; }
-@media (max-width: 1023px) {
-  html.gsap-enabled .robot-stop { display: block; }
-}
-.robot-stop {
-  position: relative;
-  height: 190px; /* tall enough for the full robot… */
-  overflow: hidden; /* …and clips the flown-out robot so it never widens the page */
-  pointer-events: none;
-}
-.rs-bot {
-  position: absolute;
-  top: 6px;
-  width: 132px;
-  visibility: hidden; /* GSAP autoAlpha flies it in */
-  will-change: transform, opacity;
-}
-.robot-stop[data-side="right"] .rs-bot { right: 4px; }
-.robot-stop[data-side="left"] .rs-bot { left: 4px; }
-/* mirror via an inner wrapper so GSAP owns the outer transform */
-.robot-stop[data-side="left"] .rs-flip { transform: scaleX(-1); }
-.rs-canvas { display: block; width: 100%; height: auto; }
-.rg-travel {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 20; /* above content, below the sticky navbar (z-index 40) */
-  width: clamp(190px, 20vw, 290px);
-  pointer-events: none;
-  visibility: hidden; /* GSAP autoAlpha reveals it on the fly-in */
-  will-change: transform, opacity;
-}
-.rg-flip,
-.rg-bob,
-.rg-pop { position: relative; will-change: transform; }
-.rg-canvas { display: block; width: 100%; height: auto; }
-.rg-glow {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 118%;
-  aspect-ratio: 1 / 1;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(194, 239, 78, 0.16), rgba(122, 63, 240, 0.14) 45%, transparent 70%);
-  filter: blur(46px);
-  pointer-events: none;
-}
-
-/* ── Cinematic video hero (stepped presentation overlay) ────────────────── */
-/* Without JS/motion, `.pvh` is a plain in-flow 100vh section playing the clip.
-   With motion, JS adds `pvh--overlay`: the section collapses out of the flow
-   and `.pvh-stage` becomes a fixed full-viewport overlay — the page hero sits
+/* ── NightFilm — „EINE NACHT" (stepped chaptered-timelapse overlay) ─────── */
+/* Without JS/motion, `.nf` is a plain in-flow 100vh section playing the film.
+   With motion, JS adds `nf--overlay`: the section collapses out of the flow
+   and `.nf-stage` becomes a fixed full-viewport overlay — the page hero sits
    at the very top of the document beneath it, so the end dissolve lands
    exactly on the hero with zero dead space, seamless colour hand-off. */
-.pvh {
+.nf {
   position: relative;
   width: 100%;
   height: 100vh;
 }
-.pvh-stage {
+.nf-stage {
   position: relative;
   height: 100vh;
   height: 100svh; /* stable on phones while the URL bar collapses */
   width: 100%;
   overflow: hidden;
-  z-index: 25; /* above the traveling robot (z20); navbar (z40) stays on top */
+  z-index: 25; /* navbar (z40) stays on top */
   pointer-events: none; /* purely visual — never block the hero behind it */
   background: transparent;
 }
-/* Stepped journey on ALL sizes when motion is allowed (reduced motion keeps
-   the plain 100vh section with the playing video). One scroll gesture = one
-   station; the JS drives the travel and locks page scroll while presenting. */
-html.gsap-enabled .pvh--overlay { height: 0; }
-html.gsap-enabled .pvh--overlay .pvh-stage { position: fixed; inset: 0; }
-.pvh-video,
-.pvh-canvas {
+html.gsap-enabled .nf--overlay { height: 0; }
+html.gsap-enabled .nf--overlay .nf-stage { position: fixed; inset: 0; }
+/* The film layer IS a native <video> — each gesture plays its chapter segment
+   (hardware-decoded, every source frame) and pauses on the station frame. */
+.nf-video {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   display: block;
-}
-.pvh-video { object-fit: cover; object-position: center; } /* reduced-motion fallback, behind canvas */
-/* With motion on, the canvas frames drive the scene on every size — hide the
-   video so its poster doesn't block the gradient during the end zoom-through. */
-html.gsap-enabled .pvh-video { display: none; }
-.pvh-canvas {
+  object-fit: cover;
+  object-position: center;
   transform-origin: center; /* end "pull into the page" zoom */
-  will-change: transform;
-  /* Poster behind the pixels: while frames are still downloading the canvas is
-     transparent — show the bar instead of the page content pulled up behind. */
-  background: #0a0712 url("/assets/club-hero-poster.jpg") center / cover no-repeat;
-}
-/* The robot guiding you through the journey (drawn from the shared frame set) */
-.pvh-bot {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: clamp(110px, 18vw, 230px);
-  z-index: 2;
-  opacity: 0;
-  pointer-events: none;
   will-change: transform, opacity;
+  background: #0a0712; /* letterbox edges before metadata loads */
 }
-.pvh-bot-flip { will-change: transform; }
-.pvh-bot-canvas { display: block; width: 100%; height: auto; }
-.pvh-scrim {
+.nf-scrim {
   position: absolute;
   inset: 0;
   pointer-events: none;
   background:
-    linear-gradient(105deg, rgba(10, 7, 18, 0.9) 0%, rgba(10, 7, 18, 0.62) 38%, rgba(10, 7, 18, 0.2) 64%, rgba(10, 7, 18, 0) 100%),
-    linear-gradient(0deg, rgba(10, 7, 18, 0.55) 0%, transparent 32%);
+    linear-gradient(105deg, rgba(10, 7, 18, 0.88) 0%, rgba(10, 7, 18, 0.55) 38%, rgba(10, 7, 18, 0.14) 64%, rgba(10, 7, 18, 0) 100%),
+    linear-gradient(0deg, rgba(10, 7, 18, 0.6) 0%, transparent 34%);
 }
-.pvh-copy {
+/* Deliberate exposure-step at every chapter cut (a time jump, by design). */
+.nf-flash {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 4;
+  opacity: 0;
+  background: radial-gradient(circle at 50% 46%, rgba(255, 252, 235, 0.95), rgba(255, 252, 235, 0.35) 55%, transparent 80%);
+  mix-blend-mode: screen;
+}
+.nf-copy {
   position: absolute;
   left: clamp(24px, 7vw, 120px);
   top: 0;
@@ -395,7 +325,7 @@ html.gsap-enabled .pvh-video { display: none; }
   z-index: 2;
   will-change: transform, opacity;
 }
-.pvh-tag {
+.nf-tag {
   display: inline-block;
   font: var(--type-button-cap-light);
   letter-spacing: var(--tracking-caps);
@@ -403,7 +333,7 @@ html.gsap-enabled .pvh-video { display: none; }
   color: var(--color-accent-lime);
   margin-bottom: var(--space-md);
 }
-.pvh-title {
+.nf-title {
   font: var(--type-display-hero);
   font-size: clamp(34px, 5.4vw, 72px);
   line-height: 1.04;
@@ -411,26 +341,85 @@ html.gsap-enabled .pvh-video { display: none; }
   margin: 0;
   text-wrap: balance;
 }
-.pvh-kw { color: var(--color-accent-lime); }
-/* Benefit statements that fly toward the viewer out of the depth */
-.pvh-fly {
+.nf-kw { color: var(--color-accent-lime); }
+/* One-liner shown while resting at a chapter (fades out for the next travel) */
+.nf-caption {
   position: absolute;
   left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%) scale(1);
-  width: min(900px, 86vw);
+  bottom: clamp(96px, 17vh, 160px);
+  transform: translateX(-50%);
+  width: min(860px, 88vw);
   text-align: center;
-  font: var(--type-display-hero);
-  font-size: clamp(30px, 5vw, 64px);
-  line-height: 1.05;
+  font: var(--type-display-large);
+  font-size: clamp(24px, 3.6vw, 44px);
+  line-height: 1.12;
   color: #fff;
   opacity: 0;
+  visibility: hidden;
   z-index: 3;
   pointer-events: none;
-  text-shadow: 0 2px 34px rgba(0, 0, 0, 0.6);
-  will-change: transform, opacity, filter;
+  text-shadow: 0 2px 34px rgba(0, 0, 0, 0.65);
+  text-wrap: balance;
+  will-change: transform, opacity;
 }
-.pvh-hint {
+/* The big rolling clock — the film's narrator */
+.nf-clock {
+  position: absolute;
+  left: clamp(24px, 6vw, 110px);
+  bottom: clamp(24px, 6vh, 64px);
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  pointer-events: none;
+}
+.nf-clock-time {
+  font: var(--type-display-hero);
+  font-size: clamp(44px, 7.5vw, 108px);
+  line-height: 1;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+  text-shadow: 0 2px 30px rgba(0, 0, 0, 0.6);
+}
+.nf-clock-cap {
+  font: var(--type-button-cap-light);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: var(--color-accent-lime);
+}
+/* Answered-messages counter — the product working, quantified */
+.nf-count {
+  position: absolute;
+  right: clamp(24px, 6vw, 110px);
+  bottom: clamp(28px, 6.4vh, 70px);
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  pointer-events: none;
+  text-align: right;
+}
+.nf-count-num {
+  font: var(--type-display-hero);
+  font-size: clamp(30px, 4.4vw, 62px);
+  line-height: 1;
+  color: var(--color-accent-lime);
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 2px 26px rgba(0, 0, 0, 0.55);
+}
+.nf-count-cap {
+  font: var(--type-caption);
+  letter-spacing: var(--tracking-caps);
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+}
+@media (max-width: 767px) {
+  .nf-count { display: none; } /* phones: the clock carries the chrome alone */
+  .nf-caption { bottom: clamp(150px, 24vh, 220px); }
+}
+.nf-hint {
   position: absolute;
   left: 50%;
   bottom: 26px;
@@ -445,14 +434,14 @@ html.gsap-enabled .pvh-video { display: none; }
   letter-spacing: var(--tracking-caps);
   text-transform: uppercase;
 }
-.pvh-hint-line {
+.nf-hint-line {
   width: 1px;
   height: 40px;
   background: linear-gradient(rgba(255, 255, 255, 0.75), transparent);
   transform-origin: top;
-  animation: pvhHint 1.8s ease-in-out infinite;
+  animation: nfHint 1.8s ease-in-out infinite;
 }
-@keyframes pvhHint {
+@keyframes nfHint {
   0%, 100% { transform: scaleY(0.5); opacity: 0.4; }
   50% { transform: scaleY(1); opacity: 0.9; }
 }

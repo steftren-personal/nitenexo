@@ -46,7 +46,15 @@ export function KineticHeading({
         );
 
       if (trigger === "scroll") {
-        ScrollTrigger.create({ trigger: ref.current, start: "top 80%", once: true, onEnter: anim });
+        // Already at/above the viewport when we hydrate (restored scroll after
+        // a refresh)? Show the finished headline instantly — the entrance is
+        // only for headings the visitor scrolls toward.
+        const r = ref.current?.getBoundingClientRect();
+        if (r && r.top < window.innerHeight * 0.9) {
+          gsap.set(words, { yPercent: 0, rotate: 0, autoAlpha: 1 });
+        } else {
+          ScrollTrigger.create({ trigger: ref.current, start: "top 80%", once: true, onEnter: anim });
+        }
       } else {
         gsap.delayedCall(0.15, anim);
       }

@@ -16,9 +16,7 @@ import { ServicesBento } from "./ServicesBento";
 import { RobotPresenter } from "./RobotPresenter";
 import { HeroSpline } from "./HeroSpline";
 import { MascotRobot } from "./MascotRobot";
-import { RobotGuide } from "./RobotGuide";
-import { RobotStop } from "./RobotStop";
-import { PinnedVideoHero } from "./PinnedVideoHero";
+import { NightFilm } from "./NightFilm";
 import { IntegrationsStrip } from "@/components/marketing/IntegrationsStrip";
 import { TestimonialsMarquee } from "./TestimonialsMarquee";
 import { UseCaseTabs } from "./UseCaseTabs";
@@ -59,14 +57,10 @@ const h2Style: React.CSSProperties = { font: "var(--type-display-large)", fontSi
 export function HomeScreen() {
   return (
     <div style={{ color: "var(--on-primary)" }}>
-      {/* Gepinnter cineastischer Video-Hero (Scroll-Scrub + Text-Kapitel). */}
-      <PinnedVideoHero />
+      {/* „EINE NACHT" — der Kapitel-Zeitraffer als cineastischer Einstieg. */}
+      <NightFilm />
 
-      {/* Mitreisender Roboter — fliegt rein, gleitet durch die Seite und zeigt
-          abwechselnd auf die Textblöcke (nur Desktop + Bewegung erlaubt). */}
-      <RobotGuide />
-
-      {/* ── Hero — interaktiver 3D-Roboter (Spline) ──────────── */}
+      {/* ── Hero — Headline + Reservierungs-Board (der Morgen danach) ── */}
       <HeroSpline />
 
       {/* ── Stats ────────────────────────────────────────────── */}
@@ -83,11 +77,8 @@ export function HomeScreen() {
         </div>
       </div>
 
-      {/* Handy: Roboter-Auftritt am rechten Rand */}
-      <RobotStop side="right" />
-
       {/* ── Über NiteNexo ───────────────────────────────────── */}
-      <section style={sectionStyle} data-guide="right">
+      <section style={sectionStyle}>
         <div className="bw-about-grid" style={{ display: "grid", gridTemplateColumns: "0.95fr 1.05fr", gap: "var(--space-section)", alignItems: "center" }}>
           <div style={{ position: "relative", display: "flex", justifyContent: "center" }} data-reveal>
             <Card variant="spotlight-violet" style={{ width: "100%", maxWidth: 420 }}>
@@ -131,7 +122,7 @@ export function HomeScreen() {
       <UseCaseTabs />
 
       {/* ── Leistungen-Grid ─────────────────────────────────── */}
-      <section style={{ ...sectionStyle, paddingTop: 0 }} data-guide="left">
+      <section style={{ ...sectionStyle, paddingTop: 0 }}>
         <div style={centerHead} data-reveal>
           <Eyebrow polarity="dark">Leistungen</Eyebrow>
           <h2 style={{ ...h2Style, fontSize: "clamp(28px, 4vw, 44px)" }}>Was wir für deinen Laden bauen.</h2>
@@ -142,16 +133,13 @@ export function HomeScreen() {
       {/* ── Funktioniert mit (Logo-Marquee, 21st.dev) ────────── */}
       <IntegrationsStrip />
 
-      {/* ── Roboter-Presenter (Vordergrund, zeigt Schritte) ──── */}
-      <div data-guide="right">
+      {/* ── So arbeitet dein Assistent (Chat + Schritte) ─────── */}
+      <div>
         <RobotPresenter />
       </div>
 
-      {/* Handy: Roboter-Auftritt am linken Rand */}
-      <RobotStop side="left" />
-
       {/* ── Preise ──────────────────────────────────────────── */}
-      <div data-guide="left">
+      <div>
         <div style={sectionStyle}>
           <div style={centerHead} data-reveal>
             <Eyebrow polarity="dark">Preise</Eyebrow>
@@ -169,8 +157,8 @@ export function HomeScreen() {
         </div>
       </div>
 
-      {/* ── Warum NiteNexo (SVG-Maskottchen → Reise-Roboter blendet aus) ── */}
-      <section style={sectionStyle} data-guide="hide">
+      {/* ── Warum NiteNexo ──────────────────────────────────── */}
+      <section style={sectionStyle}>
         <div className="bw-why-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-section)", alignItems: "center" }}>
           <div data-reveal>
             <Eyebrow polarity="dark">Warum NiteNexo</Eyebrow>
@@ -180,13 +168,15 @@ export function HomeScreen() {
             <WhyAccordion />
           </div>
           <div data-reveal style={{ minHeight: 400, display: "flex", alignItems: "center" }}>
+            {/* Das Maskottchen folgt der Maus und winkt — der einzige Roboter
+                außerhalb des Intro-Films (bewusst behalten). */}
             <MascotRobot autoWave />
           </div>
         </div>
       </section>
 
       {/* ── Testimonials (full-bleed marquee) ────────────────── */}
-      <div style={{ paddingTop: "var(--space-section)", paddingBottom: "var(--space-section)" }} data-guide="right">
+      <div style={{ paddingTop: "var(--space-section)", paddingBottom: "var(--space-section)" }}>
         <div className="bw-container" style={{ padding: "0 var(--space-xl)" }}>
           <div style={centerHead} data-reveal>
             <Eyebrow polarity="dark">Stimmen aus dem Betrieb</Eyebrow>
@@ -239,15 +229,9 @@ export function HomeScreen() {
         </div>
       </section>
 
-      {/* Handy: Roboter-Auftritt am rechten Rand vor dem CTA */}
-      <RobotStop side="right" />
-
       {/* ── Großer CTA ──────────────────────────────────────── */}
-      <div data-guide="left">
+      <div>
         <div style={{ ...sectionStyle, textAlign: "center", position: "relative" }}>
-          <span className="bw-float" style={{ display: "inline-block", marginBottom: "var(--space-lg)" }}>
-            <Sticker name="bot" size={96} tilt={-8} />
-          </span>
           <KineticHeading
             as="h2"
             trigger="scroll"
