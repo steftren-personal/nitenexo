@@ -2,31 +2,17 @@ import type { Metadata } from "next";
 import { NavBar } from "@/components/marketing/NavBar";
 import { Footer } from "@/components/marketing/Footer";
 import { Eyebrow } from "@/components/ui/Eyebrow";
-import { createClient } from "@/lib/supabase/server";
-import { SlotPicker } from "@/components/booking/SlotPicker";
-import { AppointmentList } from "@/components/booking/AppointmentList";
+import { TerminManager } from "@/components/booking/TerminManager";
 
 export const metadata: Metadata = {
   title: "Termine — NiteNexo Solutions",
 };
 
-export default async function TerminePage() {
-  const supabase = await createClient();
-  const { data: auth } = await supabase.auth.getUser();
-
-  const { data: slots } = await supabase
-    .from("slots")
-    .select("id, starts_at, ends_at")
-    .eq("is_booked", false)
-    .gte("starts_at", new Date().toISOString())
-    .order("starts_at", { ascending: true });
-
-  const { data: appointments } = await supabase
-    .from("appointments")
-    .select("id, status, slots ( starts_at, ends_at )")
-    .eq("user_id", auth.user!.id)
-    .order("created_at", { ascending: false });
-
+// Auth is enforced by middleware.ts (redirects to /login before this ever
+// renders), and all booking data now comes from the Google Calendar-backed
+// API routes, fetched client-side by TerminManager — so this page itself
+// has nothing left to fetch.
+export default function TerminePage() {
   return (
     <>
       <NavBar polarity="light" />
@@ -38,17 +24,11 @@ export default async function TerminePage() {
               Buch dir einen Beratungstermin.
             </h1>
             <p style={{ font: "var(--type-body-md)", color: "var(--color-accent-violet-mid)", margin: 0 }}>
-              Wähl einen freien Slot — du bekommst sofort eine Bestätigung per E-Mail.
+              Wähl Dauer, Tag und Uhrzeit — du bekommst sofort eine Bestätigung per E-Mail.
             </p>
           </div>
 
-          <div
-            className="bw-termine-grid"
-            style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: "var(--space-section)", alignItems: "start" }}
-          >
-            <SlotPicker slots={slots ?? []} />
-            <AppointmentList appointments={appointments ?? []} />
-          </div>
+          <TerminManager />
         </div>
       </div>
       <Footer />
