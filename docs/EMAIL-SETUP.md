@@ -134,6 +134,44 @@ Im Supabase-Dashboard unter **Authentication → Email Templates** findet ihr me
 
 Zum Einrichten einfach den Inhalt der jeweiligen `.html`-Datei komplett kopieren und im Supabase-Dashboard in das passende Vorlagenfeld einfügen, dann speichern.
 
+## 7c. Redirect-URLs in Supabase (wichtig für "Passwort vergessen")
+
+Die Mail-Vorlagen sind jetzt eingerichtet — aber es gibt noch eine Stelle, die bei "Passwort vergessen" garantiert Probleme macht, wenn man sie übersieht.
+
+**Warum das wichtig ist:**
+Der Link in der Passwort-Mail führt zurück auf eure Website, zu einer Seite, auf der man ein neues Passwort eingeben kann. Supabase lässt das aber nur für Adressen zu, die ihr vorher ausdrücklich erlaubt habt. Ist die Ziel-Adresse nicht auf dieser Erlaubnisliste, landet der Nutzer entweder auf einer Fehlerseite oder einfach auf der Startseite — ohne dass er sein Passwort ändern kann. Das ist kein Fehler, sondern Absicht: Damit verhindert Supabase, dass jemand die Links auf eine fremde, gefälschte Seite umleiten kann.
+
+**Wo das eingestellt wird:**
+Im Supabase-Dashboard im Bereich **Authentication**, dort nach **URL Configuration** suchen. Dort gibt es zwei Felder:
+
+- **Site URL** — die Hauptadresse eurer Website
+- **Redirect URLs** — eine Liste erlaubter Ziel-Adressen (Platzhalter mit `*` werden unterstützt, z. B. um alle Unterseiten einer Domain auf einmal freizugeben)
+
+**Was konkret eingetragen werden muss:**
+
+| Umgebung | Site URL | Redirect URLs (hinzufügen) |
+|---|---|---|
+| Lokale Entwicklung | `http://localhost:3000` | `http://localhost:3000/**` |
+| Live-Seite | `https://nitenexo.at` | `https://nitenexo.at/**` |
+
+Der Platzhalter `/**` deckt alle Unterseiten ab, unter anderem `/passwort-neu` — das ist die Seite, auf die Supabase nach einem Klick auf den "Passwort vergessen"-Link weiterleitet. Ein einzelner Eintrag reicht also für lokal und live zusammen, solange beide Zeilen in der Liste stehen.
+
+**Wichtig — die Umgebungsvariable `NEXT_PUBLIC_SITE_URL`:**
+Die Website baut den Rücksprung-Link in der Mail nicht selbst frei erfunden, sondern liest ihn aus dieser Variable aus. Das ist der wahrscheinlichste Stolperstein bei diesem Feature:
+
+- In Vercel muss `NEXT_PUBLIC_SITE_URL` auf `https://nitenexo.at` gesetzt sein (unter **Settings → Environment Variables**, wie in Abschnitt 3 beschrieben). Fehlt das oder steht dort noch `localhost`, bekommen eure echten Kunden einen Link, der auf euren eigenen Rechner zeigt und für sie nicht funktioniert.
+- Lokal gehört in `.env.local` die Zeile `NEXT_PUBLIC_SITE_URL=http://localhost:3000` — sonst funktioniert der Test auf dem eigenen Rechner nicht richtig.
+- Nach dem Setzen oder Ändern dieser Variable in Vercel ist wie immer ein **Redeploy** nötig (siehe Abschnitt 3, Schritt 5).
+
+**Wenn es nicht klappt:**
+
+| Problem | Wahrscheinliche Ursache | Lösung |
+|---|---|---|
+| Klick auf den Mail-Link landet auf der Startseite statt auf dem Passwort-Formular | Die Ziel-Adresse steht nicht in **Redirect URLs** | In Supabase unter Authentication → URL Configuration die passende Adresse (siehe Tabelle oben) zu **Redirect URLs** hinzufügen |
+| Seite zeigt "requested path is invalid" oder eine ähnliche Fehlermeldung | Redirect-URL fehlt oder ist falsch geschrieben (z. B. `http` statt `https`, fehlender Platzhalter `/**`) | Eintrag in Supabase exakt mit `https://` bzw. `http://` und `/**` am Ende prüfen |
+| Mail-Link zeigt auf `localhost`, obwohl ein echter Kunde die Mail bekommen hat | `NEXT_PUBLIC_SITE_URL` ist in Vercel nicht gesetzt oder noch auf `localhost` | Variable in Vercel auf `https://nitenexo.at` setzen, danach Redeploy auslösen |
+| Beim lokalen Testen zeigt der Link auf die falsche Adresse | `NEXT_PUBLIC_SITE_URL` fehlt in `.env.local` | Zeile `NEXT_PUBLIC_SITE_URL=http://localhost:3000` ergänzen, `npm run dev` neu starten |
+
 ## 8. Anbieter wechseln
 
 Die Website nutzt bewusst reines SMTP statt eines bestimmten Anbieter-Dienstes (wie z. B. eine Versand-API von SendGrid oder Postmark). Das war eine bewusste Entscheidung, um nicht von einem einzelnen Anbieter abhängig zu sein.
