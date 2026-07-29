@@ -77,7 +77,18 @@ Wenn ihr das Refresh-Token später verliert oder es ungültig wird, müsst ihr d
 
 ## 5. Werte eintragen
 
-Genau wie beim E-Mail-Versand ([EMAIL-SETUP.md](./EMAIL-SETUP.md), Abschnitt 3) werden die Werte in Vercel eingetragen: Projekt öffnen → **Settings → Environment Variables**.
+Die vier Werte müssen an **zwei Stellen** eingetragen werden — sie sind voneinander unabhängig:
+
+| Wo | Wofür | Wann nötig |
+|---|---|---|
+| **Vercel** | die echte Website unter `nitenexo.at` | damit Kunden buchen können |
+| **`.env.local`** | dein eigener Rechner (`localhost:3000`) | zum Testen und Weiterentwickeln |
+
+Trägt man sie nur in Vercel ein, funktioniert die Buchung live, aber lokal nicht. Trägt man sie nur lokal ein, ist es umgekehrt. Für den Betrieb reicht Vercel — beides ist nur nötig, wenn ihr auch selbst testen wollt.
+
+### 5a. In Vercel
+
+Projekt öffnen → **Settings → Environment Variables**.
 
 | Variable | Beispielwert | Was sie macht |
 |---|---|---|
@@ -88,7 +99,20 @@ Genau wie beim E-Mail-Versand ([EMAIL-SETUP.md](./EMAIL-SETUP.md), Abschnitt 3) 
 
 Nach dem Eintragen: **Speichern**, dann im Vercel-Dashboard unter **Deployments** beim letzten Deployment auf die drei Punkte klicken → **Redeploy**. Ohne Redeploy wirken neue Variablen nicht.
 
-Wollt ihr das Ganze auch lokal auf eurem Rechner testen, tragt dieselben vier Variablen zusätzlich in `.env.local` ein (Datei anlegen, falls sie nicht existiert) und startet danach `npm run dev` neu. `.env.local` darf wie immer niemals in Git/GitHub landen.
+### 5b. Lokal in `.env.local`
+
+Im Projektordner die Datei `.env.local` öffnen (falls nicht vorhanden, neu anlegen) und dieselben vier Zeilen ergänzen:
+
+```
+GOOGLE_CLIENT_ID=123456789-abc...apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=GOCSPX-abcdefghijk...
+GOOGLE_REFRESH_TOKEN=1//0abcdefghijklmnop...
+GOOGLE_CALENDAR_ID=info@nitenexo.at
+```
+
+Danach `npm run dev` neu starten — laufende Server lesen die Datei nicht noch einmal.
+
+**`.env.local` darf niemals in Git oder auf GitHub landen.** Das Projekt ist so eingerichtet, dass die Datei automatisch ignoriert wird. Trotzdem gilt: nie manuell hochladen, nie in einen Chat kopieren.
 
 ## 6. Sicherheitshinweise
 
