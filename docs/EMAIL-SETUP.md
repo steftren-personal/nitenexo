@@ -116,8 +116,8 @@ Supabase verschickt diese Mails über einen eigenen Zugang — der ist getrennt 
 | Feld | Wert |
 |---|---|
 | Enable Custom SMTP | **einschalten** — ohne diesen Schalter werden alle Felder darunter ignoriert |
-| Host | `smtp.gmail.com` |
-| Port | `465` |
+| Host | `smtp.gmail.com` — **`.com`, nicht `.at`**. Ein Tippfehler hier führt zu einem nichtssagenden "Error sending recovery email" |
+| Port | `587` — hier bewusst ein anderer als in Vercel; Supabase arbeitet damit zuverlässiger |
 | Username | `info@nitenexo.at` |
 | Password | das App-Passwort |
 | Sender email | `info@nitenexo.at` — muss mit dem Username übereinstimmen, Gmail verschickt sonst nicht |
