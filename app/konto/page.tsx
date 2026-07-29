@@ -78,6 +78,9 @@ export default async function KontoPage({
             <Field label="Neues Passwort">
               <Input type="password" name="password" required minLength={8} autoComplete="new-password" />
             </Field>
+            <p style={{ font: "var(--type-caption)", color: "var(--color-accent-violet-mid)", margin: 0 }}>
+              Mindestens 8 Zeichen.
+            </p>
             {error && (
               <div style={{ font: "var(--type-caption)", color: "var(--color-accent-pink)" }}>{error}</div>
             )}
