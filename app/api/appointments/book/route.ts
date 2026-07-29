@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { createAdminClient } from "@/lib/supabase/admin";
 import { sendBookingConfirmation } from "@/lib/email";
+import { isSlotAvailable } from "@/lib/availability";
+import { isValidDuration, type DurationMinutes } from "@/lib/booking-config";
+import { createCalendarEvent } from "@/lib/google-calendar";
 
 console.log("[api/appointments/book] handler loaded");
 
@@ -15,40 +17,80 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Nicht eingeloggt." }, { status: 401 });
   }
 
-  const { slotId } = await request.json();
-  if (!slotId) {
-    return NextResponse.json({ error: "slotId fehlt." }, { status: 400 });
+  const body = await request.json();
+  const startIso: unknown = body?.startIso;
+  const durationMinutes: unknown = body?.durationMinutes;
+  const address: unknown = body?.address;
+
+  if (typeof startIso !== "string" || Number.isNaN(new Date(startIso).getTime())) {
+    return NextResponse.json({ error: "Ungültiger Zeitpunkt." }, { status: 400 });
+  }
+  if (!isValidDuration(durationMinutes)) {
+    return NextResponse.json({ error: "Ungültige Termindauer." }, { status: 400 });
+  }
+  if (typeof address !== "string" || address.trim().length === 0) {
+    return NextResponse.json({ error: "Adresse fehlt." }, { status: 400 });
   }
 
-  const { data: slot, error: slotError } = await supabase
-    .from("slots")
-    .select("id, starts_at, ends_at, is_booked")
-    .eq("id", slotId)
+  const start = new Date(startIso);
+  if (start.getTime() < Date.now()) {
+    console.log("[api/appointments/book] rejected: start time in the past");
+    return NextResponse.json({ error: "Der gewählte Zeitpunkt liegt in der Vergangenheit." }, { status: 400 });
+  }
+
+  // Never trust the browser — re-check against the real calendar right
+  // before writing, so a stale UI or a race with another booking can't
+  // create a double-booking.
+  let stillAvailable: boolean;
+  try {
+    stillAvailable = await isSlotAvailable(startIso, durationMinutes as DurationMinutes);
+  } catch (error) {
+    console.log("[api/appointments/book] availability check failed", error);
+    return NextResponse.json({ error: "Verfügbarkeit konnte nicht geprüft werden." }, { status: 500 });
+  }
+
+  if (!stillAvailable) {
+    console.log("[api/appointments/book] rejected: slot no longer available");
+    return NextResponse.json({ error: "Der gewählte Zeitpunkt ist nicht mehr verfügbar." }, { status: 409 });
+  }
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("full_name")
+    .eq("id", auth.user.id)
     .single();
 
-  if (slotError || !slot) {
-    return NextResponse.json({ error: "Slot nicht gefunden." }, { status: 404 });
+  const customerName = profile?.full_name || auth.user.email || "Unbekannt";
+  const endIso = new Date(start.getTime() + (durationMinutes as DurationMinutes) * 60_000).toISOString();
+
+  let event;
+  try {
+    event = await createCalendarEvent({
+      summary: `Beratungstermin — ${customerName}`,
+      description: [
+        `Kunde: ${customerName}`,
+        `Adresse: ${address.trim()}`,
+        auth.user.email ? `E-Mail: ${auth.user.email}` : null,
+      ]
+        .filter(Boolean)
+        .join("\n"),
+      startIso: start.toISOString(),
+      endIso,
+      timeZone: "Europe/Vienna",
+      privateProperties: {
+        userId: auth.user.id,
+        app: "nitenexo-termine",
+      },
+    });
+  } catch (error) {
+    console.log("[api/appointments/book] calendar create failed", error);
+    return NextResponse.json({ error: "Termin konnte nicht angelegt werden." }, { status: 500 });
   }
-
-  const { error: insertError } = await supabase
-    .from("appointments")
-    .insert({ user_id: auth.user.id, slot_id: slotId, status: "confirmed" });
-
-  if (insertError) {
-    const alreadyBooked = insertError.code === "23505";
-    console.log("[api/appointments/book] insert failed", insertError.code);
-    return NextResponse.json(
-      { error: alreadyBooked ? "Slot bereits vergeben." : "Buchung fehlgeschlagen." },
-      { status: alreadyBooked ? 409 : 500 }
-    );
-  }
-
-  await createAdminClient().from("slots").update({ is_booked: true }).eq("id", slotId);
 
   if (auth.user.email) {
-    await sendBookingConfirmation(auth.user.email, slot.starts_at, slot.ends_at);
+    await sendBookingConfirmation(auth.user.email, start.toISOString(), endIso);
   }
 
-  console.log("[api/appointments/book] booking confirmed");
-  return NextResponse.json({ ok: true });
+  console.log("[api/appointments/book] booking confirmed", event.id);
+  return NextResponse.json({ ok: true, eventId: event.id, startIso: start.toISOString(), endIso });
 }
