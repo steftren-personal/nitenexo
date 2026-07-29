@@ -27,7 +27,10 @@ export default function ConfirmEmailPage() {
           </h1>
           <p style={{ font: "var(--type-body-md)", color: "var(--color-accent-violet-mid)", margin: "0 0 var(--space-xl)" }}>
             Wir haben dir einen Bestätigungslink geschickt. Klick ihn an, dann kannst du dich einloggen
-            und einen Termin buchen.
+            und einen Termin buchen. Schau auch kurz im Spam-Ordner nach.
+          </p>
+          <p style={{ font: "var(--type-caption)", color: "var(--color-accent-violet-mid)", margin: "0 0 var(--space-xl)" }}>
+            Du hast dich hier schon einmal registriert? Dann kannst du dich direkt einloggen.
           </p>
           <Button variant="primary" href="/login">
             Zum Login

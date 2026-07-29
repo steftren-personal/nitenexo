@@ -17,10 +17,19 @@ export async function updateProfile(formData: FormData) {
 export async function changePassword(formData: FormData) {
   const password = String(formData.get("password") ?? "");
   const supabase = await createClient();
+  const { data: auth } = await supabase.auth.getUser();
+  if (!auth.user) redirect("/login");
+
+  if (password.length < 8) {
+    redirect(`/konto?error=${encodeURIComponent("Das Passwort muss mindestens 8 Zeichen lang sein.")}`);
+  }
+
   const { error } = await supabase.auth.updateUser({ password });
 
   if (error) {
-    redirect(`/konto?error=${encodeURIComponent(error.message)}`);
+    // Log the original Supabase error server-side for debugging, show a generic German message to the user
+    console.error("changePassword: Supabase updateUser error:", error.message);
+    redirect(`/konto?error=${encodeURIComponent("Passwort konnte nicht geändert werden. Bitte versuche es erneut.")}`);
   }
   redirect("/konto?passwordChanged=1");
 }
