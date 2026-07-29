@@ -98,6 +98,12 @@ Das Kontaktformular verschickt echte E-Mails über SMTP (z. B. Google Workspace)
 
 Eine vollständige, anfängertaugliche Anleitung (inkl. App-Passwort erstellen, Vercel-Setup und Verteiler mit mehreren Empfängern) gibt es in [`docs/EMAIL-SETUP.md`](./docs/EMAIL-SETUP.md).
 
+## Google-Kalender
+
+Die Terminbuchung soll an den Google Kalender von `info@nitenexo.at` angebunden werden. Der Zugang läuft über OAuth statt über ein Dienstkonto — Google Workspace sperrt das Erstellen von Dienstkonto-Schlüsseln per Organisationsrichtlinie.
+
+Einrichtung Schritt für Schritt: [`docs/GOOGLE-KALENDER-SETUP.md`](./docs/GOOGLE-KALENDER-SETUP.md).
+
 ## Hinweise
 
 - Deployment erfolgt über **Vercel** (Next.js).
