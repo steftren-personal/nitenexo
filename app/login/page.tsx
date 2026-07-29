@@ -15,9 +15,9 @@ export const metadata: Metadata = {
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string; redirectTo?: string }>;
+  searchParams: Promise<{ error?: string; redirectTo?: string; success?: string }>;
 }) {
-  const { error, redirectTo = "/termine" } = await searchParams;
+  const { error, redirectTo = "/termine", success } = await searchParams;
 
   return (
     <>
@@ -50,6 +50,16 @@ export default async function LoginPage({
             <Field label="Passwort">
               <Input type="password" name="password" required autoComplete="current-password" />
             </Field>
+
+            <p style={{ font: "var(--type-caption)", textAlign: "right", margin: "calc(-1 * var(--space-sm)) 0 0" }}>
+              <Link href="/passwort-vergessen" style={{ color: "var(--color-accent-violet-mid)" }}>
+                Passwort vergessen?
+              </Link>
+            </p>
+
+            {success && (
+              <div style={{ font: "var(--type-caption)", color: "var(--color-ink-deep)" }}>{success}</div>
+            )}
 
             {error && (
               <div style={{ font: "var(--type-caption)", color: "var(--color-accent-pink)" }}>{error}</div>
