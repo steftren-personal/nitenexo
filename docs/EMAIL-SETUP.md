@@ -109,6 +109,24 @@ Wichtig: Wenn die Bestätigungsmail mal fehlschlägt, ist das kein Problem — e
 
 Neben der Kontaktformular-Mail oben gibt es noch zwei andere Mails, die nichts mit dem Kontaktformular zu tun haben: die Registrierungs-Bestätigung und das Passwort-zurücksetzen. Die verschickt nicht eure Website, sondern Supabase selbst — dafür müsst ihr die passenden Vorlagen einmal im Supabase-Dashboard hinterlegen.
 
+### Zuerst: SMTP in Supabase aktivieren
+
+Supabase verschickt diese Mails über einen eigenen Zugang — der ist getrennt von dem, was ihr in Vercel eingetragen habt. Im Supabase-Dashboard unter **Project Settings → Notifications → Emails** (Supabase benennt diesen Bereich gelegentlich um; sucht nach "SMTP") tragt ihr dieselben Werte ein wie in Vercel:
+
+| Feld | Wert |
+|---|---|
+| Enable Custom SMTP | **einschalten** — ohne diesen Schalter werden alle Felder darunter ignoriert |
+| Host | `smtp.gmail.com` |
+| Port | `465` |
+| Username | `info@nitenexo.at` |
+| Password | das App-Passwort |
+| Sender email | `info@nitenexo.at` — muss mit dem Username übereinstimmen, Gmail verschickt sonst nicht |
+| Sender name | `NiteNexo Solutions` |
+
+Wenn der Schalter aus bleibt, versucht Supabase weiter über seinen eingebauten Test-Mailer zu senden. Der ist stark gedrosselt und bei wiederhergestellten Projekten oft gar nicht mehr aktiv — die Mail schlägt dann mit "Error sending recovery email" fehl, obwohl die eingetragenen Daten korrekt sind.
+
+### Dann: Vorlagen einfügen
+
 Im Supabase-Dashboard unter **Authentication → Email Templates** findet ihr mehrere Vorlagen (z. B. "Confirm signup", "Reset Password", "Magic Link" ...). Für NiteNexo sind aktuell zwei davon relevant:
 
 - **Confirm signup** — die Mail, die jemand nach der Registrierung bekommt. Die gebrandete HTML-Vorlage dafür liegt im Repo unter `email-templates/supabase-email-bestaetigen.html`.
