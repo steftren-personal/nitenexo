@@ -56,11 +56,15 @@ Das ist der Teil, bei dem am ehesten etwas schiefgeht. Geht Schritt für Schritt
 4. In die Felder, die jetzt erscheinen, **eure eigene Client-ID** und **euer eigenes Client-Secret** aus Schritt 3b einfügen.
 5. Das Einstellungsfenster schließen.
 6. Links in der Liste **"Step 1: Select & authorize APIs"** nach **Calendar API v3** suchen und aufklappen.
-7. Den Scope auswählen, der **Lesen und Schreiben** von Terminen erlaubt:
+7. Den Scope auswählen, der **Lesen und Schreiben von Terminen** erlaubt:
    ```
-   https://www.googleapis.com/auth/calendar
+   https://www.googleapis.com/auth/calendar.events
    ```
-   (Nicht `calendar.readonly` — der erlaubt nur Lesen. Der volle `calendar`-Scope erlaubt auch das Anlegen und Ändern von Terminen, was für die Terminbuchung gebraucht wird.)
+   Beim Draufzeigen erscheint der Hinweis "View and edit events on all your calendars" — das ist der richtige.
+
+   **Warum nicht der erste Eintrag `.../auth/calendar`?** Der würde auch funktionieren, gibt aber mehr Rechte als nötig: Damit dürfte die Website zusätzlich Kalender anlegen und löschen, Freigaben ändern und Einstellungen bearbeiten. Für die Terminbuchung reicht `calendar.events` vollständig — Termine lesen, anlegen und ändern. Gerät das Token je in falsche Hände, ist der mögliche Schaden dadurch deutlich kleiner.
+
+   **Auf keinen Fall** einen Scope mit `.readonly` am Ende wählen — damit könnte die Website keine Termine eintragen.
 8. Unten auf **"Authorize APIs"** klicken.
 9. Ihr werdet zu Google weitergeleitet und sollt euch anmelden — **hier unbedingt mit `info@nitenexo.at` einloggen**, nicht mit einem privaten Konto. Der Kalender, der am Ende angebunden wird, ist der Kalender des Kontos, mit dem ihr euch jetzt anmeldet.
 10. Google zeigt den Zustimmungsbildschirm mit dem Hinweis, dass "NiteNexo Terminbuchung" (oder wie ihr die App genannt habt) auf den Kalender zugreifen möchte. Zustimmen.
@@ -121,5 +125,5 @@ In allen Fällen ist die Lösung dieselbe: Abschnitt 4 (OAuth Playground) erneut
 | `invalid_grant` / "Token has been expired or revoked" | Eine der Ursachen aus Abschnitt 7 ist eingetreten | Abschnitt 4 wiederholen, neues Token eintragen, Redeploy |
 | `invalid_client` | Client-ID oder Client-Secret in Vercel falsch abgetippt oder vertauscht | Beide Werte in der Google Cloud Console (Zugangsdaten) mit den Vercel-Variablen abgleichen |
 | Termine erscheinen nicht im richtigen Kalender | `GOOGLE_CALENDAR_ID` falsch oder leer | Prüfen, dass dort exakt `info@nitenexo.at` steht |
-| Website kann Termine lesen, aber nicht anlegen | Beim Autorisieren im Playground wurde `calendar.events.readonly` statt `calendar` gewählt | Abschnitt 4 wiederholen und diesmal den vollen `https://www.googleapis.com/auth/calendar`-Scope wählen |
+| Website kann Termine lesen, aber nicht anlegen | Beim Autorisieren im Playground wurde ein Scope mit `.readonly` gewählt | Abschnitt 4 wiederholen und diesmal `https://www.googleapis.com/auth/calendar.events` wählen |
 | Änderungen wirken nicht | Nach dem Eintragen der Variablen kein Redeploy gemacht | In Vercel unter Deployments ein Redeploy auslösen |
