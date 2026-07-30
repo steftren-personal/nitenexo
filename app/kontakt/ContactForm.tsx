@@ -130,8 +130,9 @@ export function ContactForm() {
           </div>
           <div className="kt-field anim-fade-up" style={{ background: "var(--surface-canvas-dark)", padding: "var(--space-lg)", borderRadius: "var(--rounded-md)" }}>
             <Field label="Welche Leistung interessiert dich?" polarity="dark">
-              <Select name="service" defaultValue="Digitales Gäste-Tool">
-                <option>Digitales Gäste-Tool</option>
+              <Select name="service" defaultValue="Chatbot (WhatsApp)">
+                <option>Chatbot (WhatsApp)</option>
+                <option>Chatbot (anderer Kanal)</option>
                 <option>Website-Design</option>
                 <option>Digitaler Assistent</option>
                 <option>Beratung &amp; Setup</option>

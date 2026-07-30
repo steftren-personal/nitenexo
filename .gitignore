@@ -35,3 +35,6 @@ next-env.d.ts
 
 # local screenshot/debug helpers
 /tmp-*
+
+# scroll-film build intermediates (raw clips, keyframes, jobs ledger — 100MB+; only extracted frames ship)
+/.film-work/

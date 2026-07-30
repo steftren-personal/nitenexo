@@ -2,9 +2,11 @@
 
 ## What the app does and who uses it
 Marketing website for **NiteNexo Solutions** (Stefan Trendafilov, Wien) — a small digital
-workshop building **WhatsApp chatbots, websites and custom digital assistants** for hospitality,
-bars and clubs. Visitors are venue owners — little time, non-technical, high WhatsApp/Instagram
-volume. German copy, informal "Du".
+workshop building **chatbots (specialised in WhatsApp), websites and custom digital assistants**
+for hospitality, bars and clubs. Chatbots are the core product on any channel — WhatsApp is the
+declared specialty, Instagram and on-site web widgets are offered too; copy must not narrow the
+offering to WhatsApp alone. Visitors are venue owners — little time, non-technical, high
+WhatsApp/Instagram volume. German copy, informal "Du".
 
 In addition to the public marketing pages, registered users (prospective/existing clients) can
 **log in and book a consultation appointment** with NiteNexo directly through the site — no more

@@ -4,10 +4,11 @@ import React from "react";
 import { Button } from "@/components/ui/Button";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Card } from "@/components/ui/Card";
-import { Badge } from "@/components/ui/Badge";
 import { CodeBlock } from "@/components/ui/CodeBlock";
 import { Sticker } from "@/components/marketing/Sticker";
-import { PricingTiers } from "@/components/marketing/PricingTiers";
+import { PricingModel } from "@/components/marketing/PricingModel";
+import { ArticleCard } from "@/components/marketing/ArticleCard";
+import { ARTICLES } from "@/lib/werkstatt";
 import { KineticHeading } from "@/components/motion/KineticHeading";
 import { FlipWords } from "@/components/motion/FlipWords";
 import { StatStrip } from "./StatStrip";
@@ -16,34 +17,10 @@ import { ServicesBento } from "./ServicesBento";
 import { RobotPresenter } from "./RobotPresenter";
 import { HeroSpline } from "./HeroSpline";
 import { MascotRobot } from "./MascotRobot";
-import { RobotGuide } from "./RobotGuide";
+import { NightFilm } from "./NightFilm";
 import { IntegrationsStrip } from "@/components/marketing/IntegrationsStrip";
 import { TestimonialsMarquee } from "./TestimonialsMarquee";
 import { UseCaseTabs } from "./UseCaseTabs";
-
-const BLOG_POSTS = [
-  {
-    tag: "Guide",
-    title: "Warum ein WhatsApp-Bot mehr Reservierungen bringt",
-    excerpt: "Gäste fragen dann, wenn sie Lust haben — nicht zu Bürozeiten. Wer sofort antwortet, gewinnt den Tisch.",
-    read: "5 Min",
-    hue: "linear-gradient(135deg, #422082, #7a3ff0)",
-  },
-  {
-    tag: "Praxis",
-    title: "Gästeliste am Einlass: vom Klemmbrett zum Chat",
-    excerpt: "Wie ein Club die komplette Gästeliste auf WhatsApp umgestellt hat — inkl. QR-Code am Einlass.",
-    read: "4 Min",
-    hue: "linear-gradient(135deg, #150f23, #422082)",
-  },
-  {
-    tag: "Setup",
-    title: "In Tagen live: so läuft ein Bot-Projekt ab",
-    excerpt: "Von der ersten Nachricht bis zur Live-Schaltung — was wir von dir brauchen und was wir übernehmen.",
-    read: "3 Min",
-    hue: "linear-gradient(135deg, #5a2db0, #fa7faa)",
-  },
-];
 
 const sectionStyle: React.CSSProperties = {
   maxWidth: "var(--container-max)",
@@ -57,11 +34,10 @@ const h2Style: React.CSSProperties = { font: "var(--type-display-large)", fontSi
 export function HomeScreen() {
   return (
     <div style={{ color: "var(--on-primary)" }}>
-      {/* Mitreisender Roboter — fliegt rein, gleitet durch die Seite und zeigt
-          abwechselnd auf die Textblöcke (nur Desktop + Bewegung erlaubt). */}
-      <RobotGuide />
+      {/* „EINE NACHT" — der Kapitel-Zeitraffer als cineastischer Einstieg. */}
+      <NightFilm />
 
-      {/* ── Hero — interaktiver 3D-Roboter (Spline) ──────────── */}
+      {/* ── Hero — Headline + Reservierungs-Board (der Morgen danach) ── */}
       <HeroSpline />
 
       {/* ── Stats ────────────────────────────────────────────── */}
@@ -79,7 +55,7 @@ export function HomeScreen() {
       </div>
 
       {/* ── Über NiteNexo ───────────────────────────────────── */}
-      <section style={sectionStyle} data-guide="right">
+      <section style={sectionStyle}>
         <div className="bw-about-grid" style={{ display: "grid", gridTemplateColumns: "0.95fr 1.05fr", gap: "var(--space-section)", alignItems: "center" }}>
           <div style={{ position: "relative", display: "flex", justifyContent: "center" }} data-reveal>
             <Card variant="spotlight-violet" style={{ width: "100%", maxWidth: 420 }}>
@@ -102,9 +78,10 @@ export function HomeScreen() {
               Ein digitaler Mitarbeiter, der nie Pause macht.
             </h2>
             <p style={{ font: "var(--type-body-lg)", color: "var(--on-dark-muted)", margin: 0, maxWidth: 520 }}>
-              NiteNexo Solutions ist eine kleine Digital-Werkstatt aus Wien. Wir bauen
-              Websites, WhatsApp-Chatbots und maßgeschneiderte Automatisierungen für Gastronomie, Bars
-              und Clubs — für Betriebe mit wenig Zeit und viel Andrang.
+              NiteNexo Solutions ist eine kleine Digital-Werkstatt aus Wien. Wir bauen Chatbots,
+              Websites und maßgeschneiderte Automatisierungen für Gastronomie, Bars und Clubs — für
+              Betriebe mit wenig Zeit und viel Andrang über WhatsApp und Instagram. Unsere
+              Spezialität ist WhatsApp, weil dort die meisten Anfragen landen.
             </p>
             <p style={{ font: "var(--type-body-lg)", color: "var(--on-dark-muted)", margin: "var(--space-lg) 0 0", maxWidth: 520 }}>
               Kein Agentur-Sprech, keine Monatsprojekte. Du erklärst uns deinen Ablauf, wir verdrahten
@@ -123,7 +100,7 @@ export function HomeScreen() {
       <UseCaseTabs />
 
       {/* ── Leistungen-Grid ─────────────────────────────────── */}
-      <section style={{ ...sectionStyle, paddingTop: 0 }} data-guide="left">
+      <section style={{ ...sectionStyle, paddingTop: 0 }}>
         <div style={centerHead} data-reveal>
           <Eyebrow polarity="dark">Leistungen</Eyebrow>
           <h2 style={{ ...h2Style, fontSize: "clamp(28px, 4vw, 44px)" }}>Was wir für deinen Laden bauen.</h2>
@@ -134,23 +111,24 @@ export function HomeScreen() {
       {/* ── Funktioniert mit (Logo-Marquee, 21st.dev) ────────── */}
       <IntegrationsStrip />
 
-      {/* ── Roboter-Presenter (Vordergrund, zeigt Schritte) ──── */}
-      <div data-guide="right">
+      {/* ── So arbeitet dein Assistent (Chat + Schritte) ─────── */}
+      <div>
         <RobotPresenter />
       </div>
 
       {/* ── Preise ──────────────────────────────────────────── */}
-      <div data-guide="left">
+      <div>
         <div style={sectionStyle}>
           <div style={centerHead} data-reveal>
             <Eyebrow polarity="dark">Preise</Eyebrow>
-            <h2 style={{ ...h2Style, fontSize: "clamp(28px, 4vw, 44px)", marginBottom: "var(--space-md)" }}>Faire Pakete für jede Größe.</h2>
+            <h2 style={{ ...h2Style, fontSize: "clamp(28px, 4vw, 44px)", marginBottom: "var(--space-md)" }}>Jeder Betrieb ist anders — der Preis auch.</h2>
             <p style={{ font: "var(--type-body-md)", color: "var(--on-dark-muted)", margin: 0 }}>
-              Einmalige Einrichtung, danach monatlich. Keine versteckten Kosten, jederzeit kündbar.
+              Keine Pakete von der Stange. Festpreis für die Einrichtung, dazu eine monatliche
+              Pauschale, die zu deinem Assistenten passt.
             </p>
           </div>
-          <PricingTiers />
-          <div style={{ textAlign: "center", marginTop: "var(--space-xxl)" }}>
+          <PricingModel polarity="dark" />
+          <div style={{ textAlign: "center", marginTop: "var(--space-lg)" }}>
             <Button variant="ghost-on-dark" href="/preise">
               Alle Details ansehen
             </Button>
@@ -158,8 +136,8 @@ export function HomeScreen() {
         </div>
       </div>
 
-      {/* ── Warum NiteNexo (SVG-Maskottchen → Reise-Roboter blendet aus) ── */}
-      <section style={sectionStyle} data-guide="hide">
+      {/* ── Warum NiteNexo ──────────────────────────────────── */}
+      <section style={sectionStyle}>
         <div className="bw-why-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-section)", alignItems: "center" }}>
           <div data-reveal>
             <Eyebrow polarity="dark">Warum NiteNexo</Eyebrow>
@@ -169,13 +147,15 @@ export function HomeScreen() {
             <WhyAccordion />
           </div>
           <div data-reveal style={{ minHeight: 400, display: "flex", alignItems: "center" }}>
+            {/* Das Maskottchen folgt der Maus und winkt — der einzige Roboter
+                außerhalb des Intro-Films (bewusst behalten). */}
             <MascotRobot autoWave />
           </div>
         </div>
       </section>
 
       {/* ── Testimonials (full-bleed marquee) ────────────────── */}
-      <div style={{ paddingTop: "var(--space-section)", paddingBottom: "var(--space-section)" }} data-guide="right">
+      <div style={{ paddingTop: "var(--space-section)", paddingBottom: "var(--space-section)" }}>
         <div className="bw-container" style={{ padding: "0 var(--space-xl)" }}>
           <div style={centerHead} data-reveal>
             <Eyebrow polarity="dark">Stimmen aus dem Betrieb</Eyebrow>
@@ -196,51 +176,23 @@ export function HomeScreen() {
           <div>
             <Eyebrow polarity="dark">Aus der Werkstatt</Eyebrow>
             <h2 style={{ ...h2Style, fontSize: "clamp(28px, 4vw, 44px)" }}>Kurz erklärt.</h2>
-            <p style={{ font: "var(--type-body-md)", color: "var(--on-dark-muted)", margin: "var(--space-md) 0 0", maxWidth: 520 }}>
-              Kurze Guides aus der Praxis — die ersten Artikel erscheinen bald.
-            </p>
           </div>
         </div>
         <div className="bw-blog-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "var(--space-lg)" }}>
-          {/* Coming soon: no tilt and slightly dimmed so the cards don't invite
-              a click there is nothing behind yet (#26). */}
-          {BLOG_POSTS.map((p, i) => (
-            <Card key={i} reveal polarity="dark" aria-disabled="true" style={{ padding: 0, overflow: "hidden", display: "flex", flexDirection: "column", opacity: 0.85 }}>
-              <div style={{ height: 170, position: "relative", overflow: "hidden", display: "flex", alignItems: "flex-end", gap: "var(--space-sm)", padding: "var(--space-lg)" }}>
-                <span className="bw-blog-media" style={{ position: "absolute", inset: 0, background: p.hue }} />
-                <span className="bw-blog-media" style={{ position: "absolute", inset: 0, background: "url(/assets/starfield.png)", backgroundSize: "cover", opacity: 0.45 }} />
-                <Badge variant="violet-tag" style={{ position: "relative" }}>
-                  {p.tag}
-                </Badge>
-                <Badge variant="violet-tag" style={{ position: "relative" }}>
-                  Bald verfügbar
-                </Badge>
-              </div>
-              <div style={{ padding: "var(--space-xl)", display: "flex", flexDirection: "column", gap: "var(--space-sm)", flex: 1 }}>
-                <h3 style={{ font: "var(--type-heading-md)", margin: 0 }}>{p.title}</h3>
-                <p style={{ font: "var(--type-body-md)", color: "var(--on-dark-muted)", margin: 0, flex: 1 }}>{p.excerpt}</p>
-                {/* No "Lesen" CTA while the articles don't exist — a link into
-                    nowhere is exactly what #26 asked us to remove. */}
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: "var(--space-sm)", paddingTop: "var(--space-md)", borderTop: "1px solid var(--hairline-violet)" }}>
-                  <span style={{ font: "var(--type-caption)", color: "var(--on-dark-muted)" }}>{p.read} Lesezeit · in Arbeit</span>
-                </div>
-              </div>
-            </Card>
+          {ARTICLES.map((a) => (
+            <ArticleCard key={a.slug} article={a} />
           ))}
         </div>
         <div style={{ textAlign: "center", marginTop: "var(--space-xxl)" }}>
-          <Button variant="ghost-on-dark" href="/kontakt">
-            Frag uns direkt
+          <Button variant="ghost-on-dark" href="/werkstatt">
+            Mehr aus der Werkstatt
           </Button>
         </div>
       </section>
 
       {/* ── Großer CTA ──────────────────────────────────────── */}
-      <div data-guide="left">
+      <div>
         <div style={{ ...sectionStyle, textAlign: "center", position: "relative" }}>
-          <span className="bw-float" style={{ display: "inline-block", marginBottom: "var(--space-lg)" }}>
-            <Sticker name="bot" size={96} tilt={-8} />
-          </span>
           <KineticHeading
             as="h2"
             trigger="scroll"

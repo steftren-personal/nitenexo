@@ -8,12 +8,13 @@ import { Button } from "@/components/ui/Button";
 import { KineticHeading } from "@/components/motion/KineticHeading";
 import { ScrambleText } from "@/components/motion/ScrambleText";
 import { Spotlight } from "@/components/ui/Spotlight";
+import { BookingBoard } from "./BookingBoard";
 
 /**
- * Hero — a realistic, transparent robot video (background removed → VP8-alpha
- * WebM, so it floats with no rectangle/cut-off). It flies in on load, waves +
- * points toward the headline, and zooms forward as you scroll. Text rises in;
- * a Spotlight sweeps across.
+ * Hero — lands right after the intro film's morning shot: the headline on the
+ * left, and on the right the payoff made concrete — tonight's reservation
+ * board, filled overnight by the assistant. Text rises in; a Spotlight sweeps
+ * across.
  */
 export function HeroSpline() {
   const root = useRef<HTMLDivElement>(null);
@@ -26,17 +27,6 @@ export function HeroSpline() {
         .timeline({ defaults: { ease: "power3.out" } })
         .to(".hs-sub", { autoAlpha: 1, y: 0, duration: 0.5 }, 0.5)
         .to(".hs-cta", { autoAlpha: 1, y: 0, duration: 0.5 }, "-=0.25");
-
-      // Robot flies in from the right on load.
-      gsap.from(".hs-robot-vid", { xPercent: 60, autoAlpha: 0, scale: 0.72, duration: 1.1, ease: "power3.out", delay: 0.15 });
-
-      // Zoom-in on scroll (the whole robot scales forward + drifts).
-      gsap.to(".hs-robot", {
-        scale: 1.22,
-        yPercent: 8,
-        ease: "none",
-        scrollTrigger: { trigger: root.current, start: "top top", end: "bottom top", scrub: true },
-      });
     },
     { scope: root }
   );
@@ -49,7 +39,7 @@ export function HeroSpline() {
         <div className="bw-hero-grid" style={{ display: "grid", gridTemplateColumns: "1.02fr 0.98fr", gap: "var(--space-xl)", alignItems: "center" }}>
           <div style={{ position: "relative" }}>
             <Eyebrow polarity="dark">
-              <ScrambleText text="Digitale Lösungen für Gastro & Clubs" />
+              <ScrambleText text="Chatbots für Gastro & Clubs — spezialisiert auf WhatsApp" />
             </Eyebrow>
             <KineticHeading
               trigger="load"
@@ -71,9 +61,8 @@ export function HeroSpline() {
             </div>
           </div>
 
-          {/* Realistic transparent robot (VP8-alpha WebM). On desktop the
-              traveling RobotGuide takes over and this is hidden via CSS. */}
-          <div className="hs-robot hs-robot-inline" style={{ position: "relative", height: "min(64vh, 600px)", minHeight: 380, display: "flex", alignItems: "center", justifyContent: "center" }}>
+          {/* Tonight's reservation board — the film's morning payoff, live */}
+          <div style={{ position: "relative", display: "flex", alignItems: "center", justifyContent: "center" }}>
             <span
               aria-hidden="true"
               style={{
@@ -85,17 +74,7 @@ export function HeroSpline() {
                 filter: "blur(46px)",
               }}
             />
-            <video
-              className="hs-robot-vid"
-              autoPlay
-              loop
-              muted
-              playsInline
-              preload="auto"
-              style={{ position: "relative", width: "100%", height: "100%", objectFit: "contain" }}
-            >
-              <source src="/assets/robot-hero.webm" type="video/webm" />
-            </video>
+            <BookingBoard />
           </div>
         </div>
       </div>
