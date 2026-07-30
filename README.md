@@ -2,7 +2,7 @@
 
 # NiteNexo Solutions — Website
 
-**WhatsApp-Chatbots, Website-Design und digitale Assistenten**
+**Chatbots — spezialisiert auf WhatsApp —, Website-Design und digitale Assistenten**
 für Gastronomie, Bars und Clubs.
 
 [![Next.js](https://img.shields.io/badge/Next.js-App_Router-000000?logo=next.js&logoColor=white)](https://nextjs.org/)
@@ -18,16 +18,18 @@ für Gastronomie, Bars und Clubs.
 ## Über das Projekt
 
 Marketing-Website für **NiteNexo Solutions** (Stefan Trendafilov, Wien) — eine kleine
-Digital-Werkstatt, die WhatsApp-Chatbots, Websites und maßgeschneiderte digitale Assistenten
-für die Nachtgastronomie baut. Die Seite ist öffentlich, mehrsprachig auf Deutsch (lockeres „Du")
-und enthält ein Kontaktformular sowie eine Terminbuchung für angemeldete Nutzer.
+Digital-Werkstatt, die Chatbots (spezialisiert auf WhatsApp, auf Wunsch auch Instagram oder
+direkt auf der Website), Websites und maßgeschneiderte digitale Assistenten für die
+Nachtgastronomie baut. Die Seite ist auf Deutsch (lockeres „Du") und enthält neben den
+öffentlichen Seiten ein Kontaktformular sowie eine Terminbuchung für angemeldete Nutzer.
 
 ## Highlights
 
 - **Premium-Design** im Botwerk Design-System (Violett-Mitternacht + Lime, zwei Flächen-Polaritäten)
-- **Cinematische Animationen** mit GSAP & ScrollTrigger — kinetische Headlines, Scroll-Reveals, Count-up-Stats, Parallax
+- **Cinematischer Einstieg** „EINE NACHT" — ein kapitelweiser Nacht-Zeitraffer, der beim Scrollen von 21:00 bis 09:00 Uhr durchläuft
+- **Bewegung im Detail** mit GSAP & ScrollTrigger — kinetische Headlines, Scroll-Reveals, Count-up-Stats, Parallax
 - **Voll responsiv** und mit Rücksicht auf `prefers-reduced-motion`
-- **Kein Backend nötig** — statisch auf Vercel deploybar
+- **Mit Backend** — Supabase (Auth + Postgres), API-Routen und Middleware; siehe [Konfiguration](#konfiguration)
 
 ## Tech Stack
 
@@ -37,7 +39,10 @@ und enthält ein Kontaktformular sowie eine Terminbuchung für angemeldete Nutze
 | Styling      | Tailwind CSS + Botwerk Design-Tokens (CSS Variablen) |
 | Animation    | GSAP (ScrollTrigger) via `@gsap/react`               |
 | Schriften    | `next/font` — Space Grotesk (Display), Rubik (UI)    |
-| Hintergrund  | Higgsfield-generiertes Roboter-Video                 |
+| Intro-Film   | Higgsfield-generierter Nacht-Zeitraffer (`public/assets/night-hero.mp4`) |
+| Auth & DB    | Supabase (Auth + Postgres, RLS auf jeder Tabelle)    |
+| Mailversand  | nodemailer über reines SMTP                          |
+| Termine      | Google Kalender API (OAuth)                          |
 | Deployment   | Vercel                                               |
 
 ## Schnellstart
@@ -46,11 +51,17 @@ und enthält ein Kontaktformular sowie eine Terminbuchung für angemeldete Nutze
 # 1. Abhängigkeiten installieren
 npm install
 
-# 2. Entwicklungsserver starten
+# 2. Umgebungsvariablen anlegen und ausfüllen
+cp .env.local.example .env.local
+
+# 3. Entwicklungsserver starten
 npm run dev
 ```
 
 Danach im Browser **[http://localhost:3000](http://localhost:3000)** öffnen.
+
+Die öffentlichen Seiten laufen auch ohne ausgefüllte `.env.local`. Login, Terminbuchung
+und Mailversand brauchen die passenden Werte — siehe [Konfiguration](#konfiguration).
 
 ### Produktiv-Build
 
@@ -61,36 +72,65 @@ npm run start   # Build lokal starten
 
 ## Seitenübersicht
 
-| Route            | Inhalt                                                     |
-| ---------------- | ---------------------------------------------------------- |
-| `/`              | Start — dunkel, animierter Roboter-Hintergrund             |
-| `/leistungen`    | Leistungen im Detail                                        |
-| `/preise`        | Preispakete + FAQ                                           |
-| `/kontakt`       | Kontakt — Formular, versendet per SMTP                     |
-| `/login`         | Anmeldung (Supabase Auth)                                   |
-| `/registrieren`  | Registrierung inkl. E-Mail-Bestätigung                     |
-| `/termine`       | Terminbuchung (nur angemeldet)                              |
-| `/konto`         | Eigenes Konto (nur angemeldet)                              |
-| `/admin/termine` | Terminverwaltung (nur Admins)                               |
-| `/impressum`     | Rechtliches (Österreich, § 5 ECG)                          |
-| `/datenschutz`   | Datenschutzerklärung (DSGVO)                                |
+| Route                       | Inhalt                                                  |
+| --------------------------- | ------------------------------------------------------- |
+| `/`                         | Start — Intro-Film „EINE NACHT", danach die Landing-Page |
+| `/leistungen`               | Leistungen im Detail                                     |
+| `/preise`                   | Preismodell (individuell kalkuliert) + FAQ               |
+| `/werkstatt`                | Artikelübersicht                                         |
+| `/werkstatt/[slug]`         | Einzelartikel (derzeit drei)                             |
+| `/kontakt`                  | Kontakt — Formular, versendet per SMTP                   |
+| `/login`                    | Anmeldung (Supabase Auth)                                |
+| `/registrieren`             | Registrierung inkl. E-Mail-Bestätigung                   |
+| `/registrieren/bestaetigen` | Hinweisseite nach der Registrierung                      |
+| `/passwort-vergessen`       | Zurücksetzen anfordern                                   |
+| `/passwort-neu`             | Neues Passwort vergeben                                  |
+| `/termine`                  | Terminbuchung (nur angemeldet)                           |
+| `/konto`                    | Eigenes Konto (nur angemeldet)                           |
+| `/admin/termine`            | Terminverwaltung (nur Admins)                            |
+| `/impressum`                | Rechtliches (Österreich, § 5 ECG)                        |
+| `/datenschutz`              | Datenschutzerklärung (DSGVO)                             |
+| `/coming-soon`              | Platzhalter, nur aktiv bei `NEXT_PUBLIC_COMING_SOON=true` |
+
+Geschützte Bereiche (`/termine`, `/konto`, `/admin`) sichert `middleware.ts` ab — ohne
+Anmeldung geht es zurück auf `/login`, ohne Admin-Rechte zurück auf `/termine`.
 
 ## Projektstruktur
 
 ```
-app/          Seiten (Routes), Layout & globale Styles
-  └─ api/        Server-Endpunkte (Kontakt, Termine, Admin)
-components/    Wiederverwendbare Bausteine
-  ├─ ui/         Buttons, Cards, Badges …
-  ├─ forms/      Formularelemente
-  ├─ booking/    Slot-Auswahl, Terminlisten
-  ├─ marketing/  NavBar, Footer, Pricing, CookieBanner …
-  ├─ screens/    Seiten-Abschnitte (Hero, Chat-Vorschau …)
-  └─ motion/     GSAP-Animationslogik
-lib/          Inhalts- & Konfigurationsdaten, Supabase-Clients, Mailversand
-supabase/     Datenbank-Migrationen
-public/       Bilder, Video & statische Dateien
+app/              Seiten (Routes), Layout & globale Styles
+  └─ api/            Server-Endpunkte (Kontakt, Termine, Admin)
+components/        Wiederverwendbare Bausteine
+  ├─ ui/             Buttons, Cards, Badges …
+  ├─ forms/          Formularelemente
+  ├─ booking/        Slot-Auswahl, Terminlisten
+  ├─ marketing/      NavBar, Footer, Preise, Artikel-Karten, CookieBanner …
+  ├─ screens/        Seiten-Abschnitte (NightFilm, Hero, Bento, Tabs …)
+  └─ motion/         GSAP-Animationslogik
+lib/              Inhalts- & Konfigurationsdaten, Supabase-Clients, Mailversand,
+                  Google-Kalender-Anbindung
+middleware.ts     Coming-Soon-Weiche + Schutz von /termine, /konto, /admin
+supabase/         Datenbank-Migrationen
+docs/             Einrichtungs-Anleitungen (SMTP, Google Kalender)
+email-templates/  HTML-Vorlagen für Transaktionsmails
+public/           Bilder, Intro-Film & statische Dateien
+Botwerk/          Design-System-Referenz (kein App-Code)
 ```
+
+## Konfiguration
+
+Alle Variablen stehen kommentiert in [`.env.local.example`](./.env.local.example). Kurz:
+
+| Gruppe          | Variablen                                                                 | Wofür                              |
+| --------------- | ------------------------------------------------------------------------- | ---------------------------------- |
+| Supabase        | `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `ADMIN_EMAILS` | Login, Registrierung, Admin-Zugang |
+| Allgemein       | `NEXT_PUBLIC_SITE_URL`                                                    | Links in E-Mails, Weiterleitungen  |
+| SMTP            | `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `CONTACT_TO`, `CONTACT_AUTOREPLY` | Kontaktformular, Terminmails       |
+| Google Kalender | `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GOOGLE_REFRESH_TOKEN`, `GOOGLE_CALENDAR_ID` | Terminbuchung                      |
+| Schalter        | `NEXT_PUBLIC_COMING_SOON`                                                 | Seite hinter Platzhalter legen     |
+
+`SUPABASE_SERVICE_ROLE_KEY` umgeht sämtliche RLS-Regeln und darf ausschließlich
+serverseitig verwendet werden. `.env.local` gehört nie ins Repository.
 
 ## E-Mail-Versand
 

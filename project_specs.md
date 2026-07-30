@@ -115,19 +115,28 @@ gracefully. Additionally for the booking feature:
 
 ## File structure (within allowed folders)
 ```
-/app        layout, globals.css, template (route fade), page.tsx, leistungen/, preise/, kontakt/,
-            impressum/, datenschutz/, login/, registrieren/, termine/, konto/
-/app/(admin) termine/  -- Stefan & Theodor only
-/app/api    appointments/ (book, cancel), admin/slots/ (create, update)
-/components ui/ (Button, Badge, Eyebrow, KeywordHighlight, Card, CodeBlock)
-            forms/ (Field, Input, Select, Textarea)
-            marketing/ (Logo, NavBar, Footer, CookieBanner, SquiggleDivider, PricingCard,
-                        PricingTiers, Sticker, Marquee, IndustryPills)
-            screens/ (HomeScreen + home sub-parts: ChatPreview, StatStrip, WhyAccordion)
-            motion/ (MotionRoot, KineticHeading, Reveal helpers, gsap setup)
-            booking/ (SlotPicker, AppointmentList, AuthForm)
-/lib        site nav config + pricing/content data
+/app        layout, globals.css, template (route fade), page.tsx, leistungen/, preise/,
+            werkstatt/ (+ 3 article routes), kontakt/, impressum/, datenschutz/, login/,
+            registrieren/ (+ bestaetigen/), passwort-vergessen/, passwort-neu/, termine/,
+            konto/, admin/termine/ (Stefan & Theodor only), coming-soon/
+/app/api    appointments/ (availability, book, cancel, mine), admin/slots/, contact/, me/
+/middleware.ts  coming-soon gate + auth guard for /termine, /konto, /admin
+/components ui/ (Button, Badge, Eyebrow, KeywordHighlight, Card, CodeBlock, Spotlight,
+                 BackgroundGradientAnimation)
+            forms/ (Field, Input, Select)
+            marketing/ (Logo, NavBar, Footer, CookieBanner, SquiggleDivider, PricingModel,
+                        ArticleCard, ArticleLayout, IntegrationsStrip, Legal, Sticker, Marquee)
+            screens/ (NightFilm intro, HeroSpline, HomeScreen + sub-parts: ServicesBento,
+                      UseCaseTabs, TestimonialsMarquee, StatStrip, WhyAccordion, ChatPreview,
+                      RobotPresenter, MascotRobot, BookingBoard)
+            motion/ (MotionRoot, KineticHeading, FlipWords, ScrambleText, SquiggleDraw,
+                     CinematicLayer, gsap setup)
+            booking/ (BookingFlow, AppointmentList, TerminManager)
+/lib        site nav config, pricing/content data, werkstatt article data, admin-emails,
+            availability + booking-config, mailer/email/email-template (SMTP),
+            google-calendar (OAuth)
 /lib/supabase  server.ts (SSR client), client.ts (browser client), admin.ts (service-role, server-only)
 /supabase   sql migrations for profiles / slots / appointments + RLS policies
-/public/assets  logo, stickers, squiggle, starfield.png
+/docs       setup guides (EMAIL-SETUP.md, GOOGLE-KALENDER-SETUP.md)
+/public/assets  logo, stickers, squiggle, night-hero.mp4 (+ sm/poster/still), blog stills
 ```
