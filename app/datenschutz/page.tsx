@@ -12,7 +12,7 @@ export default function DatenschutzPage() {
       eyebrow="Rechtliches"
       title="Datenschutzerklärung"
       intro="Wir nehmen den Schutz deiner persönlichen Daten ernst und verarbeiten sie nach der Datenschutz-Grundverordnung (DSGVO) und dem österreichischen Datenschutzgesetz (DSG)."
-      updated="Juni 2026"
+      updated="Juli 2026"
     >
       <LegalSection title="1. Verantwortlicher">
         <p style={{ margin: 0 }}>Verantwortlich für die Datenverarbeitung auf dieser Website ist:</p>
@@ -62,13 +62,40 @@ export default function DatenschutzPage() {
           eines Vertrags — Art. 6 Abs. 1 lit. b DSGVO. Die Daten werden gelöscht, sobald die Anfrage
           erledigt ist und keine gesetzlichen Aufbewahrungspflichten entgegenstehen.
         </p>
-        <p style={{ margin: 0, font: "var(--type-caption)", color: "var(--color-accent-violet-mid)" }}>
-          Hinweis: Das Formular auf dieser Demo-Seite versendet keine Daten. Vor dem Live-Betrieb ist
-          eine datenschutzkonforme Übertragung (z. B. per E-Mail-Dienst innerhalb der EU) einzurichten.
+        <p style={{ margin: 0 }}>
+          Der Versand dieser Nachrichten erfolgt über den E-Mail-Dienst von Google (Google Ireland
+          Limited, Gordon House, Barrow Street, Dublin 4, Irland). Google verarbeitet die Inhalte
+          deiner Anfrage als Auftragsverarbeiter für uns; Grundlage ist ein
+          Auftragsverarbeitungsvertrag (Cloud Data Processing Addendum). Eine mögliche
+          Datenübermittlung in die USA ist durch die EU-Standardvertragsklauseln abgesichert.
         </p>
       </LegalSection>
 
-      <LegalSection title="5. WhatsApp-Kommunikation">
+      <LegalSection title="5. Benutzerkonto & Terminbuchung">
+        <p style={{ margin: 0 }}>
+          Für die Registrierung eines Benutzerkontos und die Buchung von Terminen verarbeiten wir die
+          von dir angegebenen Daten (E-Mail-Adresse, Zugangsdaten in verschlüsselter Form sowie die
+          gebuchten Termine). Rechtsgrundlage ist die Erfüllung des Nutzungsverhältnisses bzw. die
+          Durchführung vorvertraglicher Maßnahmen gemäß Art. 6 Abs. 1 lit. b DSGVO.
+        </p>
+        <p style={{ margin: 0 }}>
+          Für Konten- und Terminverwaltung setzen wir Supabase als Auftragsverarbeiter ein
+          (Supabase Inc., USA). Die Daten werden ausschließlich in der Region Frankfurt am Main
+          (EU, <code>eu-central-1</code>) gespeichert und verarbeitet. Grundlage ist ein
+          Auftragsverarbeitungsvertrag; für eine mögliche Datenübermittlung in die USA gelten die
+          EU-Standardvertragsklauseln.
+        </p>
+        <p style={{ margin: 0 }}>
+          Dein Konto und die damit verbundenen Daten kannst du jederzeit löschen lassen — schreib uns
+          dazu einfach an{" "}
+          <a href="mailto:info@nitenexo.at" style={legalLink}>
+            info@nitenexo.at
+          </a>
+          .
+        </p>
+      </LegalSection>
+
+      <LegalSection title="6. WhatsApp-Kommunikation">
         <p style={{ margin: 0 }}>
           Ein Kernprodukt von NiteNexo Solutions sind Chatbots über WhatsApp. Sofern du mit einem von
           uns eingerichteten Assistenten über WhatsApp kommunizierst, läuft diese Kommunikation über
@@ -83,7 +110,7 @@ export default function DatenschutzPage() {
         </p>
       </LegalSection>
 
-      <LegalSection title="6. Cookies & lokale Speicherung">
+      <LegalSection title="7. Cookies & lokale Speicherung">
         <p style={{ margin: 0 }}>
           Diese Website verwendet ausschließlich technisch notwendige Cookies bzw. lokalen Speicher
           (Local Storage), z. B. um deine Cookie-Auswahl zu merken. Optionale oder analytische Cookies
@@ -93,7 +120,7 @@ export default function DatenschutzPage() {
         </p>
       </LegalSection>
 
-      <LegalSection title="7. Deine Rechte">
+      <LegalSection title="8. Deine Rechte">
         <p style={{ margin: 0 }}>Dir stehen gegenüber uns folgende Rechte hinsichtlich deiner personenbezogenen Daten zu:</p>
         <LegalList
           items={[
@@ -112,7 +139,7 @@ export default function DatenschutzPage() {
         </p>
       </LegalSection>
 
-      <LegalSection title="8. Beschwerderecht">
+      <LegalSection title="9. Beschwerderecht">
         <p style={{ margin: 0 }}>
           Du hast das Recht, dich bei einer Aufsichtsbehörde zu beschweren. In Österreich ist dies die
           Österreichische Datenschutzbehörde, Barichgasse 40–42, 1030 Wien,{" "}
