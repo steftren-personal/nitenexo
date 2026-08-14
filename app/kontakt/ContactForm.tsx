@@ -76,12 +76,12 @@ export function ContactForm() {
   };
 
   const textareaStyle: React.CSSProperties = {
-    background: "var(--surface-canvas-light)",
-    color: "var(--color-ink-deep)",
+    background: "var(--surface-canvas-dark)",
+    color: "var(--on-primary)",
     font: "var(--type-body-md)",
     padding: "var(--space-sm) var(--space-md)",
     borderRadius: "var(--rounded-sm)",
-    border: "1px solid var(--hairline-cool)",
+    border: "1px solid var(--hairline-violet)",
     width: "100%",
     boxSizing: "border-box",
     outline: "none",
@@ -91,35 +91,35 @@ export function ContactForm() {
   return (
     <div
       ref={root}
-      style={{ border: "1px solid var(--hairline-cloud)", borderRadius: "var(--rounded-xl)", padding: "var(--space-xxl)", boxShadow: "var(--shadow-2)" }}
+      style={{ background: "var(--surface-night)", border: "1px solid var(--hairline-violet)", borderRadius: "var(--rounded-xl)", padding: "var(--space-xxl)", boxShadow: "var(--shadow-2)" }}
     >
       {sent ? (
         <div className="kt-success" style={{ textAlign: "center", padding: "var(--space-xl) 0" }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/assets/sticker-bot.svg" alt="" width={72} height={72} style={{ margin: "0 auto var(--space-md)" }} />
           <div style={{ font: "var(--type-heading-md)", marginBottom: "var(--space-sm)" }}>Danke — deine Anfrage ist raus.</div>
-          <p style={{ font: "var(--type-body-md)", color: "var(--color-accent-violet-mid)", margin: "0 auto var(--space-lg)", maxWidth: 380 }}>
+          <p style={{ font: "var(--type-body-md)", color: "var(--on-dark-muted)", margin: "0 auto var(--space-lg)", maxWidth: 380 }}>
             Wir melden uns bei dir. Bald musst du deutlich weniger tippen.
           </p>
-          <Button variant="primary" href="/">
+          <Button variant="inverted" href="/">
             Zurück zur Startseite
           </Button>
         </div>
       ) : (
         <form onSubmit={submit} style={{ display: "flex", flexDirection: "column", gap: "var(--space-lg)" }}>
           <div className="kt-field anim-fade-up bw-form-row" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-lg)" }}>
-            <Field label="Vorname">
-              <Input name="firstName" placeholder="Maria" required />
+            <Field label="Vorname" polarity="dark">
+              <Input polarity="dark" name="firstName" placeholder="Maria" required />
             </Field>
-            <Field label="Nachname">
-              <Input name="lastName" placeholder="Keller" required />
+            <Field label="Nachname" polarity="dark">
+              <Input polarity="dark" name="lastName" placeholder="Keller" required />
             </Field>
           </div>
-          <Field className="kt-field anim-fade-up" label="E-Mail">
-            <Input name="email" type="email" placeholder="maria@club.at" required />
+          <Field className="kt-field anim-fade-up" label="E-Mail" polarity="dark">
+            <Input polarity="dark" name="email" type="email" placeholder="maria@club.at" required />
           </Field>
-          <Field className="kt-field anim-fade-up" label="Betrieb">
-            <Input name="company" placeholder="Club Nachtschicht, Wien" />
+          <Field className="kt-field anim-fade-up" label="Betrieb" polarity="dark">
+            <Input polarity="dark" name="company" placeholder="Club Nachtschicht, Wien" />
           </Field>
           {/* Honeypot: invisible to humans, bots fill it and get silently dropped. */}
           <div style={{ position: "absolute", left: "-9999px", top: "auto" }} aria-hidden="true">
@@ -140,8 +140,8 @@ export function ContactForm() {
               </Select>
             </Field>
           </div>
-          <Field className="kt-field anim-fade-up" label="Nachricht">
-            <textarea name="message" rows={4} placeholder="Wie läuft dein Laden? Was kostet dich Zeit?" style={textareaStyle} />
+          <Field className="kt-field anim-fade-up" label="Nachricht" polarity="dark">
+            <textarea name="message" rows={4} placeholder="Wie läuft dein Laden? Was kostet dich Zeit?" className="bw-input bw-input-dark" style={textareaStyle} />
           </Field>
 
           <label className="kt-field anim-fade-up" style={{ display: "flex", gap: "var(--space-md)", alignItems: "flex-start", cursor: "pointer" }}>
@@ -149,11 +149,11 @@ export function ContactForm() {
               type="checkbox"
               checked={consent}
               onChange={(e) => setConsent(e.target.checked)}
-              style={{ marginTop: 3, width: 18, height: 18, accentColor: "var(--color-accent-violet-deep)", flex: "0 0 auto" }}
+              style={{ marginTop: 3, width: 18, height: 18, accentColor: "var(--color-accent-lime)", flex: "0 0 auto" }}
             />
-            <span style={{ font: "var(--type-caption)", color: "var(--color-ink-deep)" }}>
+            <span style={{ font: "var(--type-caption)", color: "var(--on-dark-muted)" }}>
               Ich habe die{" "}
-              <Link href="/datenschutz" style={{ color: "var(--color-accent-violet)" }}>
+              <Link href="/datenschutz" style={{ color: "var(--color-accent-lime)" }}>
                 Datenschutzerklärung
               </Link>{" "}
               gelesen und stimme der Verarbeitung meiner Angaben zur Bearbeitung der Anfrage zu.
@@ -170,7 +170,7 @@ export function ContactForm() {
             </div>
           )}
 
-          <Button className="kt-field anim-fade-up" variant="primary" type="submit" disabled={sending}>
+          <Button className="kt-field anim-fade-up" variant="inverted" type="submit" disabled={sending}>
             {sending ? "Wird gesendet…" : "Anfrage senden"}
           </Button>
         </form>

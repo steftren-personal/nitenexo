@@ -4,8 +4,8 @@
 
 /* ──────────────────────────────────────────────────────────────────────────
    Botwerk design tokens — ported 1:1 from the Botwerk Design System.
-   Two-polarity system: violet midnight for marketing/feature surfaces,
-   white for transactional surfaces (Preise, Kontakt). Lime is a
+   Two-polarity system: violet midnight for page canvases (the whole site
+   runs dark), white reserved for card inversions. Lime is a
    typographic highlight device, never a button background.
    ────────────────────────────────────────────────────────────────────────── */
 :root {
@@ -170,6 +170,10 @@ h1, h2, h3, h4, p, ul, pre {
 /* Form input focus — inset shadow suggesting depth pressed inward */
 .bw-input { transition: box-shadow 150ms ease, border-color 150ms ease; }
 .bw-input:focus { box-shadow: var(--shadow-input-focus); border-color: var(--color-accent-violet-mid); }
+
+/* Dark-polarity form fields (Kontakt on the dark canvas) */
+.bw-input-dark::placeholder { color: var(--on-dark-muted); }
+.bw-input-dark:focus { box-shadow: 0 0 0 3px var(--on-dark-faint); }
 
 /* Nav link hover */
 .bw-navlink { transition: color 150ms ease, opacity 150ms ease; }

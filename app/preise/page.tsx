@@ -23,15 +23,15 @@ const FAQ = [
 export default function PreisePage() {
   return (
     <>
-      <NavBar polarity="light" />
-      <div style={{ background: "var(--surface-canvas-light)", color: "var(--ink)", minHeight: "100vh" }}>
+      <NavBar polarity="dark" />
+      <div style={{ background: "var(--surface-canvas-dark)", color: "var(--on-primary)", minHeight: "100vh" }}>
         <div style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "var(--space-xxl) var(--space-xl) var(--space-section)", position: "relative" }}>
           <div style={{ textAlign: "center", maxWidth: 620, margin: "0 auto var(--space-section)" }}>
-            <Eyebrow polarity="light">Preise</Eyebrow>
+            <Eyebrow polarity="dark">Preise</Eyebrow>
             <h1 style={{ font: "var(--type-heading-xl)", fontSize: "clamp(30px, 4.4vw, 48px)", margin: "var(--space-md) 0 var(--space-md)" }}>
               Jeder Betrieb ist anders — der Preis auch.
             </h1>
-            <p style={{ font: "var(--type-body-md)", color: "var(--color-accent-violet-mid)", margin: 0 }}>
+            <p style={{ font: "var(--type-body-md)", color: "var(--on-dark-muted)", margin: 0 }}>
               Keine Pakete von der Stange. Du bekommst einen Festpreis für die Einrichtung und eine
               monatliche Pauschale, die zu deinem Assistenten passt.
             </p>
@@ -40,9 +40,9 @@ export default function PreisePage() {
             </span>
           </div>
 
-          <PricingModel polarity="light" />
+          <PricingModel polarity="dark" />
 
-          <p style={{ textAlign: "center", font: "var(--type-caption)", color: "var(--color-accent-violet-mid)", marginTop: "var(--space-xl)" }}>
+          <p style={{ textAlign: "center", font: "var(--type-caption)", color: "var(--on-dark-muted)", marginTop: "var(--space-xl)" }}>
             Alle Preise zzgl. gesetzlicher Abgaben. Kleinunternehmer gem. § 6 Abs 1 Z 27 UStG — keine
             Umsatzsteuer ausgewiesen.
           </p>
@@ -55,10 +55,10 @@ export default function PreisePage() {
                 <div
                   key={f.q}
                   data-reveal
-                  style={{ border: "1px solid var(--hairline-cloud)", borderRadius: "var(--rounded-xl)", padding: "var(--space-xl)", background: "var(--surface-canvas-light)", boxShadow: "var(--shadow-2)" }}
+                  style={{ border: "1px solid var(--hairline-violet)", borderRadius: "var(--rounded-xl)", padding: "var(--space-xl)", background: "var(--surface-night)" }}
                 >
                   <div style={{ font: "var(--type-heading-sm)", marginBottom: "var(--space-sm)" }}>{f.q}</div>
-                  <p style={{ font: "var(--type-body-md)", color: "var(--color-accent-violet-mid)", margin: 0 }}>{f.a}</p>
+                  <p style={{ font: "var(--type-body-md)", color: "var(--on-dark-muted)", margin: 0 }}>{f.a}</p>
                 </div>
               ))}
             </div>

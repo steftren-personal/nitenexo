@@ -44,10 +44,10 @@ is only the underlying component library.
   services grid (6, one spotlight) → pricing tiers → "Warum NiteNexo" accordion + code block →
   testimonials → blog teasers → big kinetic CTA → footer.
 - `/leistungen` **Leistungen** (dark): hero + 5 alternating detail rows (text ↔ checklist card) + CTA.
-- `/preise` **Preise** (light): 3 pricing tiers (Pro featured/inverted) + Kleinunternehmer note + FAQ.
-- `/kontakt` **Kontakt** (light): 2-col form (with DSGVO consent checkbox ) + contact column.
-- `/impressum` **Impressum** (light): § 5 ECG / § 25 MedienG disclosure.
-- `/datenschutz` **Datenschutz** (light): DSGVO privacy policy.
+- `/preise` **Preise** (dark): 3 pricing tiers (Pro featured/inverted) + Kleinunternehmer note + FAQ.
+- `/kontakt` **Kontakt** (dark): 2-col form (with DSGVO consent checkbox ) + contact column.
+- `/impressum` **Impressum** (dark): § 5 ECG / § 25 MedienG disclosure.
+- `/datenschutz` **Datenschutz** (dark): DSGVO privacy policy.
 - `/login` **Login**: email + password, link to `/registrieren`, "Passwort vergessen" via Supabase
   magic link/reset.
 - `/registrieren` **Registrieren**: name, email, password (Supabase Auth sign-up, email confirmation).
