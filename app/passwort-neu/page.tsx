@@ -23,11 +23,11 @@ export default async function ResetPasswordPage({
 
   return (
     <>
-      <NavBar polarity="light" />
-      <div style={{ background: "var(--surface-canvas-light)", color: "var(--ink)", minHeight: "100vh" }}>
+      <NavBar polarity="dark" />
+      <div style={{ background: "var(--surface-canvas-dark)", color: "var(--on-primary)", minHeight: "100vh" }}>
         <div style={{ maxWidth: 440, margin: "0 auto", padding: "var(--space-xxl) var(--space-xl) var(--space-section)" }}>
           <div style={{ textAlign: "center", marginBottom: "var(--space-xxl)" }}>
-            <Eyebrow polarity="light">Neues Passwort</Eyebrow>
+            <Eyebrow polarity="dark">Neues Passwort</Eyebrow>
             <h1 style={{ font: "var(--type-heading-xl)", fontSize: "clamp(28px, 4vw, 40px)", margin: "var(--space-md) 0" }}>
               {showInvalid ? "Link nicht gültig." : "Fast geschafft."}
             </h1>
@@ -36,17 +36,18 @@ export default async function ResetPasswordPage({
           {showInvalid ? (
             <div
               style={{
-                border: "1px solid var(--hairline-cloud)",
+                background: "var(--surface-night)",
+                border: "1px solid var(--hairline-violet)",
                 borderRadius: "var(--rounded-xl)",
                 padding: "var(--space-xxl)",
                 boxShadow: "var(--shadow-2)",
                 textAlign: "center",
               }}
             >
-              <p style={{ font: "var(--type-body-md)", color: "var(--color-ink-deep)", margin: "0 0 var(--space-xl)" }}>
+              <p style={{ font: "var(--type-body-md)", color: "var(--on-dark-muted)", margin: "0 0 var(--space-xl)" }}>
                 Dieser Link ist abgelaufen oder wurde schon verwendet. Fordere einfach einen neuen an.
               </p>
-              <Button variant="primary" href="/passwort-vergessen">
+              <Button variant="inverted" href="/passwort-vergessen">
                 Neuen Link anfordern
               </Button>
             </div>
@@ -57,20 +58,21 @@ export default async function ResetPasswordPage({
                 display: "flex",
                 flexDirection: "column",
                 gap: "var(--space-lg)",
-                border: "1px solid var(--hairline-cloud)",
+                background: "var(--surface-night)",
+                border: "1px solid var(--hairline-violet)",
                 borderRadius: "var(--rounded-xl)",
                 padding: "var(--space-xxl)",
                 boxShadow: "var(--shadow-2)",
               }}
             >
               <input type="hidden" name="code" value={code} />
-              <Field label="Neues Passwort">
-                <Input type="password" name="password" required minLength={8} autoComplete="new-password" />
+              <Field label="Neues Passwort" polarity="dark">
+                <Input polarity="dark" type="password" name="password" required minLength={8} autoComplete="new-password" />
               </Field>
-              <Field label="Passwort wiederholen">
-                <Input type="password" name="passwordRepeat" required minLength={8} autoComplete="new-password" />
+              <Field label="Passwort wiederholen" polarity="dark">
+                <Input polarity="dark" type="password" name="passwordRepeat" required minLength={8} autoComplete="new-password" />
               </Field>
-              <p style={{ font: "var(--type-caption)", color: "var(--color-accent-violet-mid)", margin: 0 }}>
+              <p style={{ font: "var(--type-caption)", color: "var(--on-dark-muted)", margin: 0 }}>
                 Mindestens 8 Zeichen.
               </p>
 
@@ -78,7 +80,7 @@ export default async function ResetPasswordPage({
                 <div style={{ font: "var(--type-caption)", color: "var(--color-accent-pink)" }}>{error}</div>
               )}
 
-              <Button variant="primary" type="submit">
+              <Button variant="inverted" type="submit">
                 Passwort speichern
               </Button>
             </form>

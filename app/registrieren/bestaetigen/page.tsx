@@ -11,8 +11,8 @@ export const metadata: Metadata = {
 export default function ConfirmEmailPage() {
   return (
     <>
-      <NavBar polarity="light" />
-      <div style={{ background: "var(--surface-canvas-light)", color: "var(--ink)", minHeight: "100vh" }}>
+      <NavBar polarity="dark" />
+      <div style={{ background: "var(--surface-canvas-dark)", color: "var(--on-primary)", minHeight: "100vh" }}>
         <div
           style={{
             maxWidth: 440,
@@ -21,18 +21,18 @@ export default function ConfirmEmailPage() {
             textAlign: "center",
           }}
         >
-          <Eyebrow polarity="light">Fast geschafft</Eyebrow>
+          <Eyebrow polarity="dark">Fast geschafft</Eyebrow>
           <h1 style={{ font: "var(--type-heading-xl)", fontSize: "clamp(28px, 4vw, 40px)", margin: "var(--space-md) 0" }}>
             Check deine E-Mails.
           </h1>
-          <p style={{ font: "var(--type-body-md)", color: "var(--color-accent-violet-mid)", margin: "0 0 var(--space-xl)" }}>
+          <p style={{ font: "var(--type-body-md)", color: "var(--on-dark-muted)", margin: "0 0 var(--space-xl)" }}>
             Wir haben dir einen Bestätigungslink geschickt. Klick ihn an, dann kannst du dich einloggen
             und einen Termin buchen. Schau auch kurz im Spam-Ordner nach.
           </p>
-          <p style={{ font: "var(--type-caption)", color: "var(--color-accent-violet-mid)", margin: "0 0 var(--space-xl)" }}>
+          <p style={{ font: "var(--type-caption)", color: "var(--on-dark-muted)", margin: "0 0 var(--space-xl)" }}>
             Du hast dich hier schon einmal registriert? Dann kannst du dich direkt einloggen.
           </p>
-          <Button variant="primary" href="/login">
+          <Button variant="inverted" href="/login">
             Zum Login
           </Button>
         </div>

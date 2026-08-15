@@ -72,13 +72,15 @@ function formatTime(iso: string): string {
   }).format(new Date(iso));
 }
 
+// Dark-polarity chips: lime fill marks the selection (ink text for contrast),
+// closed/disabled days stay muted with a strikethrough so they read as taken.
 const chipStyle = (active: boolean, disabled = false): React.CSSProperties => ({
   font: "var(--type-body-md)",
   padding: "var(--space-sm) var(--space-md)",
   borderRadius: "var(--rounded-md)",
-  border: active ? "1px solid var(--color-accent-violet-deep)" : "1px solid var(--hairline-cool)",
-  background: active ? "var(--color-accent-violet-deep)" : "transparent",
-  color: disabled ? "var(--hairline-cool)" : active ? "var(--on-primary)" : "var(--color-ink-deep)",
+  border: active ? "1px solid var(--color-accent-lime)" : "1px solid var(--hairline-violet)",
+  background: active ? "var(--color-accent-lime)" : "transparent",
+  color: disabled ? "var(--on-dark-muted)" : active ? "var(--color-ink-deep)" : "var(--on-primary)",
   cursor: disabled ? "not-allowed" : "pointer",
   textDecoration: disabled ? "line-through" : "none",
 });
@@ -188,7 +190,7 @@ export function BookingFlow({ onBooked }: { onBooked: () => void }) {
   };
 
   return (
-    <Card polarity="light">
+    <Card polarity="dark">
       <div style={{ font: "var(--type-heading-sm)", marginBottom: "var(--space-lg)" }}>Termin buchen</div>
 
       <div style={{ marginBottom: "var(--space-xl)" }}>
@@ -246,7 +248,7 @@ export function BookingFlow({ onBooked }: { onBooked: () => void }) {
           <div
             style={{
               font: "var(--type-caption)",
-              color: "var(--color-accent-violet-mid)",
+              color: "var(--on-dark-muted)",
               marginBottom: "var(--space-sm)",
             }}
           >
@@ -260,7 +262,7 @@ export function BookingFlow({ onBooked }: { onBooked: () => void }) {
           )}
 
           {!loadingSlots && !slotsError && slots && slots.length === 0 && (
-            <p style={{ font: "var(--type-body-md)", color: "var(--color-accent-violet-mid)" }}>
+            <p style={{ font: "var(--type-body-md)", color: "var(--on-dark-muted)" }}>
               An diesem Tag ist nichts mehr frei. Wähl einen anderen Tag.
             </p>
           )}
@@ -287,13 +289,14 @@ export function BookingFlow({ onBooked }: { onBooked: () => void }) {
           <div
             style={{
               font: "var(--type-caption)",
-              color: "var(--color-accent-violet-mid)",
+              color: "var(--on-dark-muted)",
             }}
           >
             4. Adresse angeben
           </div>
-          <Field label="Adresse">
+          <Field label="Adresse" polarity="dark">
             <Input
+              polarity="dark"
               type="text"
               value={address}
               onChange={(e) => setAddress(e.target.value)}
@@ -304,14 +307,14 @@ export function BookingFlow({ onBooked }: { onBooked: () => void }) {
 
           {bookError && <div style={{ font: "var(--type-caption)", color: "var(--color-accent-pink)" }}>{bookError}</div>}
 
-          <Button variant="primary" type="submit" disabled={booking || !address.trim()}>
+          <Button variant="inverted" type="submit" disabled={booking || !address.trim()}>
             {booking ? "Buche…" : "Termin buchen"}
           </Button>
         </form>
       )}
 
       {bookSuccess && (
-        <div style={{ font: "var(--type-caption)", color: "var(--color-ink-deep)", marginTop: "var(--space-md)" }}>
+        <div style={{ font: "var(--type-caption)", color: "var(--color-accent-lime)", marginTop: "var(--space-md)" }}>
           {bookSuccess}
         </div>
       )}

@@ -26,11 +26,11 @@ export default function AdminTerminePage() {
 
   return (
     <>
-      <NavBar polarity="light" />
-      <div style={{ background: "var(--surface-canvas-light)", color: "var(--ink)", minHeight: "100vh" }}>
+      <NavBar polarity="dark" />
+      <div style={{ background: "var(--surface-canvas-dark)", color: "var(--on-primary)", minHeight: "100vh" }}>
         <div style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "var(--space-xxl) var(--space-xl) var(--space-section)" }}>
           <div style={{ textAlign: "center", maxWidth: 620, margin: "0 auto var(--space-xxl)" }}>
-            <Eyebrow polarity="light">Admin</Eyebrow>
+            <Eyebrow polarity="dark">Admin</Eyebrow>
             <h1 style={{ font: "var(--type-heading-xl)", fontSize: "clamp(30px, 4.4vw, 48px)", margin: "var(--space-md) 0 var(--space-md)" }}>
               Terminverwaltung.
             </h1>

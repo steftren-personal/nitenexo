@@ -15,15 +15,15 @@ export const metadata: Metadata = {
 export default function TerminePage() {
   return (
     <>
-      <NavBar polarity="light" />
-      <div style={{ background: "var(--surface-canvas-light)", color: "var(--ink)", minHeight: "100vh" }}>
+      <NavBar polarity="dark" />
+      <div style={{ background: "var(--surface-canvas-dark)", color: "var(--on-primary)", minHeight: "100vh" }}>
         <div style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "var(--space-xxl) var(--space-xl) var(--space-section)" }}>
           <div style={{ textAlign: "center", maxWidth: 620, margin: "0 auto var(--space-xxl)" }}>
-            <Eyebrow polarity="light">Termine</Eyebrow>
+            <Eyebrow polarity="dark">Termine</Eyebrow>
             <h1 style={{ font: "var(--type-heading-xl)", fontSize: "clamp(30px, 4.4vw, 48px)", margin: "var(--space-md) 0 var(--space-md)" }}>
               Buch dir einen Beratungstermin.
             </h1>
-            <p style={{ font: "var(--type-body-md)", color: "var(--color-accent-violet-mid)", margin: 0 }}>
+            <p style={{ font: "var(--type-body-md)", color: "var(--on-dark-muted)", margin: 0 }}>
               Wähl Dauer, Tag und Uhrzeit — du bekommst sofort eine Bestätigung per E-Mail.
             </p>
           </div>
