@@ -116,7 +116,7 @@ export function renderEmailShell({
             <td style="padding:28px 40px 36px;">
               ${footerNote ? `<p style="margin:0 0 4px; font-size:13px; color:#79628c;">${escapeHtml(footerNote)}</p>` : ""}
               <p style="margin:0; font-size:13px; color:#79628c;">
-                NiteNexo Solutions · Schumanngasse 9/13, 1180 Wien · <a href="mailto:stef.tren@gmail.com" style="color:#6a5fc1; text-decoration:none;">stef.tren@gmail.com</a>
+                NiteNexo Solutions · Schumanngasse 9/13, 1180 Wien · <a href="mailto:info@nitenexo.at" style="color:#6a5fc1; text-decoration:none;">info@nitenexo.at</a>
               </p>
             </td>
           </tr>
