@@ -134,18 +134,20 @@ Im Supabase-Dashboard unter **Authentication → Email Templates** findet ihr me
 
 Zum Einrichten einfach den Inhalt der jeweiligen `.html`-Datei komplett kopieren und im Supabase-Dashboard in das passende Vorlagenfeld einfügen, dann speichern.
 
+**Update (Fix "requested path is invalid"):** Beide Vorlagen wurden geändert — sie verlinken jetzt nicht mehr auf Supabases eigenen `{{ .ConfirmationURL }}`-Link, sondern direkt auf eine eigene Seite (`/auth/confirm`). Wenn ihr die Vorlagen schon einmal eingefügt hattet, **müsst ihr sie jetzt neu kopieren und erneut einfügen** — sonst bleibt der alte, fehleranfällige Link aktiv. Warum das nötig war, steht gleich im nächsten Abschnitt.
+
 ## 7c. Redirect-URLs in Supabase (wichtig für "Passwort vergessen")
 
-Die Mail-Vorlagen sind jetzt eingerichtet — aber es gibt noch eine Stelle, die bei "Passwort vergessen" garantiert Probleme macht, wenn man sie übersieht.
+Die Mail-Vorlagen sind jetzt eingerichtet — aber es gibt noch eine Stelle, die bei "Passwort vergessen" (und bei der Registrierungs-Bestätigung) garantiert Probleme macht, wenn man sie übersieht.
 
 **Warum das wichtig ist:**
-Der Link in der Passwort-Mail führt zurück auf eure Website, zu einer Seite, auf der man ein neues Passwort eingeben kann. Supabase lässt das aber nur für Adressen zu, die ihr vorher ausdrücklich erlaubt habt. Ist die Ziel-Adresse nicht auf dieser Erlaubnisliste, landet der Nutzer entweder auf einer Fehlerseite oder einfach auf der Startseite — ohne dass er sein Passwort ändern kann. Das ist kein Fehler, sondern Absicht: Damit verhindert Supabase, dass jemand die Links auf eine fremde, gefälschte Seite umleiten kann.
+Der Link in der Passwort-Mail führt zurück auf eure Website, zu einer Seite, auf der man ein neues Passwort eingeben kann. Supabase lässt das nur für eine Adresse zu, die ihr vorher ausdrücklich als **Site URL** eingetragen habt — sonst weiß Supabase nicht, wohin der Link zeigen soll.
 
 **Wo das eingestellt wird:**
 Im Supabase-Dashboard im Bereich **Authentication**, dort nach **URL Configuration** suchen. Dort gibt es zwei Felder:
 
-- **Site URL** — die Hauptadresse eurer Website
-- **Redirect URLs** — eine Liste erlaubter Ziel-Adressen (Platzhalter mit `*` werden unterstützt, z. B. um alle Unterseiten einer Domain auf einmal freizugeben)
+- **Site URL** — die Hauptadresse eurer Website. Genau dieser Wert wird jetzt direkt in den Mail-Link eingesetzt (siehe unten, "Zwei Ursachen").
+- **Redirect URLs** — eine Liste erlaubter Ziel-Adressen (Platzhalter mit `*` werden unterstützt). Diese Liste bleibt für andere Supabase-Funktionen wichtig (z. B. falls später Login über Google/Apple dazukommt), betrifft die beiden Mail-Links unten aber nicht mehr.
 
 **Was konkret eingetragen werden muss:**
 
@@ -154,23 +156,33 @@ Im Supabase-Dashboard im Bereich **Authentication**, dort nach **URL Configurati
 | Lokale Entwicklung | `http://localhost:3000` | `http://localhost:3000/**` |
 | Live-Seite | `https://nitenexo.at` | `https://nitenexo.at/**` |
 
-Der Platzhalter `/**` deckt alle Unterseiten ab, unter anderem `/passwort-neu` — das ist die Seite, auf die Supabase nach einem Klick auf den "Passwort vergessen"-Link weiterleitet. Ein einzelner Eintrag reicht also für lokal und live zusammen, solange beide Zeilen in der Liste stehen.
+Supabase erlaubt nur **eine** Site URL gleichzeitig. Wollt ihr den Link lokal testen, muss die Site URL vorübergehend auf `http://localhost:3000` stehen — für den Live-Betrieb muss sie danach wieder auf `https://nitenexo.at` zurückgestellt werden.
+
+### Zwei Ursachen für kaputte Links — und wie der Code das jetzt löst
+
+Es gibt zwei unabhängige Gründe, warum der Klick auf den Mail-Link fehlschlagen kann. Beide treten unabhängig voneinander auf, auch wenn beide sich als Fehlerseite bemerkbar machen:
+
+1. **Site URL falsch oder nicht gesetzt** (siehe Tabelle oben) — der Link zeigt dann auf die falsche Adresse oder auf gar nichts Sinnvolles.
+2. **E-Mail-Sicherheitsprogramme "klicken" den Link automatisch vorab.** Viele Firmen- und Uni-Postfächer (z. B. Microsoft Defender "Safe Links") öffnen eingehende Links automatisch, um sie auf Schadsoftware zu prüfen — noch bevor der Mensch überhaupt reinschaut. Der Passwort- bzw. Bestätigungslink ist aber nur **einmal** gültig. Wenn das Sicherheitsprogramm ihn zuerst "verbraucht", bekommt der echte Nutzer beim eigenen Klick nur noch eine Fehlermeldung, obwohl er nichts falsch gemacht hat.
+
+Der zweite Punkt war früher unabhängig vom Redirect-URL-Problem und konnte auch dann noch zuschlagen, wenn Site URL und Redirect URLs schon korrekt eingetragen waren. Der Code (`app/auth/confirm/route.ts`) und die beiden Vorlagen wurden deshalb umgebaut: Der Mail-Link zeigt jetzt direkt auf `{{ .SiteURL }}/auth/confirm?...` (unsere eigene Seite) statt auf Supabases eigene Verifizierungs-Seite. Das räumt Ursache 1 komplett aus dem Weg (der Link braucht keine Prüfung gegen die Redirect-URLs-Liste mehr) und macht das Verhalten bei Ursache 2 wenigstens vorhersehbar: Ein bereits verbrauchter Link zeigt jetzt zuverlässig die freundliche "Link nicht gültig"-Meldung auf `/passwort-neu` bzw. eine Fehlermeldung auf `/registrieren`, statt einer rohen, kryptischen Supabase-Fehlerseite. Verbrauchte Links lassen sich technisch nicht verhindern (das Sicherheitsprogramm entscheidet, nicht wir) — der Nutzer muss in dem Fall einfach einen neuen Link anfordern.
 
 **Wichtig — die Umgebungsvariable `NEXT_PUBLIC_SITE_URL`:**
-Die Website baut den Rücksprung-Link in der Mail nicht selbst frei erfunden, sondern liest ihn aus dieser Variable aus. Das ist der wahrscheinlichste Stolperstein bei diesem Feature:
+Diese Variable (in `.env.local` bzw. Vercel) steuert **nicht mehr**, wohin der Mail-Link zeigt — das erledigt jetzt allein die Supabase-Einstellung **Site URL** oben. `NEXT_PUBLIC_SITE_URL` wird im Code nur noch als harmloser Rückfall mitgeschickt, falls im Dashboard versehentlich doch noch die alte Vorlage hinterlegt ist. Trotzdem gilt weiterhin:
 
-- In Vercel muss `NEXT_PUBLIC_SITE_URL` auf `https://nitenexo.at` gesetzt sein (unter **Settings → Environment Variables**, wie in Abschnitt 3 beschrieben). Fehlt das oder steht dort noch `localhost`, bekommen eure echten Kunden einen Link, der auf euren eigenen Rechner zeigt und für sie nicht funktioniert.
-- Lokal gehört in `.env.local` die Zeile `NEXT_PUBLIC_SITE_URL=http://localhost:3000` — sonst funktioniert der Test auf dem eigenen Rechner nicht richtig.
+- In Vercel sollte `NEXT_PUBLIC_SITE_URL` auf `https://nitenexo.at` gesetzt sein (unter **Settings → Environment Variables**, wie in Abschnitt 3 beschrieben).
+- Lokal gehört in `.env.local` die Zeile `NEXT_PUBLIC_SITE_URL=http://localhost:3000`.
 - Nach dem Setzen oder Ändern dieser Variable in Vercel ist wie immer ein **Redeploy** nötig (siehe Abschnitt 3, Schritt 5).
 
 **Wenn es nicht klappt:**
 
 | Problem | Wahrscheinliche Ursache | Lösung |
 |---|---|---|
-| Klick auf den Mail-Link landet auf der Startseite statt auf dem Passwort-Formular | Die Ziel-Adresse steht nicht in **Redirect URLs** | In Supabase unter Authentication → URL Configuration die passende Adresse (siehe Tabelle oben) zu **Redirect URLs** hinzufügen |
-| Seite zeigt "requested path is invalid" oder eine ähnliche Fehlermeldung | Redirect-URL fehlt oder ist falsch geschrieben (z. B. `http` statt `https`, fehlender Platzhalter `/**`) | Eintrag in Supabase exakt mit `https://` bzw. `http://` und `/**` am Ende prüfen |
-| Mail-Link zeigt auf `localhost`, obwohl ein echter Kunde die Mail bekommen hat | `NEXT_PUBLIC_SITE_URL` ist in Vercel nicht gesetzt oder noch auf `localhost` | Variable in Vercel auf `https://nitenexo.at` setzen, danach Redeploy auslösen |
-| Beim lokalen Testen zeigt der Link auf die falsche Adresse | `NEXT_PUBLIC_SITE_URL` fehlt in `.env.local` | Zeile `NEXT_PUBLIC_SITE_URL=http://localhost:3000` ergänzen, `npm run dev` neu starten |
+| Klick auf den Mail-Link landet auf der Startseite statt auf dem Passwort-Formular | Die Vorlage im Dashboard ist noch die alte, ODER Site URL ist falsch gesetzt | Vorlage aus `email-templates/` neu einfügen (siehe oben); Site URL in Authentication → URL Configuration prüfen |
+| Seite zeigt "requested path is invalid" oder eine ähnliche Fehlermeldung | Ältere Ursache: Redirect-URL fehlte oder war falsch geschrieben. Betrifft die beiden Mail-Links nach diesem Update nicht mehr, kann aber bei anderen Supabase-Funktionen (z. B. OAuth) weiterhin auftreten | Eintrag in Supabase exakt mit `https://` bzw. `http://` und `/**` am Ende prüfen |
+| Link funktioniert beim ersten eigenen Test, aber ein echter Kunde meldet "Link ungültig" bei einem noch ganz frischen Link | Vermutlich hat das Sicherheitsprogramm des Kunden-Postfachs den Link automatisch vorab "angeklickt" und damit verbraucht (siehe oben, Ursache 2) | Kein Bug — Nutzer bittet einfach um einen neuen Link. Lässt sich nicht verhindern, ist aber jetzt wenigstens eine klare Fehlermeldung statt eines Absturzes |
+| Mail-Link zeigt auf `localhost`, obwohl ein echter Kunde die Mail bekommen hat | Site URL in Supabase steht noch auf `localhost` | Site URL in Supabase auf `https://nitenexo.at` umstellen |
+| Beim lokalen Testen zeigt der Link auf die falsche Adresse | Site URL in Supabase steht noch auf die Live-Adresse | Site URL in Supabase vorübergehend auf `http://localhost:3000` umstellen |
 
 ## 8. Anbieter wechseln
 

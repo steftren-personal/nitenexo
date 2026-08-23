@@ -1,4 +1,6 @@
-<!-- Diese Vorlage gehoert im Supabase-Dashboard in die Vorlage "Reset Password". Der Link-Platzhalter steht weiter unten im Button. -->
+<!-- Diese Vorlage gehoert im Supabase-Dashboard in die Vorlage "Reset Password". Der Link-Platzhalter steht weiter unten im Button.
+     Wichtig: Der Link fuehrt bewusst direkt auf /auth/confirm auf unserer eigenen Seite (nicht ueber
+     Supabases der alten ConfirmationURL-Variante) - siehe app/auth/confirm/route.ts und docs/EMAIL-SETUP.md Abschnitt 7c. -->
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -51,14 +53,14 @@
               <table role="presentation" cellpadding="0" cellspacing="0">
                 <tr>
                   <td style="background-color:#c2ef4e; border-radius:10px;">
-                    <a href="{{ .ConfirmationURL }}" style="display:inline-block; padding:14px 28px; font-size:14px; font-weight:700; text-transform:uppercase; letter-spacing:0.4px; color:#150f23; text-decoration:none;">
+                    <a href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=recovery&next=/passwort-neu" style="display:inline-block; padding:14px 28px; font-size:14px; font-weight:700; text-transform:uppercase; letter-spacing:0.4px; color:#150f23; text-decoration:none;">
                       Neues Passwort setzen
                     </a>
                   </td>
                 </tr>
               </table>
               <p style="margin:16px 0 0; font-size:13px; color:#79628c;">
-                Funktioniert der Button nicht? Link kopieren: {{ .ConfirmationURL }}
+                Funktioniert der Button nicht? Link kopieren: {{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=recovery&next=/passwort-neu
               </p>
             </td>
           </tr>
