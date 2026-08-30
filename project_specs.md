@@ -126,9 +126,10 @@ gracefully. Additionally for the booking feature:
             forms/ (Field, Input, Select)
             marketing/ (Logo, NavBar, Footer, CookieBanner, SquiggleDivider, PricingModel,
                         ArticleCard, ArticleLayout, IntegrationsStrip, Legal, Sticker, Marquee)
-            screens/ (NightFilm intro, HeroSpline, HomeScreen + sub-parts: ServicesBento,
+            screens/ (ThreadFilm scrub intro, HomeScreen + sub-parts: ServicesBento,
                       UseCaseTabs, TestimonialsMarquee, StatStrip, WhyAccordion, ChatPreview,
-                      RobotPresenter, MascotRobot, BookingBoard)
+                      RobotPresenter mit Halte-Moment, MascotRobot, BookingBoard)
+            motion/StoryThread (der Seiten-Faden), marketing/ChapterKicker (Kapitel-Knoten)
             motion/ (MotionRoot, KineticHeading, FlipWords, ScrambleText, SquiggleDraw,
                      CinematicLayer, gsap setup)
             booking/ (BookingFlow, AppointmentList, TerminManager)
@@ -138,5 +139,5 @@ gracefully. Additionally for the booking feature:
 /lib/supabase  server.ts (SSR client), client.ts (browser client), admin.ts (service-role, server-only)
 /supabase   sql migrations for profiles / slots / appointments + RLS policies
 /docs       setup guides (EMAIL-SETUP.md, GOOGLE-KALENDER-SETUP.md)
-/public/assets  logo, stickers, squiggle, night-hero.mp4 (+ sm/poster/still), blog stills
+/public/assets  logo, stickers, squiggle, thread-film.mp4 (+ poster/ending), night-hero.mp4 (alt, ungenutzt), blog stills
 ```

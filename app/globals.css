@@ -258,194 +258,6 @@ a[href*="spline.design"] { display: none !important; }
 /* The mascot lives inside the intro film footage now — no floating page
    robots. (RobotGuide / RobotStop / inline hero robot were removed.) */
 
-/* ── NightFilm — „EINE NACHT" (stepped chaptered-timelapse overlay) ─────── */
-/* Without JS/motion, `.nf` is a plain in-flow 100vh section playing the film.
-   With motion, JS adds `nf--overlay`: the section collapses out of the flow
-   and `.nf-stage` becomes a fixed full-viewport overlay — the page hero sits
-   at the very top of the document beneath it, so the end dissolve lands
-   exactly on the hero with zero dead space, seamless colour hand-off. */
-.nf {
-  position: relative;
-  width: 100%;
-  height: 100vh;
-}
-.nf-stage {
-  position: relative;
-  height: 100vh;
-  height: 100svh; /* stable on phones while the URL bar collapses */
-  width: 100%;
-  overflow: hidden;
-  z-index: 25; /* navbar (z40) stays on top */
-  pointer-events: none; /* purely visual — never block the hero behind it */
-  background: transparent;
-}
-html.gsap-enabled .nf--overlay { height: 0; }
-html.gsap-enabled .nf--overlay .nf-stage { position: fixed; inset: 0; }
-/* The film layer IS a native <video> — each gesture plays its chapter segment
-   (hardware-decoded, every source frame) and pauses on the station frame. */
-.nf-video {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: cover;
-  object-position: center;
-  transform-origin: center; /* end "pull into the page" zoom */
-  will-change: transform, opacity;
-  background: #0a0712; /* letterbox edges before metadata loads */
-}
-.nf-scrim {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    linear-gradient(105deg, rgba(10, 7, 18, 0.88) 0%, rgba(10, 7, 18, 0.55) 38%, rgba(10, 7, 18, 0.14) 64%, rgba(10, 7, 18, 0) 100%),
-    linear-gradient(0deg, rgba(10, 7, 18, 0.6) 0%, transparent 34%);
-}
-/* Deliberate exposure-step at every chapter cut (a time jump, by design). */
-.nf-flash {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 4;
-  opacity: 0;
-  background: radial-gradient(circle at 50% 46%, rgba(255, 252, 235, 0.95), rgba(255, 252, 235, 0.35) 55%, transparent 80%);
-  mix-blend-mode: screen;
-}
-.nf-copy {
-  position: absolute;
-  left: clamp(24px, 7vw, 120px);
-  top: 0;
-  bottom: 0;
-  width: min(640px, 76vw);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  z-index: 2;
-  will-change: transform, opacity;
-}
-.nf-tag {
-  display: inline-block;
-  font: var(--type-button-cap-light);
-  letter-spacing: var(--tracking-caps);
-  text-transform: uppercase;
-  color: var(--color-accent-lime);
-  margin-bottom: var(--space-md);
-}
-.nf-title {
-  font: var(--type-display-hero);
-  font-size: clamp(34px, 5.4vw, 72px);
-  line-height: 1.04;
-  color: #fff;
-  margin: 0;
-  text-wrap: balance;
-}
-.nf-kw { color: var(--color-accent-lime); }
-/* One-liner shown while resting at a chapter (fades out for the next travel) */
-.nf-caption {
-  position: absolute;
-  left: 50%;
-  bottom: clamp(96px, 17vh, 160px);
-  transform: translateX(-50%);
-  width: min(860px, 88vw);
-  text-align: center;
-  font: var(--type-display-large);
-  font-size: clamp(24px, 3.6vw, 44px);
-  line-height: 1.12;
-  color: #fff;
-  opacity: 0;
-  visibility: hidden;
-  z-index: 3;
-  pointer-events: none;
-  text-shadow: 0 2px 34px rgba(0, 0, 0, 0.65);
-  text-wrap: balance;
-  will-change: transform, opacity;
-}
-/* The big rolling clock — the film's narrator */
-.nf-clock {
-  position: absolute;
-  left: clamp(24px, 6vw, 110px);
-  bottom: clamp(24px, 6vh, 64px);
-  z-index: 3;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  pointer-events: none;
-}
-.nf-clock-time {
-  font: var(--type-display-hero);
-  font-size: clamp(44px, 7.5vw, 108px);
-  line-height: 1;
-  color: #fff;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.02em;
-  text-shadow: 0 2px 30px rgba(0, 0, 0, 0.6);
-}
-.nf-clock-cap {
-  font: var(--type-button-cap-light);
-  letter-spacing: var(--tracking-caps);
-  text-transform: uppercase;
-  color: var(--color-accent-lime);
-}
-/* Answered-messages counter — the product working, quantified */
-.nf-count {
-  position: absolute;
-  right: clamp(24px, 6vw, 110px);
-  bottom: clamp(28px, 6.4vh, 70px);
-  z-index: 3;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 4px;
-  pointer-events: none;
-  text-align: right;
-}
-.nf-count-num {
-  font: var(--type-display-hero);
-  font-size: clamp(30px, 4.4vw, 62px);
-  line-height: 1;
-  color: var(--color-accent-lime);
-  font-variant-numeric: tabular-nums;
-  text-shadow: 0 2px 26px rgba(0, 0, 0, 0.55);
-}
-.nf-count-cap {
-  font: var(--type-caption);
-  letter-spacing: var(--tracking-caps);
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.72);
-}
-@media (max-width: 767px) {
-  .nf-count { display: none; } /* phones: the clock carries the chrome alone */
-  .nf-caption { bottom: clamp(150px, 24vh, 220px); }
-}
-.nf-hint {
-  position: absolute;
-  left: 50%;
-  bottom: 26px;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  z-index: 2;
-  color: rgba(255, 255, 255, 0.7);
-  font: var(--type-caption);
-  letter-spacing: var(--tracking-caps);
-  text-transform: uppercase;
-}
-.nf-hint-line {
-  width: 1px;
-  height: 40px;
-  background: linear-gradient(rgba(255, 255, 255, 0.75), transparent);
-  transform-origin: top;
-  animation: nfHint 1.8s ease-in-out infinite;
-}
-@keyframes nfHint {
-  0%, 100% { transform: scaleY(0.5); opacity: 0.4; }
-  50% { transform: scaleY(1); opacity: 0.9; }
-}
-
 /* Spotlight (21st.dev/aceternity) + spinner */
 @keyframes spotlight {
   0% { opacity: 0; transform: translate(-72%, -62%) scale(0.5); }
@@ -594,4 +406,294 @@ html.gsap-enabled [data-reveal] { opacity: 0; transform: translateY(24px); }
     transition-duration: 0.001ms !important;
   }
   .bw-grain { display: none !important; }
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   ThreadFilm — »Der Faden« (scrub hero; spec: .story-work/DESIGN-PACKAGE.md)
+   ════════════════════════════════════════════════════════════════════ */
+:root {
+  --tf-tshadow: 0 1px 2px rgba(5, 5, 10, 0.95), 0 3px 12px rgba(5, 5, 10, 0.78), 0 10px 44px rgba(5, 5, 10, 0.8);
+}
+
+/* Default = static hero (also the no-JS state). JS arms .tf--scrub.
+   With motion available (html.gsap-enabled, set by the inline head script)
+   the pre-hydration state is the film's first frame as a CSS background, so
+   nothing flashes and phones (gate block below) never download it. */
+.tf { position: relative; height: auto; }
+.tf--scrub { height: 800vh; }
+html.gsap-enabled .tf {
+  min-height: 100vh;
+  background: var(--color-primary) url("/assets/thread-poster.jpg") 50% 50% / cover no-repeat;
+}
+/* armed: the section must be fully transparent (no color, no image) or it
+   covers the fixed film layer behind it for the whole hero */
+html.gsap-enabled .tf--scrub { background: none; }
+html.gsap-enabled .tf-static { display: none; }
+.tf-stage { display: none; }
+.tf--scrub .tf-stage {
+  display: block; position: sticky; top: 0; height: 100vh; overflow: hidden;
+  background: transparent;
+}
+.tf--scrub .tf-static { display: none; }
+
+/* the film: ONE fixed layer behind the entire page — one continuous take.
+   Lives inside the page wrapper's stacking context at z -1, so it sits above
+   the page-level env fallback but below nav, thread, and every section. */
+.tf-film { position: fixed; inset: 0; z-index: -1; display: none; }
+.tf--scrub .tf-film { display: block; }
+.tf-poster {
+  position: absolute; inset: 0; background-size: cover; background-position: 50% 50%;
+}
+.tf-video {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  opacity: 0; transition: opacity 0.6s ease; will-change: transform; transform: translateZ(0);
+}
+.tf-dim {
+  position: absolute; inset: 0; pointer-events: none;
+  background: rgb(15, 11, 26); opacity: 0;
+}
+.tf--video-ready .tf-video { opacity: 1; }
+.tf--video-failed .tf-video { display: none; }
+
+/* global base scrim: no frame is ever raw behind the page */
+.tf-scrim {
+  position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse 120% 90% at 50% 45%, rgba(10, 8, 18, 0) 35%, rgba(10, 8, 18, 0.62) 100%);
+}
+
+/* loading ring (honest progress; hidden once done or failed) */
+.tf-ringwrap {
+  position: absolute; right: 28px; top: 28px; width: 34px; height: 34px;
+  color: var(--on-dark-muted); opacity: 0.85; transition: opacity 0.4s ease;
+}
+.tf-ring--done { opacity: 0; }
+.tf-ring circle { transition: stroke-dashoffset 0.15s linear; transform: rotate(-90deg); transform-origin: center; }
+
+/* ── caption bands ── */
+.tf-band {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: min(34vw, 460px); opacity: 0; visibility: hidden;
+  text-shadow: var(--tf-tshadow);
+}
+.tf-band--left  { left: clamp(24px, 7vw, 110px); }
+.tf-band--right { right: clamp(24px, 7vw, 110px); text-align: right; }
+.tf-band--settle {
+  left: 50%; top: 14%; transform: translateX(-50%);
+  width: min(88vw, 760px); text-align: center;
+}
+
+/* per-band scrim: a one-sided ellipse over the text lane, deepening with --k.
+   The gradient must reach fully transparent WELL INSIDE its box, or the box
+   edges show as faint contours over the film. */
+.tf-band::before {
+  content: ""; position: absolute; inset: -55% -50%; pointer-events: none; z-index: -1;
+  opacity: calc(0.25 + 0.75 * var(--k, 1));
+  background: radial-gradient(ellipse 50% 46% at 50% 50%, rgba(5, 5, 10, 0.62) 0%, rgba(5, 5, 10, 0.38) 44%, rgba(5, 5, 10, 0) 70%);
+}
+/* settle: single upper-centered ellipse, fade completed inside the box */
+.tf-band--settle::before {
+  inset: -45% -35%;
+  background: radial-gradient(ellipse 52% 54% at 50% 45%, rgba(5, 5, 10, 0.62) 0%, rgba(5, 5, 10, 0.4) 44%, rgba(5, 5, 10, 0) 70%);
+}
+
+.tf-h {
+  font: var(--type-display-large); font-size: clamp(30px, 4.4vw, 54px); line-height: 1.08;
+  margin: 0; color: var(--on-primary);
+}
+.tf-s {
+  font: var(--type-body-lg); color: var(--on-dark-muted); margin: var(--space-md) 0 0;
+}
+.tf-h1 {
+  font: var(--type-display-hero); font-size: clamp(38px, 5.6vw, 68px); line-height: 1.06;
+  margin: 0; color: var(--on-primary);
+}
+.tf-s--settle { max-width: 560px; margin-left: auto; margin-right: auto; }
+.tf-cta { display: flex; gap: var(--space-md); justify-content: center; flex-wrap: wrap; margin-top: var(--space-xl); }
+.tf-cta .bw-btn, .tf-cta a { text-shadow: none; }
+
+/* screen-reader copy + split spans */
+.tf-sr {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+.tf-vis .tf-w { display: inline-block; white-space: nowrap; }
+.tf-vis .tf-c { display: inline-block; }
+
+/* entrances — transform/opacity only, scrubbed off --k, reversible.
+   Shared by the hero bands (.tf-band--*) and the StoryBeats (.sb--*). */
+.tf-band--scatter .tf-c, .tf-band--grid .tf-c, .tf-band--weave .tf-c,
+.sb--scatter .tf-c, .sb--grid .tf-c, .sb--weave .tf-c {
+  --kc: clamp(0, calc((var(--k, 0) - var(--th, 0)) * 2.6), 1);
+  opacity: var(--kc);
+  transform: translate(calc((1 - var(--kc)) * var(--jx, 0px)), calc((1 - var(--kc)) * var(--jy, 0px)))
+    rotate(calc((1 - var(--kc)) * var(--jr, 0deg)));
+}
+.tf-band--rise .tf-w, .sb--rise .tf-w {
+  --kc: clamp(0, calc((var(--k, 0) - var(--th, 0)) * 2.8), 1);
+  opacity: var(--kc);
+  transform: translateY(calc((1 - var(--kc)) * 18px));
+}
+.tf-band--rise .tf-s {
+  --ks: clamp(0, calc((var(--k, 0) - 0.55) * 4), 1);
+  opacity: var(--ks); transform: translateY(calc((1 - var(--ks)) * 14px));
+}
+.tf-band--rise .tf-cta {
+  --kb: clamp(0, calc((var(--k, 0) - 0.72) * 5), 1);
+  opacity: var(--kb); transform: translateY(calc((1 - var(--kb)) * 12px));
+}
+
+/* persistent hero chrome (no HUD, no clocks — spec §1) */
+.tf-chip {
+  position: absolute; left: 24px; bottom: 24px; opacity: 0; transition: opacity 0.5s ease;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px;
+  letter-spacing: 0.04em; color: var(--on-dark-muted);
+  background: rgba(8, 8, 15, 0.55); border: 1px solid rgba(96, 96, 126, 0.3);
+  border-radius: 10px; padding: 8px 12px; backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px); text-shadow: 0 1px 3px rgba(5, 5, 10, 0.85);
+}
+.tf-hint {
+  position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%);
+  font: var(--type-caption); color: var(--on-dark-faint); letter-spacing: 0.14em;
+  text-transform: uppercase; transition: opacity 0.4s ease;
+}
+/* ── static hero (designed layout, not an apology) ── */
+.tf-static {
+  position: relative; min-height: 100svh; display: flex; align-items: flex-end;
+  background-size: cover; background-position: 50% 100%; background-color: var(--color-primary);
+}
+.tf-static-scrim {
+  position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(180deg, rgba(10, 8, 18, 0.55) 0%, rgba(10, 8, 18, 0.2) 40%, rgba(10, 8, 18, 0.74) 100%);
+}
+.tf-static-inner {
+  position: relative; width: 100%; max-width: 720px; margin: 0 auto;
+  padding: 120px var(--space-xl) 64px; text-align: center; text-shadow: var(--tf-tshadow);
+}
+.tf-static-inner .tf-h1 { font-size: clamp(34px, 9vw, 56px); }
+.tf-static-inner .tf-s--settle { margin-top: var(--space-md); }
+.tf-chip--static { position: static; display: inline-block; opacity: 1; margin-bottom: var(--space-lg); }
+
+/* ── THE FIVE GATES — character-identical to GATES in ThreadFilm.tsx ── */
+@media (max-width: 720px), (orientation: portrait) and (max-width: 1024px), (orientation: portrait) and (pointer: coarse), (orientation: landscape) and (pointer: coarse) and (max-height: 560px), (prefers-reduced-motion: reduce) {
+  .tf, .tf--scrub { height: auto !important; min-height: 0 !important; background-image: none !important; }
+  .tf-stage { display: none !important; }
+  .tf-film { display: none !important; }
+  .tf-static { display: flex !important; }
+}
+
+/* scrub-capable but short desktop windows: hide the small overlays only */
+@media (max-height: 560px) {
+  .tf-hint, .tf-chip { display: none; }
+}
+
+/* ── The one environment: the film's ending world behind the whole page ── */
+.thread-env { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+.thread-env-img {
+  position: absolute; inset: -4%;
+  background: url("/assets/thread-ending.jpg") 50% 62% / cover no-repeat;
+  filter: brightness(0.68) saturate(1.05);
+  animation: threadEnvDrift 96s ease-in-out -14s infinite alternate;
+  will-change: transform;
+}
+.thread-env-scrim {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(15, 11, 26, 0.62) 0%, rgba(15, 11, 26, 0.45) 45%, rgba(15, 11, 26, 0.6) 100%);
+}
+@keyframes threadEnvDrift {
+  from { transform: scale(1) translateY(0); }
+  to { transform: scale(1.06) translateY(-1.6%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .thread-env-img { animation: none; }
+}
+
+/* ── StoryThread: the film's filament continues through the page ── */
+.story-thread {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: visible;
+}
+.story-thread .st-path {
+  stroke: var(--color-accent-lime); stroke-width: 2; stroke-linecap: round; opacity: 0.85;
+}
+.story-thread .st-glow {
+  stroke: rgba(194, 239, 78, 0.3); stroke-width: 7; stroke-linecap: round;
+  filter: blur(4px);
+}
+
+/* chapter kicker: replaces the section's Eyebrow, sits on a thread node */
+.chapter-kicker {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--on-dark-muted);
+}
+.chapter-kicker .ck-dot {
+  width: 8px; height: 8px; border-radius: 50%; position: relative;
+  background: rgba(194, 239, 78, 0.35); transition: background 0.5s ease, box-shadow 0.5s ease;
+}
+.chapter-kicker.st-on .ck-dot {
+  background: var(--color-accent-lime);
+  box-shadow: 0 0 10px rgba(194, 239, 78, 0.75);
+}
+.chapter-kicker.st-on { color: var(--on-primary); }
+
+/* in-between sections: a quiet violet pulse when the thread arrives */
+[data-thread-pulse] .tp-dot, .thread-pulse {
+  display: inline-block; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--color-accent-violet-mid); opacity: 0.5;
+  transition: opacity 0.5s ease, box-shadow 0.5s ease;
+}
+.st-on > .tp-dot, .thread-pulse.st-on, [data-thread-pulse].st-on .tp-dot {
+  opacity: 1; box-shadow: 0 0 8px rgba(121, 98, 140, 0.9);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .story-thread .st-path, .story-thread .st-glow { stroke-dashoffset: 0 !important; }
+}
+
+/* pricing: three equal offer panels, stacking on narrow screens */
+@media (max-width: 980px) {
+  .bw-pricing-offers { grid-template-columns: 1fr !important; }
+}
+
+/* ── StoryBeats: full-viewport narrative moments between chapters ── */
+.sb { position: relative; height: 170vh; }
+.sb-stage {
+  position: sticky; top: 0; height: 100vh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: var(--space-lg); text-align: center; padding: 0 var(--space-xl);
+  text-shadow: var(--tf-tshadow);
+}
+.sb-stage::before {
+  content: ""; position: absolute; inset: 0 -25%; pointer-events: none; z-index: -1;
+  opacity: calc(0.2 + 0.5 * var(--k, 1));
+  background: radial-gradient(ellipse 55% 48% at 50% 50%, rgba(5, 5, 10, 0.58) 0%, rgba(5, 5, 10, 0.34) 46%, rgba(5, 5, 10, 0) 70%);
+}
+.sb-line {
+  font: var(--type-display-large); font-size: clamp(30px, 4.8vw, 58px); line-height: 1.1;
+  margin: 0; color: var(--on-primary); max-width: 900px; text-wrap: balance;
+}
+@media (max-width: 720px) {
+  .sb { height: 140vh; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sb { height: auto; }
+  .sb-stage { position: static; height: auto; padding: var(--space-section) var(--space-xl); }
+}
+
+/* ── Ambient request-lights around the chat portal (whisper level) ── */
+.rp-spark {
+  position: absolute; left: 50%; top: 45%; width: 7px; height: 7px; border-radius: 50%;
+  pointer-events: none; z-index: 0;
+  background: var(--color-accent-pink);
+  transform: translate(calc(var(--sx) * 3.2), calc(var(--sy) * 3.2));
+  opacity: 0.55;
+  box-shadow: 0 0 8px rgba(250, 127, 170, 0.65);
+  animation: rpFlicker 2.4s ease-in-out infinite;
+  animation-delay: var(--sd, 0s);
+}
+@keyframes rpFlicker {
+  0%, 100% { filter: brightness(0.7); }
+  50% { filter: brightness(1.4); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rp-spark { animation: none; opacity: 0.7; }
 }

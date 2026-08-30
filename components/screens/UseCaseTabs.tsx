@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Utensils, Wine, Music, Coffee } from "lucide-react";
-import { Eyebrow } from "@/components/ui/Eyebrow";
 
 type UseCase = {
   id: string;
@@ -72,8 +71,7 @@ export function UseCaseTabs() {
   return (
     <section style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "var(--space-section) var(--space-xl)" }}>
       <div style={{ textAlign: "center", maxWidth: 640, margin: "0 auto var(--space-xxl)" }} data-reveal>
-        <Eyebrow polarity="dark">Für deine Art von Laden</Eyebrow>
-        <h2 style={{ font: "var(--type-display-large)", fontSize: "clamp(28px, 4vw, 44px)", margin: "var(--space-md) 0 0" }}>
+        <h2 style={{ font: "var(--type-display-large)", fontSize: "clamp(28px, 4vw, 44px)", margin: 0 }}>
           Gebaut für genau deinen Betrieb.
         </h2>
       </div>

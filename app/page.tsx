@@ -1,18 +1,18 @@
 import { NavBar } from "@/components/marketing/NavBar";
 import { Footer } from "@/components/marketing/Footer";
 import { HomeScreen } from "@/components/screens/HomeScreen";
-import { BackgroundGradientAnimation } from "@/components/ui/BackgroundGradientAnimation";
 
-// Start — dark marketing landing for NiteNexo Solutions. An animated gradient
-// (violet/pink/lime gooey blobs) sits fixed behind the content, tamed by a dark
-// scrim for legibility; the interactive mascot lives in the hero.
+// Start — dark marketing landing for NiteNexo Solutions. The film's world IS
+// the page's world: the ThreadFilm ending frame (the ordered light field)
+// sits fixed behind the entire page with a whisper-slow drift, so scrolling
+// out of the film continues seamlessly into the same environment.
 export default function HomePage() {
   return (
     <>
       <div className="bw-page-bg" aria-hidden="true" />
-      <div aria-hidden="true" style={{ position: "fixed", inset: 0, zIndex: 0, overflow: "hidden" }}>
-        <BackgroundGradientAnimation interactive={false} />
-        <div style={{ position: "absolute", inset: 0, background: "rgba(15,11,26,0.5)", pointerEvents: "none" }} />
+      <div className="thread-env" aria-hidden="true">
+        <div className="thread-env-img" />
+        <div className="thread-env-scrim" />
       </div>
       <div style={{ position: "relative", zIndex: 1 }}>
         <NavBar polarity="dark" />

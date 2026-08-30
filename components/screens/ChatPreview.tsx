@@ -72,8 +72,12 @@ function TypingBubble({ bot }: { bot: boolean }) {
 /**
  * Animated chat mockup. Messages play in sequence (with typing indicators)
  * the first time the card scrolls into view. Micro-motion is CSS-driven.
+ *
+ * Driven mode: pass `revealed` (0..4) and `typing` and the chat follows the
+ * caller (the RobotPresenter hold moment) instead of auto-playing.
  */
-export function ChatPreview() {
+export function ChatPreview({ revealed, typing: typingProp }: { revealed?: number; typing?: boolean } = {}) {
+  const driven = revealed !== undefined;
   const [shown, setShown] = useState(0);
   const [typing, setTyping] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -81,6 +85,7 @@ export function ChatPreview() {
   const started = useRef(false);
 
   useEffect(() => {
+    if (driven) return;
     const el = ref.current;
     if (!el) return;
     const timerStore = timers.current;
@@ -128,9 +133,11 @@ export function ChatPreview() {
       io.disconnect();
       timerStore.forEach(clearTimeout);
     };
-  }, []);
+  }, [driven]);
 
-  const nextWho = shown < CHAT_ROWS.length ? CHAT_ROWS[shown].who : "bot";
+  const effShown = driven ? Math.max(0, Math.min(CHAT_ROWS.length, revealed)) : shown;
+  const effTyping = driven ? Boolean(typingProp) && effShown < CHAT_ROWS.length : typing;
+  const nextWho = effShown < CHAT_ROWS.length ? CHAT_ROWS[effShown].who : "bot";
 
   return (
     <div
@@ -171,10 +178,10 @@ export function ChatPreview() {
         </div>
       </div>
       <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-md)", flex: 1 }}>
-        {CHAT_ROWS.slice(0, shown).map((r, i) => (
+        {CHAT_ROWS.slice(0, effShown).map((r, i) => (
           <Bubble key={i} r={r} />
         ))}
-        {typing && <TypingBubble bot={nextWho === "bot"} />}
+        {effTyping && <TypingBubble bot={nextWho === "bot"} />}
       </div>
       <div
         style={{

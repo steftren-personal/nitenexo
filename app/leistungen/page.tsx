@@ -11,12 +11,12 @@ import { KeywordHighlight } from "@/components/ui/KeywordHighlight";
 export const metadata: Metadata = {
   title: "Leistungen — NiteNexo Solutions",
   description:
-    "Chatbots — spezialisiert auf WhatsApp —, Website-Design, digitale Assistenten, Beratung & Setup sowie Wartung & Support für Gastronomie, Bars und Clubs.",
+    "Chatbots — spezialisiert auf WhatsApp —, Website-Design und KI-Integration, dazu Beratung & Setup sowie Wartung & Support für Gastronomie, Bars und Clubs.",
 };
 
 const LEISTUNGEN = [
   {
-    tag: "Kernprodukt",
+    tag: "Chat",
     title: "Chatbots",
     lead: "Dein meistgenutzter Kanal wird zum Mitarbeiter. Reservierungen, Bestellungen, Gästelisten und FAQ laufen direkt im Chat — rund um die Uhr, ohne dass dein Team tippt. Unsere Spezialität ist WhatsApp; auf Wunsch auch Instagram oder direkt auf deiner Website.",
     points: ["Tischreservierung mit Verfügbarkeitsprüfung", "Bestellungen & Vorbestellungen", "Gästeliste & Einlass-Check", "FAQ: Öffnungszeiten, Anfahrt, Karte", "Automatische Bestätigungen & Erinnerungen"],
@@ -28,10 +28,10 @@ const LEISTUNGEN = [
     points: ["Mobile-first und blitzschnell", "Speisekarte & Galerie pflegbar", "Reservierung direkt eingebunden", "Instagram- & WhatsApp-Anbindung", "Suchmaschinen-Grundlagen inklusive"],
   },
   {
-    tag: "Automatisierung",
-    title: "Digitale Assistenten",
-    lead: "Maßgeschneiderte Abläufe für genau deinen Betrieb. Vom Türsteher-Check über Newsletter bis zur Schicht-Erinnerung — wir automatisieren, was dich Zeit kostet.",
-    points: ["Individuelle Workflows nach Maß", "Anbindung an Kasse, Kalender & Tischplan", "Newsletter & Gäste-Reaktivierung", "Interne Benachrichtigungen fürs Team", "Reports, die du wirklich liest"],
+    tag: "KI",
+    title: "KI-Integration",
+    lead: "Automatismen in deinem Unternehmen, maßgeschneidert für deinen Ablauf. Die KI verbindet Kasse, Kalender und Newsletter und übernimmt, was dich Zeit kostet: vom Türsteher-Check bis zur Schicht-Erinnerung.",
+    points: ["Individuelle KI-Abläufe nach Maß", "Anbindung an Kasse, Kalender & Tischplan", "Newsletter & Gäste-Reaktivierung", "Interne Benachrichtigungen fürs Team", "Reports, die du wirklich liest"],
   },
   {
     tag: "Start",
@@ -60,8 +60,9 @@ export default function LeistungenPage() {
               Alles, damit dein Team <KeywordHighlight>weniger tippt</KeywordHighlight>.
             </h1>
             <p style={{ font: "var(--type-body-lg)", color: "var(--on-dark-muted)", maxWidth: 560, margin: "var(--space-lg) 0 0" }}>
-              Von Chatbots — spezialisiert auf WhatsApp — über Websites bis zu maßgeschneiderten
-              Automatisierungen: wir bauen die digitalen Mitarbeiter für deinen Betrieb.
+              Chatbots, spezialisiert auf WhatsApp. Websites, die verkaufen. Und KI-Integration,
+              die Abläufe in deinem Unternehmen von allein laufen lässt. Drei Gewerke, eine
+              Werkstatt.
             </p>
             <span className="bw-float bw-hide-mobile" style={{ position: "absolute", right: 24, top: 56 }}>
               <Sticker name="plug" size={104} tilt={10} />
