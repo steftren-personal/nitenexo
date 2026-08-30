@@ -38,3 +38,4 @@ next-env.d.ts
 
 # scroll-film build intermediates (raw clips, keyframes, jobs ledger — 100MB+; only extracted frames ship)
 /.film-work/
+.story-work/

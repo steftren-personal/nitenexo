@@ -13,16 +13,17 @@ type Service = {
   featured?: boolean;
 };
 
+// The three offerings share the top row with equal weight — deliberately no
+// featured tile, so no Gewerk is crowned above the others.
 const SERVICES: Service[] = [
   {
-    tag: "Chatbots",
+    tag: "Chat",
     title: "Chatbots",
-    desc: "Reservierungen, Bestellungen, Gästelisten und FAQ — direkt im Chat, rund um die Uhr. Unsere Spezialität ist WhatsApp; auf Wunsch auch Instagram oder direkt auf deiner Website.",
+    desc: "Reservierungen, Bestellungen, Gästelisten und FAQ — direkt im Chat, rund um die Uhr. Unsere Spezialität ist WhatsApp.",
     icon: <MessageCircle strokeWidth={2} />,
-    featured: true,
   },
-  { tag: "Web", title: "Website-Design", desc: "Schnelle, klare Seiten für deinen Betrieb: Speisekarte, Öffnungszeiten, Buchung.", icon: <Globe strokeWidth={2} /> },
-  { tag: "Bots", title: "Digitale Assistenten", desc: "Maßgeschneiderte Automatisierungen — vom Türsteher-Check bis zum Newsletter.", icon: <Bot strokeWidth={2} /> },
+  { tag: "Web", title: "Website-Design", desc: "Professionelle Seiten für deinen Betrieb: Speisekarte, Galerie, Buchung. Mobile-first und blitzschnell.", icon: <Globe strokeWidth={2} /> },
+  { tag: "KI", title: "KI-Integration", desc: "Automatismen in deinem Unternehmen: Die KI verbindet Kasse, Kalender und Newsletter und übernimmt Abläufe von allein.", icon: <Bot strokeWidth={2} /> },
   { tag: "Setup", title: "Beratung & Setup", desc: "Wir analysieren deinen Ablauf und verdrahten alles mit deinen Kanälen.", icon: <Settings strokeWidth={2} /> },
   { tag: "Support", title: "Wartung & Support", desc: "Updates, Monitoring und schnelle Hilfe, wenn der Laden voll ist.", icon: <Wrench strokeWidth={2} /> },
   { tag: "Schnittstellen", title: "Integrationen", desc: "Kasse, Tischplan, Kalender und Newsletter sauber miteinander verbunden.", icon: <Puzzle strokeWidth={2} /> },
@@ -110,5 +111,16 @@ export function ServicesBento() {
         <Tile key={s.title} s={s} />
       ))}
     </motion.div>
+  );
+}
+
+/** Centered link under the grid, replacing the old featured-tile button. */
+export function ServicesBentoCta() {
+  return (
+    <div style={{ textAlign: "center", marginTop: "var(--space-xl)" }}>
+      <Button variant="ghost-on-dark" href="/leistungen">
+        Alle Leistungen ansehen
+      </Button>
+    </div>
   );
 }

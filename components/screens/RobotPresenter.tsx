@@ -3,7 +3,6 @@
 import React from "react";
 import { motion, type Variants } from "framer-motion";
 import { MessageCircle, Bot, CalendarCheck } from "lucide-react";
-import { Eyebrow } from "@/components/ui/Eyebrow";
 import { ChatPreview } from "./ChatPreview";
 
 const STEPS = [
@@ -33,16 +32,22 @@ const stepV: Variants = {
   visible: { opacity: 1, x: 0, transition: { duration: 0.55, ease: [0.16, 0.84, 0.44, 1] } },
 };
 
+// Ambient request-lights around the chat portal (whisper-level flicker).
+const SPARKS = [
+  { x: -46, y: -38 }, { x: 44, y: -30 }, { x: -52, y: 8 }, { x: 55, y: 14 },
+  { x: -38, y: 46 }, { x: 40, y: 42 }, { x: -18, y: -52 }, { x: 20, y: 54 },
+];
+
 /**
- * Foreground robot "presenter" — the robot plays in a framed portal on one
- * side while it "presents" three steps that animate in on the other side
- * (Framer Motion). Brings the robot into the foreground, doing + showing things.
+ * »So arbeitet dein Assistent« — Kapitel 4: the example chat plays itself the
+ * first time it scrolls into view (ChatPreview's own IntersectionObserver),
+ * beside the three presented steps.
  */
 export function RobotPresenter() {
   return (
     <section className="bw-container bw-section" style={{ padding: "var(--space-section) var(--space-xl)" }}>
       <div className="bw-about-grid" style={{ display: "grid", gridTemplateColumns: "0.95fr 1.05fr", gap: "var(--space-section)", alignItems: "center" }}>
-        {/* Framed robot portal */}
+        {/* Framed chat portal + ambient request-lights */}
         <motion.div
           initial={{ opacity: 0, scale: 0.92 }}
           whileInView={{ opacity: 1, scale: 1 }}
@@ -60,15 +65,22 @@ export function RobotPresenter() {
               zIndex: 0,
             }}
           />
-          <div style={{ position: "relative", zIndex: 1, display: "flex", justifyContent: "center", width: "100%" }}>
+          <div className="rp-portal" style={{ position: "relative", zIndex: 1, display: "flex", justifyContent: "center", width: "100%" }}>
+            {SPARKS.map((s, i) => (
+              <span
+                key={i}
+                className="rp-spark"
+                aria-hidden="true"
+                style={{ "--sx": `${s.x}%`, "--sy": `${s.y}%`, "--sd": `${(i % 4) * -0.9}s` } as React.CSSProperties}
+              />
+            ))}
             <ChatPreview />
           </div>
         </motion.div>
 
         {/* Presented steps */}
         <div>
-          <Eyebrow polarity="dark">So arbeitet dein Assistent</Eyebrow>
-          <h2 style={{ font: "var(--type-display-large)", fontSize: "clamp(28px, 4vw, 44px)", margin: "var(--space-md) 0 var(--space-xl)", maxWidth: 460 }}>
+          <h2 style={{ font: "var(--type-display-large)", fontSize: "clamp(28px, 4vw, 44px)", margin: "0 0 var(--space-xl)", maxWidth: 460 }}>
             Er macht die Arbeit — du siehst nur das Ergebnis.
           </h2>
 

@@ -13,11 +13,13 @@ import { KineticHeading } from "@/components/motion/KineticHeading";
 import { FlipWords } from "@/components/motion/FlipWords";
 import { StatStrip } from "./StatStrip";
 import { WhyAccordion } from "./WhyAccordion";
-import { ServicesBento } from "./ServicesBento";
+import { ServicesBento, ServicesBentoCta } from "./ServicesBento";
 import { RobotPresenter } from "./RobotPresenter";
-import { HeroSpline } from "./HeroSpline";
 import { MascotRobot } from "./MascotRobot";
-import { NightFilm } from "./NightFilm";
+import { ThreadFilm } from "./ThreadFilm";
+import { StoryBeat } from "./StoryBeat";
+import { BookingBoard } from "./BookingBoard";
+import { StoryThread } from "@/components/motion/StoryThread";
 import { IntegrationsStrip } from "@/components/marketing/IntegrationsStrip";
 import { TestimonialsMarquee } from "./TestimonialsMarquee";
 import { UseCaseTabs } from "./UseCaseTabs";
@@ -34,27 +36,44 @@ const h2Style: React.CSSProperties = { font: "var(--type-display-large)", fontSi
 export function HomeScreen() {
   return (
     <div style={{ color: "var(--on-primary)" }}>
-      {/* „EINE NACHT" — der Kapitel-Zeitraffer als cineastischer Einstieg. */}
-      <NightFilm />
+      {/* »Der Faden« — ein durchgehender 15s-Take, frei gescrubbt; das Settle-Band ist der Hero. */}
+      <ThreadFilm />
 
-      {/* ── Hero — Headline + Reservierungs-Board (der Morgen danach) ── */}
-      <HeroSpline />
+      {/* Alles darunter teilt sich eine relative Ebene mit dem Seiten-Faden. */}
+      <div style={{ position: "relative" }}>
+      <StoryThread />
 
-      {/* ── Stats ────────────────────────────────────────────── */}
-      <div className="bw-container" style={{ padding: "0 var(--space-xl) var(--space-section)" }}>
+      {/* ── Kapitel 1 · Der Morgen danach ─────────────────────── */}
+      <StoryBeat
+        kicker="Kapitel 1 · Der Morgen danach"
+        line="So sieht eine Nacht aus, in der nichts verglüht ist."
+        fx="rise"
+        seed={11}
+      />
+      <section style={{ ...sectionStyle, paddingTop: 0 }}>
+        <div style={{ display: "flex", justifyContent: "center", marginBottom: "var(--space-section)" }} data-reveal>
+          <BookingBoard />
+        </div>
         <StatStrip />
-      </div>
+      </section>
 
       {/* ── Flip-words Statement-Band (animierte CTA-Text-Komponente) ── */}
       <div style={{ borderTop: "1px solid var(--hairline-violet)", borderBottom: "1px solid var(--hairline-violet)", background: "rgba(21,15,35,0.5)", backdropFilter: "blur(6px)" }}>
         <div className="bw-container" style={{ padding: "var(--space-xxl) var(--space-xl)", textAlign: "center" }}>
+          <span className="thread-pulse" data-thread-pulse aria-hidden="true" style={{ display: "block", margin: "0 auto var(--space-md)" }} />
           <p style={{ font: "var(--type-display-large)", fontSize: "clamp(22px, 3.2vw, 38px)", margin: 0, color: "var(--on-primary)", lineHeight: 1.3 }}>
-            Dein Assistent übernimmt <FlipWords words={["Reservierungen", "Bestellungen", "Gästelisten", "den Einlass", "die FAQ"]} />.
+            NiteNexo baut dir <FlipWords words={["den Chatbot", "die Website", "die KI-Abläufe", "die Gästeliste", "den Newsletter"]} />.
           </p>
         </div>
       </div>
 
-      {/* ── Über NiteNexo ───────────────────────────────────── */}
+      {/* ── Kapitel 2 · Über NiteNexo ───────────────────────── */}
+      <StoryBeat
+        kicker="Kapitel 2 · Über NiteNexo"
+        line="Der Faden kommt aus Wien."
+        fx="grid"
+        seed={23}
+      />
       <section style={sectionStyle}>
         <div className="bw-about-grid" style={{ display: "grid", gridTemplateColumns: "0.95fr 1.05fr", gap: "var(--space-section)", alignItems: "center" }}>
           <div style={{ position: "relative", display: "flex", justifyContent: "center" }} data-reveal>
@@ -73,8 +92,7 @@ export function HomeScreen() {
             </span>
           </div>
           <div data-reveal>
-            <Eyebrow polarity="dark">Über NiteNexo</Eyebrow>
-            <h2 style={{ font: "var(--type-display-large)", fontSize: "clamp(30px, 4vw, 48px)", margin: "var(--space-md) 0 var(--space-lg)", maxWidth: 520 }}>
+            <h2 style={{ font: "var(--type-display-large)", fontSize: "clamp(30px, 4vw, 48px)", margin: "0 0 var(--space-lg)", maxWidth: 520 }}>
               Ein digitaler Mitarbeiter, der nie Pause macht.
             </h2>
             <p style={{ font: "var(--type-body-lg)", color: "var(--on-dark-muted)", margin: 0, maxWidth: 520 }}>
@@ -96,22 +114,40 @@ export function HomeScreen() {
         </div>
       </section>
 
-      {/* ── Use-Case-Tabs (21st.dev, animiert) ───────────────── */}
+      {/* ── Kapitel 3 · Use-Case-Tabs ────────────────────────── */}
+      <StoryBeat
+        kicker="Kapitel 3 · Für deine Art von Laden"
+        line="Jeder Laden flimmert anders."
+        fx="scatter"
+        seed={37}
+      />
       <UseCaseTabs />
 
-      {/* ── Leistungen-Grid ─────────────────────────────────── */}
+      {/* ── Kapitel 4 · Leistungen: mehr als ein Chatbot ─────── */}
+      <StoryBeat
+        kicker="Kapitel 4 · Was wir bauen"
+        line="Mehr als ein Chatbot."
+        fx="grid"
+        seed={41}
+      />
       <section style={{ ...sectionStyle, paddingTop: 0 }}>
         <div style={centerHead} data-reveal>
-          <Eyebrow polarity="dark">Leistungen</Eyebrow>
-          <h2 style={{ ...h2Style, fontSize: "clamp(28px, 4vw, 44px)" }}>Was wir für deinen Laden bauen.</h2>
+          <h2 style={{ ...h2Style, fontSize: "clamp(28px, 4vw, 44px)" }}>Chatbot, Website und KI-Integration für deinen Laden.</h2>
         </div>
         <ServicesBento />
+        <ServicesBentoCta />
       </section>
 
       {/* ── Funktioniert mit (Logo-Marquee, 21st.dev) ────────── */}
       <IntegrationsStrip />
 
-      {/* ── So arbeitet dein Assistent (Chat + Schritte) ─────── */}
+      {/* ── Kapitel 5 · So arbeitet dein Assistent ───────────── */}
+      <StoryBeat
+        kicker="Kapitel 5 · So arbeitet dein Assistent"
+        line="So sammelt er ein."
+        fx="weave"
+        seed={53}
+      />
       <div>
         <RobotPresenter />
       </div>
@@ -120,11 +156,12 @@ export function HomeScreen() {
       <div>
         <div style={sectionStyle}>
           <div style={centerHead} data-reveal>
+            <span className="thread-pulse" data-thread-pulse aria-hidden="true" style={{ display: "block", margin: "0 auto var(--space-sm)" }} />
             <Eyebrow polarity="dark">Preise</Eyebrow>
             <h2 style={{ ...h2Style, fontSize: "clamp(28px, 4vw, 44px)", marginBottom: "var(--space-md)" }}>Jeder Betrieb ist anders — der Preis auch.</h2>
             <p style={{ font: "var(--type-body-md)", color: "var(--on-dark-muted)", margin: 0 }}>
-              Keine Pakete von der Stange. Festpreis für die Einrichtung, dazu eine monatliche
-              Pauschale, die zu deinem Assistenten passt.
+              Keine Pakete von der Stange. Ob Chatbot, Website oder KI-Integration: Festpreis für
+              die Einrichtung, dazu eine monatliche Pauschale, die zu deinem Projekt passt.
             </p>
           </div>
           <PricingModel polarity="dark" />
@@ -140,6 +177,8 @@ export function HomeScreen() {
       <section style={sectionStyle}>
         <div className="bw-why-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-section)", alignItems: "center" }}>
           <div data-reveal>
+            <span className="thread-pulse" data-thread-pulse aria-hidden="true" style={{ display: "inline-block", marginBottom: "var(--space-sm)" }} />
+            <br aria-hidden="true" />
             <Eyebrow polarity="dark">Warum NiteNexo</Eyebrow>
             <h2 style={{ font: "var(--type-display-large)", fontSize: "clamp(28px, 4vw, 44px)", margin: "var(--space-md) 0 var(--space-xl)", maxWidth: 460 }}>
               Stark genug für Andrang. Einfach genug für dein Team.
@@ -158,6 +197,7 @@ export function HomeScreen() {
       <div style={{ paddingTop: "var(--space-section)", paddingBottom: "var(--space-section)" }}>
         <div className="bw-container" style={{ padding: "0 var(--space-xl)" }}>
           <div style={centerHead} data-reveal>
+            <span className="thread-pulse" data-thread-pulse aria-hidden="true" style={{ display: "block", margin: "0 auto var(--space-sm)" }} />
             <Eyebrow polarity="dark">Stimmen aus dem Betrieb</Eyebrow>
             <h2 style={{ ...h2Style, fontSize: "clamp(28px, 4vw, 44px)" }}>Was Betreiber:innen sagen.</h2>
           </div>
@@ -174,6 +214,8 @@ export function HomeScreen() {
       <section style={sectionStyle}>
         <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", flexWrap: "wrap", gap: "var(--space-lg)", marginBottom: "var(--space-xxl)" }} data-reveal>
           <div>
+            <span className="thread-pulse" data-thread-pulse aria-hidden="true" style={{ display: "inline-block", marginBottom: "var(--space-sm)" }} />
+            <br aria-hidden="true" />
             <Eyebrow polarity="dark">Aus der Werkstatt</Eyebrow>
             <h2 style={{ ...h2Style, fontSize: "clamp(28px, 4vw, 44px)" }}>Kurz erklärt.</h2>
           </div>
@@ -190,9 +232,15 @@ export function HomeScreen() {
         </div>
       </section>
 
-      {/* ── Großer CTA ──────────────────────────────────────── */}
+      {/* ── Kapitel 6 · Großer CTA — der Faden dockt an ──────── */}
+      <StoryBeat
+        kicker="Kapitel 6 · Dein Zug"
+        line="Der Faden endet bei dir."
+        fx="rise"
+        seed={67}
+      />
       <div>
-        <div style={{ ...sectionStyle, textAlign: "center", position: "relative" }}>
+        <div style={{ ...sectionStyle, textAlign: "center", position: "relative", paddingTop: 0 }}>
           <KineticHeading
             as="h2"
             trigger="scroll"
@@ -212,14 +260,19 @@ export function HomeScreen() {
             und einer kurzen Demo.
           </p>
           <div style={{ display: "flex", gap: "var(--space-md)", justifyContent: "center", marginTop: "var(--space-xl)", flexWrap: "wrap" }}>
-            <Button variant="inverted" glow magnetic href="/kontakt">
-              Projekt starten
-            </Button>
+            <span data-thread-end style={{ display: "inline-flex" }}>
+              <Button variant="inverted" glow magnetic href="/kontakt">
+                Projekt starten
+              </Button>
+            </span>
             <Button variant="ghost-on-dark" magnetic href="/preise">
               Preise ansehen
             </Button>
           </div>
         </div>
+      </div>
+
+      {/* Ende der Faden-Ebene */}
       </div>
     </div>
   );

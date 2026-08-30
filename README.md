@@ -26,7 +26,7 @@ Nachtgastronomie baut. Die Seite ist auf Deutsch (lockeres „Du") und enthält 
 ## Highlights
 
 - **Premium-Design** im Botwerk Design-System (Violett-Mitternacht + Lime, zwei Flächen-Polaritäten)
-- **Cinematischer Einstieg** „EINE NACHT" — ein kapitelweiser Nacht-Zeitraffer, der beim Scrollen von 21:00 bis 09:00 Uhr durchläuft
+- **Cinematischer Einstieg** »Der Faden« — ein durchgehender 15s-Take (Lichterfeld → Ordnung), frei per Scroll gescrubbt; der Lime-Faden läuft danach als SVG-Linie durch alle Kapitel bis zum CTA
 - **Bewegung im Detail** mit GSAP & ScrollTrigger — kinetische Headlines, Scroll-Reveals, Count-up-Stats, Parallax
 - **Voll responsiv** und mit Rücksicht auf `prefers-reduced-motion`
 - **Mit Backend** — Supabase (Auth + Postgres), API-Routen und Middleware; siehe [Konfiguration](#konfiguration)
@@ -39,7 +39,7 @@ Nachtgastronomie baut. Die Seite ist auf Deutsch (lockeres „Du") und enthält 
 | Styling      | Tailwind CSS + Botwerk Design-Tokens (CSS Variablen) |
 | Animation    | GSAP (ScrollTrigger) via `@gsap/react`               |
 | Schriften    | `next/font` — Space Grotesk (Display), Rubik (UI)    |
-| Intro-Film   | Higgsfield-generierter Nacht-Zeitraffer (`public/assets/night-hero.mp4`) |
+| Intro-Film   | Higgsfield-generierter Scroll-Scrub-Take (`public/assets/thread-film.mp4`) |
 | Auth & DB    | Supabase (Auth + Postgres, RLS auf jeder Tabelle)    |
 | Mailversand  | nodemailer über reines SMTP                          |
 | Termine      | Google Kalender API (OAuth)                          |
@@ -74,7 +74,7 @@ npm run start   # Build lokal starten
 
 | Route                       | Inhalt                                                  |
 | --------------------------- | ------------------------------------------------------- |
-| `/`                         | Start — Intro-Film „EINE NACHT", danach die Landing-Page |
+| `/`                         | Start — Scroll-Film »Der Faden«, danach die Kapitel-Story |
 | `/leistungen`               | Leistungen im Detail                                     |
 | `/preise`                   | Preismodell (individuell kalkuliert) + FAQ               |
 | `/werkstatt`                | Artikelübersicht                                         |
@@ -105,7 +105,7 @@ components/        Wiederverwendbare Bausteine
   ├─ forms/          Formularelemente
   ├─ booking/        Slot-Auswahl, Terminlisten
   ├─ marketing/      NavBar, Footer, Preise, Artikel-Karten, CookieBanner …
-  ├─ screens/        Seiten-Abschnitte (NightFilm, Hero, Bento, Tabs …)
+  ├─ screens/        Seiten-Abschnitte (ThreadFilm, Bento, Tabs …)
   └─ motion/         GSAP-Animationslogik
 lib/              Inhalts- & Konfigurationsdaten, Supabase-Clients, Mailversand,
                   Google-Kalender-Anbindung
