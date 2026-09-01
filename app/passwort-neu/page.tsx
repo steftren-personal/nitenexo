@@ -6,6 +6,7 @@ import { Eyebrow } from "@/components/ui/Eyebrow";
 import { Field } from "@/components/forms/Field";
 import { Input } from "@/components/forms/Input";
 import { Button } from "@/components/ui/Button";
+import { createClient } from "@/lib/supabase/server";
 import { resetPassword } from "./actions";
 
 export const metadata: Metadata = {
@@ -15,11 +16,18 @@ export const metadata: Metadata = {
 export default async function ResetPasswordPage({
   searchParams,
 }: {
-  searchParams: Promise<{ code?: string; error?: string; invalid?: string }>;
+  searchParams: Promise<{ error?: string; invalid?: string }>;
 }) {
-  const { code, error, invalid } = await searchParams;
+  const { error, invalid } = await searchParams;
 
-  const showInvalid = invalid === "1" || !code;
+  // app/auth/confirm/route.ts already redeemed the recovery link and wrote
+  // the session cookie before sending the user here — so a valid link means
+  // a valid session. No session (or an explicit ?invalid=1) means the link
+  // was missing, expired, or already used.
+  const supabase = await createClient();
+  const { data } = await supabase.auth.getUser();
+
+  const showInvalid = invalid === "1" || !data.user;
 
   return (
     <>
@@ -65,7 +73,6 @@ export default async function ResetPasswordPage({
                 boxShadow: "var(--shadow-2)",
               }}
             >
-              <input type="hidden" name="code" value={code} />
               <Field label="Neues Passwort" polarity="dark">
                 <Input polarity="dark" type="password" name="password" required minLength={8} autoComplete="new-password" />
               </Field>
