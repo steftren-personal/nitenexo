@@ -21,7 +21,6 @@ import { ScrollTrigger } from "@/components/motion/gsap";
 
 const VIDEO_URL = "/assets/thread-film.mp4";
 const POSTER_URL = "/assets/thread-poster.jpg"; // start frame (scrub poster)
-const ENDING_URL = "/assets/thread-ending.jpg"; // ending frame (static hero)
 // Real byte size of the encoded video — fallback when Content-Length is
 // missing. Updated after the final encode.
 const VIDEO_BYTES = 6873187;
@@ -411,11 +410,12 @@ export function ThreadFilm() {
         <span className="tf-hint" aria-hidden="true">Scrollen</span>
       </div>
 
-      {/* ── static hero (phones, portrait, reduced motion, no-JS) ── */}
-      <div className="tf-static" style={{ backgroundImage: `url('${ENDING_URL}')` }}>
+      {/* ── static hero (phones, portrait, reduced motion, no-JS) — sits
+           transparently on the page-wide thread-env world, so it never shows
+           a cropped image edge against the rest of the page ── */}
+      <div className="tf-static">
         <div className="tf-static-scrim" aria-hidden="true" />
         <div className="tf-static-inner">
-          <span className="tf-chip tf-chip--static">Chatbots für Gastro &amp; Clubs · WhatsApp</span>
           <h1 className="tf-h1">Digitale Assistenten, die mitarbeiten.</h1>
           <p className="tf-s tf-s--settle">
             Chatbot, Website und KI-Integration aus einer Hand. Im Dienst, auch um 23:40.

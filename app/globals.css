@@ -547,27 +547,20 @@ html.gsap-enabled .tf-static { display: none; }
 }
 
 /* persistent hero chrome (no HUD, no clocks — spec §1) */
-.tf-chip {
-  position: absolute; left: 24px; bottom: 24px; opacity: 0; transition: opacity 0.5s ease;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px;
-  letter-spacing: 0.04em; color: var(--on-dark-muted);
-  background: rgba(8, 8, 15, 0.55); border: 1px solid rgba(96, 96, 126, 0.3);
-  border-radius: 10px; padding: 8px 12px; backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px); text-shadow: 0 1px 3px rgba(5, 5, 10, 0.85);
-}
 .tf-hint {
   position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%);
   font: var(--type-caption); color: var(--on-dark-faint); letter-spacing: 0.14em;
   text-transform: uppercase; transition: opacity 0.4s ease;
 }
-/* ── static hero (designed layout, not an apology) ── */
+/* ── static hero (designed layout, not an apology) — transparent over the
+   page-wide thread-env layer, so there is no cropped image edge ── */
 .tf-static {
   position: relative; min-height: 100svh; display: flex; align-items: flex-end;
-  background-size: cover; background-position: 50% 100%; background-color: var(--color-primary);
+  background: transparent;
 }
 .tf-static-scrim {
   position: absolute; inset: 0; pointer-events: none;
-  background: linear-gradient(180deg, rgba(10, 8, 18, 0.55) 0%, rgba(10, 8, 18, 0.2) 40%, rgba(10, 8, 18, 0.74) 100%);
+  background: radial-gradient(ellipse 55% 42% at 50% 62%, rgba(5, 5, 10, 0.5) 0%, rgba(5, 5, 10, 0.28) 46%, rgba(5, 5, 10, 0) 70%);
 }
 .tf-static-inner {
   position: relative; width: 100%; max-width: 720px; margin: 0 auto;
@@ -575,11 +568,10 @@ html.gsap-enabled .tf-static { display: none; }
 }
 .tf-static-inner .tf-h1 { font-size: clamp(34px, 9vw, 56px); }
 .tf-static-inner .tf-s--settle { margin-top: var(--space-md); }
-.tf-chip--static { position: static; display: inline-block; opacity: 1; margin-bottom: var(--space-lg); }
 
 /* ── THE FIVE GATES — character-identical to GATES in ThreadFilm.tsx ── */
 @media (max-width: 720px), (orientation: portrait) and (max-width: 1024px), (orientation: portrait) and (pointer: coarse), (orientation: landscape) and (pointer: coarse) and (max-height: 560px), (prefers-reduced-motion: reduce) {
-  .tf, .tf--scrub { height: auto !important; min-height: 0 !important; background-image: none !important; }
+  .tf, .tf--scrub { height: auto !important; min-height: 0 !important; background: none !important; }
   .tf-stage { display: none !important; }
   .tf-film { display: none !important; }
   .tf-static { display: flex !important; }
@@ -587,7 +579,7 @@ html.gsap-enabled .tf-static { display: none; }
 
 /* scrub-capable but short desktop windows: hide the small overlays only */
 @media (max-height: 560px) {
-  .tf-hint, .tf-chip { display: none; }
+  .tf-hint { display: none; }
 }
 
 /* ── The one environment: the film's ending world behind the whole page ── */
@@ -609,6 +601,16 @@ html.gsap-enabled .tf-static { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   .thread-env-img { animation: none; }
+}
+/* portrait: cover-scaling the wide frame shrinks the lights below pixel size —
+   zoom into the bottom-center of the frame instead (near native resolution),
+   so the light rows and the lime tail actually show on phones */
+@media (orientation: portrait) {
+  .thread-env-img {
+    background-size: auto 175%;
+    background-position: 50% 100%;
+    filter: brightness(0.85) saturate(1.05);
+  }
 }
 
 /* ── StoryThread: the film's filament continues through the page ── */
