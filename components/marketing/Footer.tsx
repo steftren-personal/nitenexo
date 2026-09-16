@@ -2,7 +2,6 @@ import React from "react";
 import Link from "next/link";
 import { Logo } from "./Logo";
 import { SquiggleDraw } from "@/components/motion/SquiggleDraw";
-import { SquiggleDivider } from "./SquiggleDivider";
 import { CONTACT } from "@/lib/site";
 
 /**
@@ -42,10 +41,10 @@ const linkStyle: React.CSSProperties = {
   textDecoration: "none",
 };
 
-export function Footer({ calm = false }: { calm?: boolean }) {
+export function Footer() {
   return (
     <footer style={{ background: "var(--surface-canvas-light)", color: "var(--color-ink-deep)" }}>
-      {calm ? <SquiggleDivider /> : <SquiggleDraw />}
+      <SquiggleDraw />
       <div
         style={{
           padding: "var(--space-section) var(--space-xl) var(--space-xxl)",

@@ -12,6 +12,8 @@ export function ProjectsSection() {
   return (
     <section id="projekte" style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "var(--space-section) var(--space-xl)" }}>
       <div style={{ textAlign: "center", maxWidth: 640, margin: "0 auto var(--space-xxl)" }} data-reveal>
+        {/* Knoten für den Seiten-Faden (StoryThread), wie bei den Nachbar-Sections. */}
+        <span className="thread-pulse" data-thread-pulse aria-hidden="true" style={{ display: "block", margin: "0 auto var(--space-sm)" }} />
         <Eyebrow polarity="dark">Projekte</Eyebrow>
         <h2 style={{ font: "var(--type-display-large)", fontSize: "clamp(28px, 4vw, 44px)", margin: "var(--space-md) 0 var(--space-md)" }}>Umgesetzt für</h2>
         <p style={{ font: "var(--type-body-md)", color: "var(--on-dark-muted)", margin: 0 }}>Echte Projekte, echte Zahlen.</p>

@@ -35,7 +35,6 @@ export function CookieBanner() {
 
   return (
     <div
-      className="nn-cookie"
       role="dialog"
       aria-label="Cookie-Hinweis"
       style={{
@@ -57,10 +56,9 @@ export function CookieBanner() {
         gap: "var(--space-lg)",
       }}
     >
-      <div className="nn-cookie-copy" style={{ flex: "1 1 320px", minWidth: 0 }}>
-        <p className="nn-cookie-short">Nur notwendige Cookies. <Link href="/datenschutz">Details</Link></p>
-        <div className="nn-cookie-long" style={{ font: "var(--type-body-strong)", marginBottom: 4 }}>Cookies &amp; Datenschutz</div>
-        <p className="nn-cookie-long" style={{ font: "var(--type-caption)", color: "var(--on-dark-muted)", margin: 0 }}>
+      <div style={{ flex: "1 1 320px", minWidth: 0 }}>
+        <div style={{ font: "var(--type-body-strong)", marginBottom: 4 }}>Cookies &amp; Datenschutz</div>
+        <p style={{ font: "var(--type-caption)", color: "var(--on-dark-muted)", margin: 0 }}>
           Diese Seite nutzt nur technisch notwendige Cookies. Optionale Cookies setzen wir erst nach
           deiner Zustimmung.{" "}
           <Link href="/datenschutz" style={{ color: "var(--on-primary)", textDecoration: "underline" }}>

@@ -17,8 +17,7 @@ export function MotionRoot() {
 
   useGSAP(
     () => {
-      // The homepage has its own restrained driver; other routes stay unchanged.
-      if (pathname === "/" || prefersReducedMotion()) return;
+      if (prefersReducedMotion()) return;
 
       // ── Scroll progress bar ──
       let bar = document.querySelector<HTMLDivElement>(".bw-progress");
