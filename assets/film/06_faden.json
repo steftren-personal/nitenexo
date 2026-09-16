@@ -1,0 +1,23 @@
+[
+  {
+    "created_at": "2026-09-16T18:48:19.483657Z",
+    "display_name": "Nano Banana Pro",
+    "id": "6fa5de9e-9489-4ca0-8877-0a6c257fcbf9",
+    "job_type": "nano_banana_pro",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3F8gG4i8G17ktOEkeydcaQJK1fU/hf_20260916_184819_6fa5de9e-9489-4ca0-8877-0a6c257fcbf9_min.webp",
+    "params": {
+      "application": null,
+      "aspect_ratio": "16:9",
+      "batch_size": 1,
+      "height": 1536,
+      "input_image": null,
+      "input_images": [],
+      "prompt": "Abstract finale: a single thin lime-green thread of light weaving through violet smoke and connecting glowing nodes, glassy reflections, dark premium tech mood, seamless calm. Photorealistic cinematic film still, anamorphic 35mm, shallow depth of field, moody night lighting, color palette deep violet (#150f23) shadows with a single lime-green (#c8f04a) neon accent, natural film grain, no people, no faces, no text, no logos, no watermark",
+      "resolution": "2k",
+      "surface": null,
+      "width": 2752
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3F8gG4i8G17ktOEkeydcaQJK1fU/hf_20260916_184819_6fa5de9e-9489-4ca0-8877-0a6c257fcbf9.png",
+    "status": "completed"
+  }
+]

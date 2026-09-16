@@ -1,0 +1,29 @@
+[
+  {
+    "created_at": "2026-09-16T18:50:50.143608Z",
+    "display_name": "Kling 3.0 Turbo",
+    "id": "bcf355c6-96e3-4766-ba17-7eca53c7b4ea",
+    "job_type": "kling3_0_turbo",
+    "min_result_url": null,
+    "params": {
+      "duration": 5,
+      "height": 720,
+      "medias": [
+        {
+          "data": {
+            "id": "7ea22009-4eda-4f4b-9a53-a99507f900e1",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3F8gG4i8G17ktOEkeydcaQJK1fU/7ea22009-4eda-4f4b-9a53-a99507f900e1_resize.jpg"
+          },
+          "role": "start_image"
+        }
+      ],
+      "prompt": "Slow crane move over the dance floor, silhouettes sway, laser beams sweep through haze, confetti drifts down, magenta and violet light pulses, no faces visible, no text",
+      "resolution": "720p",
+      "width": 1280
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3F8gG4i8G17ktOEkeydcaQJK1fU/hf_20260916_185050_bcf355c6-96e3-4766-ba17-7eca53c7b4ea.mp4",
+    "status": "completed",
+    "thumbnail_url": "https://cdn.higgsfield.ai/user_3F8gG4i8G17ktOEkeydcaQJK1fU/hf_20260916_185050_bcf355c6-96e3-4766-ba17-7eca53c7b4ea_thumbnail.webp"
+  }
+]

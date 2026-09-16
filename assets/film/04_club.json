@@ -1,0 +1,23 @@
+[
+  {
+    "created_at": "2026-09-16T18:48:19.455061Z",
+    "display_name": "Nano Banana Pro",
+    "id": "2440021e-56c4-444a-b4fa-fa8f1cbc9887",
+    "job_type": "nano_banana_pro",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3F8gG4i8G17ktOEkeydcaQJK1fU/hf_20260916_184819_2440021e-56c4-444a-b4fa-fa8f1cbc9887_min.webp",
+    "params": {
+      "application": null,
+      "aspect_ratio": "16:9",
+      "batch_size": 1,
+      "height": 1536,
+      "input_image": null,
+      "input_images": [],
+      "prompt": "Wide shot over a packed nightclub dance floor seen from the DJ booth, only silhouettes and raised hands in backlight and haze, no faces visible, laser beams in violet and magenta, one lime-green laser line cutting through, confetti in the air. Photorealistic cinematic film still, anamorphic 35mm, shallow depth of field, moody night lighting, color palette deep violet (#150f23) shadows with a single lime-green (#c8f04a) neon accent, natural film grain, no people, no faces, no text, no logos, no watermark",
+      "resolution": "2k",
+      "surface": null,
+      "width": 2752
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3F8gG4i8G17ktOEkeydcaQJK1fU/hf_20260916_184819_2440021e-56c4-444a-b4fa-fa8f1cbc9887.png",
+    "status": "completed"
+  }
+]

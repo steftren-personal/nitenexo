@@ -1,0 +1,23 @@
+[
+  {
+    "created_at": "2026-09-16T18:48:19.548436Z",
+    "display_name": "Nano Banana Pro",
+    "id": "fc3fad82-60a9-4c7a-b9f5-169d1b70df15",
+    "job_type": "nano_banana_pro",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3F8gG4i8G17ktOEkeydcaQJK1fU/hf_20260916_184819_fc3fad82-60a9-4c7a-b9f5-169d1b70df15_min.webp",
+    "params": {
+      "application": null,
+      "aspect_ratio": "16:9",
+      "batch_size": 1,
+      "height": 1536,
+      "input_image": null,
+      "input_images": [],
+      "prompt": "The same bar at dawn: chairs stacked on tables, soft blue morning light through the window, a cash register drawer open on the counter, coffee cup steaming, a receipt printer, quiet and clean, a faint lime-green neon still glowing. Photorealistic cinematic film still, anamorphic 35mm, shallow depth of field, moody night lighting, color palette deep violet (#150f23) shadows with a single lime-green (#c8f04a) neon accent, natural film grain, no people, no faces, no text, no logos, no watermark",
+      "resolution": "2k",
+      "surface": null,
+      "width": 2752
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3F8gG4i8G17ktOEkeydcaQJK1fU/hf_20260916_184819_fc3fad82-60a9-4c7a-b9f5-169d1b70df15.png",
+    "status": "completed"
+  }
+]

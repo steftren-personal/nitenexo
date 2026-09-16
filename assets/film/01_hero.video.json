@@ -1,0 +1,29 @@
+[
+  {
+    "created_at": "2026-09-16T18:50:49.700166Z",
+    "display_name": "Kling 3.0 Turbo",
+    "id": "7eb692c5-d177-40b2-bf07-8eea7942fc7a",
+    "job_type": "kling3_0_turbo",
+    "min_result_url": null,
+    "params": {
+      "duration": 5,
+      "height": 720,
+      "medias": [
+        {
+          "data": {
+            "id": "e38da4d1-88e5-4f07-8a34-ff88f56d04b9",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3F8gG4i8G17ktOEkeydcaQJK1fU/e38da4d1-88e5-4f07-8a34-ff88f56d04b9_resize.jpg"
+          },
+          "role": "start_image"
+        }
+      ],
+      "prompt": "Slow cinematic dolly forward toward the open bar door, rain streaks slide down the window, neon reflections shimmer, warm light pulses gently from inside, camera almost steady, no people, no text",
+      "resolution": "720p",
+      "width": 1280
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3F8gG4i8G17ktOEkeydcaQJK1fU/hf_20260916_185049_7eb692c5-d177-40b2-bf07-8eea7942fc7a.mp4",
+    "status": "completed",
+    "thumbnail_url": "https://cdn.higgsfield.ai/user_3F8gG4i8G17ktOEkeydcaQJK1fU/hf_20260916_185049_7eb692c5-d177-40b2-bf07-8eea7942fc7a_thumbnail.webp"
+  }
+]

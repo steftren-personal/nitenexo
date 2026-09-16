@@ -1,0 +1,23 @@
+[
+  {
+    "created_at": "2026-09-16T18:48:19.811733Z",
+    "display_name": "Nano Banana Pro",
+    "id": "7b5d3cb5-788e-4478-af57-0c8a2f5a2f37",
+    "job_type": "nano_banana_pro",
+    "min_result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3F8gG4i8G17ktOEkeydcaQJK1fU/hf_20260916_184819_7b5d3cb5-788e-4478-af57-0c8a2f5a2f37_min.webp",
+    "params": {
+      "application": null,
+      "aspect_ratio": "16:9",
+      "batch_size": 1,
+      "height": 1536,
+      "input_image": null,
+      "input_images": [],
+      "prompt": "Close-up over a tablet standing on a restaurant table, its screen glowing with a dark elegant website layout (abstract blocks, no readable text), a menu card and a candle beside it, violet ambient light, lime-green accent glow from the screen edge. Photorealistic cinematic film still, anamorphic 35mm, shallow depth of field, moody night lighting, color palette deep violet (#150f23) shadows with a single lime-green (#c8f04a) neon accent, natural film grain, no people, no faces, no text, no logos, no watermark",
+      "resolution": "2k",
+      "surface": null,
+      "width": 2752
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3F8gG4i8G17ktOEkeydcaQJK1fU/hf_20260916_184819_7b5d3cb5-788e-4478-af57-0c8a2f5a2f37.png",
+    "status": "completed"
+  }
+]

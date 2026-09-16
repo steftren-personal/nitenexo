@@ -1,0 +1,29 @@
+[
+  {
+    "created_at": "2026-09-16T18:50:49.525767Z",
+    "display_name": "Kling 3.0 Turbo",
+    "id": "3a56c9dd-0383-4cf6-bda2-c930e0f5e809",
+    "job_type": "kling3_0_turbo",
+    "min_result_url": null,
+    "params": {
+      "duration": 5,
+      "height": 720,
+      "medias": [
+        {
+          "data": {
+            "id": "8d4d7b04-f00b-4a29-b19d-321d99e2dbe8",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3F8gG4i8G17ktOEkeydcaQJK1fU/8d4d7b04-f00b-4a29-b19d-321d99e2dbe8_resize.jpg"
+          },
+          "role": "start_image"
+        }
+      ],
+      "prompt": "Static dawn scene, steam rises slowly from the coffee cup, morning light gently brightens through the window, dust particles float, subtle camera drift, calm, no people, no text",
+      "resolution": "720p",
+      "width": 1280
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3F8gG4i8G17ktOEkeydcaQJK1fU/hf_20260916_185049_3a56c9dd-0383-4cf6-bda2-c930e0f5e809.mp4",
+    "status": "completed",
+    "thumbnail_url": "https://cdn.higgsfield.ai/user_3F8gG4i8G17ktOEkeydcaQJK1fU/hf_20260916_185049_3a56c9dd-0383-4cf6-bda2-c930e0f5e809_thumbnail.webp"
+  }
+]

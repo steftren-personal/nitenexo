@@ -1,0 +1,29 @@
+[
+  {
+    "created_at": "2026-09-16T18:50:49.849343Z",
+    "display_name": "Kling 3.0 Turbo",
+    "id": "96ca7d45-3fc8-4b27-bf38-bef3d6277201",
+    "job_type": "kling3_0_turbo",
+    "min_result_url": null,
+    "params": {
+      "duration": 5,
+      "height": 720,
+      "medias": [
+        {
+          "data": {
+            "id": "35ea7fb6-3b68-458e-aaa4-55de26f8c746",
+            "type": "media_input",
+            "url": "https://d2ol7oe51mr4n9.cloudfront.net/user_3F8gG4i8G17ktOEkeydcaQJK1fU/35ea7fb6-3b68-458e-aaa4-55de26f8c746_resize.jpg"
+          },
+          "role": "start_image"
+        }
+      ],
+      "prompt": "The lime-green light thread gently drifts and pulses, violet smoke rolls slowly, nodes breathe with glow, very slow push-in, calm seamless motion, no text, no people",
+      "resolution": "720p",
+      "width": 1280
+    },
+    "result_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3F8gG4i8G17ktOEkeydcaQJK1fU/hf_20260916_185049_96ca7d45-3fc8-4b27-bf38-bef3d6277201.mp4",
+    "status": "completed",
+    "thumbnail_url": "https://cdn.higgsfield.ai/user_3F8gG4i8G17ktOEkeydcaQJK1fU/hf_20260916_185049_96ca7d45-3fc8-4b27-bf38-bef3d6277201_thumbnail.webp"
+  }
+]
