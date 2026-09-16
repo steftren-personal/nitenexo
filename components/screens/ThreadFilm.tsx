@@ -28,8 +28,8 @@ type Variant = "desktop" | "mobile";
 const SOURCES: Record<Variant, { video: string; poster: string; bytes: number }> = {
   // byte sizes are the real encoded sizes (stat) — fallback when
   // Content-Length is missing, so the loading ring stays honest
-  desktop: { video: "/assets/film/film-desktop.mp4", poster: "/assets/film/film-poster.webp", bytes: 7603370 },
-  mobile: { video: "/assets/film/film-mobile.mp4", poster: "/assets/film/film-poster-mobile.webp", bytes: 2343855 },
+  desktop: { video: "/assets/film/film-desktop.mp4", poster: "/assets/film/film-poster.webp", bytes: 7720456 },
+  mobile: { video: "/assets/film/film-mobile.mp4", poster: "/assets/film/film-poster-mobile.webp", bytes: 2376201 },
 };
 const SCENE_MAP = sceneMapJson as SceneMap;
 

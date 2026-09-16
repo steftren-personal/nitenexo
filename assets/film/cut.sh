@@ -9,7 +9,10 @@ XF=0.6; D=5.041667
 # Filtergraph mit xfade-Kette
 inputs=(); for n in "${ORDER[@]}"; do inputs+=(-i "$n.mp4"); done
 fg=""; off=0
-for i in 0 1 2 3 4 5; do fg+="[$i:v]fps=24,scale=1600:900:flags=lanczos,setsar=1,format=yuv420p[v$i];"; done
+for i in 0 1 2 3 4 5; do
+  pre=""; [ "${ORDER[$i]}" = "02_tresen" ] && pre="crop=1284:492:0:88,"
+  fg+="[$i:v]fps=24,${pre}scale=1600:900:flags=lanczos,setsar=1,format=yuv420p[v$i];"
+done
 prev="v0"
 for i in 1 2 3 4 5; do
   off=$(python3 -c "print(round($D*$i - $XF*$i, 3))")
