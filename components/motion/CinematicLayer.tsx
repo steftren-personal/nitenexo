@@ -18,7 +18,7 @@ export function CinematicLayer() {
 
   useGSAP(
     () => {
-      if (prefersReducedMotion()) return;
+      if (pathname === "/" || prefersReducedMotion()) return;
       const fine = window.matchMedia("(pointer: fine)").matches;
       const cleanups: Array<() => void> = [];
 

@@ -1,118 +1,31 @@
-"use client";
-
 import React from "react";
-import { motion, type Variants } from "framer-motion";
 import { MessageCircle, Bot, CalendarCheck } from "lucide-react";
 import { ChatPreview } from "./ChatPreview";
 
 const STEPS = [
-  {
-    icon: <MessageCircle strokeWidth={2} />,
-    title: "Dein Gast schreibt",
-    text: "„Habt ihr morgen einen Tisch für 4?“ — per WhatsApp, jederzeit, auch um 23:40.",
-  },
-  {
-    icon: <Bot strokeWidth={2} />,
-    title: "Der Assistent antwortet sofort",
-    text: "Prüft Verfügbarkeit, schlägt Zeiten vor und bestätigt — in Sekunden, ohne dass dein Team tippt.",
-  },
-  {
-    icon: <CalendarCheck strokeWidth={2} />,
-    title: "Automatisch eingetragen",
-    text: "Die Reservierung landet im System, die Bestätigung geht raus. Du schläfst weiter.",
-  },
+  { icon: <MessageCircle strokeWidth={2} />, title: "Dein Gast schreibt", text: "„Habt ihr morgen einen Tisch für 4?“ — per WhatsApp, jederzeit, auch um 23:40." },
+  { icon: <Bot strokeWidth={2} />, title: "Der Assistent antwortet sofort", text: "Prüft Verfügbarkeit, schlägt Zeiten vor und bestätigt — in Sekunden, ohne dass dein Team tippt." },
+  { icon: <CalendarCheck strokeWidth={2} />, title: "Automatisch eingetragen", text: "Die Reservierung landet im System, die Bestätigung geht raus. Du schläfst weiter." },
 ];
 
-const list: Variants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.18, delayChildren: 0.1 } },
-};
-const stepV: Variants = {
-  hidden: { opacity: 0, x: 40 },
-  visible: { opacity: 1, x: 0, transition: { duration: 0.55, ease: [0.16, 0.84, 0.44, 1] } },
-};
-
-// Ambient request-lights around the chat portal (whisper-level flicker).
-const SPARKS = [
-  { x: -46, y: -38 }, { x: 44, y: -30 }, { x: -52, y: 8 }, { x: 55, y: 14 },
-  { x: -38, y: 46 }, { x: 40, y: 42 }, { x: -18, y: -52 }, { x: 20, y: 54 },
-];
-
-/**
- * »So arbeitet dein Assistent« — Kapitel 4: the example chat plays itself the
- * first time it scrolls into view (ChatPreview's own IntersectionObserver),
- * beside the three presented steps.
- */
 export function RobotPresenter() {
   return (
-    <section className="bw-container bw-section" style={{ padding: "var(--space-section) var(--space-xl)" }}>
+    <section id="assistent" className="bw-container" style={{ padding: "0 var(--space-xl) var(--space-section)" }}>
       <div className="bw-about-grid" style={{ display: "grid", gridTemplateColumns: "0.95fr 1.05fr", gap: "var(--space-section)", alignItems: "center" }}>
-        {/* Framed chat portal + ambient request-lights */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.92 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.7, ease: [0.16, 0.84, 0.44, 1] }}
-          style={{ position: "relative", display: "flex", justifyContent: "center" }}
-        >
-          <span
-            aria-hidden="true"
-            style={{
-              position: "absolute",
-              inset: "-8%",
-              background: "radial-gradient(circle, rgba(194,239,78,0.22), rgba(122,63,240,0.18) 45%, transparent 70%)",
-              filter: "blur(40px)",
-              zIndex: 0,
-            }}
-          />
-          <div className="rp-portal" style={{ position: "relative", zIndex: 1, display: "flex", justifyContent: "center", width: "100%" }}>
-            {SPARKS.map((s, i) => (
-              <span
-                key={i}
-                className="rp-spark"
-                aria-hidden="true"
-                style={{ "--sx": `${s.x}%`, "--sy": `${s.y}%`, "--sd": `${(i % 4) * -0.9}s` } as React.CSSProperties}
-              />
-            ))}
-            <ChatPreview />
-          </div>
-        </motion.div>
-
-        {/* Presented steps */}
+        <div data-reveal style={{ display: "flex", justifyContent: "center" }}><ChatPreview revealed={4} /></div>
         <div>
-          <h2 style={{ font: "var(--type-display-large)", fontSize: "clamp(28px, 4vw, 44px)", margin: "0 0 var(--space-xl)", maxWidth: 460 }}>
-            Er macht die Arbeit — du siehst nur das Ergebnis.
-          </h2>
-
-          <motion.div variants={list} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-80px" }} style={{ display: "flex", flexDirection: "column", gap: "var(--space-lg)" }}>
+          <h2 data-reveal style={{ font: "var(--type-display-large)", fontSize: "clamp(28px, 4vw, 44px)", marginBottom: "var(--space-xl)", maxWidth: 460 }}>Er macht die Arbeit — du siehst nur das Ergebnis.</h2>
+          <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-xl)" }}>
             {STEPS.map((s, i) => (
-              <motion.div key={i} variants={stepV} style={{ display: "flex", gap: "var(--space-lg)", alignItems: "flex-start" }}>
-                <span
-                  style={{
-                    flex: "0 0 auto",
-                    width: 48,
-                    height: 48,
-                    borderRadius: "var(--rounded-lg)",
-                    display: "inline-flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    background: "rgba(122,63,240,0.18)",
-                    border: "1px solid var(--hairline-violet)",
-                    color: "var(--color-accent-lime)",
-                  }}
-                >
-                  {s.icon}
-                </span>
+              <div key={s.title} data-reveal style={{ display: "flex", gap: "var(--space-lg)", alignItems: "flex-start" }}>
+                <span aria-hidden="true" style={{ flex: "0 0 44px", color: "var(--color-accent-lime)" }}>{s.icon}</span>
                 <div>
-                  <div style={{ font: "var(--type-heading-sm)", color: "var(--on-primary)", marginBottom: 4 }}>
-                    <span style={{ color: "var(--color-accent-violet-mid)", marginRight: 8 }}>{String(i + 1).padStart(2, "0")}</span>
-                    {s.title}
-                  </div>
-                  <p style={{ font: "var(--type-body-md)", color: "var(--on-dark-muted)", margin: 0, maxWidth: 460 }}>{s.text}</p>
+                  <h3 style={{ font: "var(--type-heading-sm)", marginBottom: 8 }}><span style={{ color: "var(--color-accent-lime)", marginRight: 8 }}>{String(i + 1).padStart(2, "0")}</span>{s.title}</h3>
+                  <p style={{ font: "var(--type-body-md)", color: "var(--on-dark-muted)", maxWidth: 460 }}>{s.text}</p>
                 </div>
-              </motion.div>
+              </div>
             ))}
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>

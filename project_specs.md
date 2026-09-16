@@ -167,6 +167,30 @@ not defensible (UWG, no fake reviews). It is removed and replaced by:
 **Done means:** `npm run build`, `npm run lint`, `npm test` green; homepage shows the Projekte grid
 where the testimonials were; `/projekte` renders all three blocks; nav and footer link to it.
 
+## Hero & Seiten-Dramaturgie 09/2026 (Stefans freigegebener Auftrag)
+
+Source: `docs/FELIX_HERO.md` and the explicit implementation/release request.
+This replaces the former ThreadFilm choreography, not the business content.
+
+- Full-bleed, poster-first 100svh hero, local portrait/tablet/desktop loops;
+  reduced motion and Save-Data never load video. A pause control is available.
+- Exact headline and tagline from the brief. Mobile preserves both complete
+  statements with wrapping: the full copy cannot fit in two three-word lines.
+- GSAP line entrances: 600ms, 120ms stagger, ease-out. Below: once-only
+  opacity + 16px reveals, cards staggered 80ms. Kicker lines use scaleX.
+- Only the desktop left-edge SVG thread is scrubbed. No page-wide film,
+  sticky story stages, film gates, dim driver, parallax or scroll progress bar.
+- Story headings are content-sized, below 70svh; chapter 1 uses the local bar still.
+- All existing chapter/service/project/pricing/blog/CTA copy remains. Mobile
+  has 16px minimum text and 44px targets. Cookie notice is a compact sheet;
+  existing consent values and persistence are unchanged.
+- No dependency or service added. Auth, account, booking, admin, Supabase,
+  middleware and mail implementation are outside scope.
+- Done: baseline/final bundles, RED/GREEN tests and coverage, build, tsc, lint,
+  all sections at 390x844 and 430x932, desktop screenshots, reduced-motion,
+  Save-Data, no-JS, failure-path checks, security/diff/design audit. Then the
+  requested Felix commit, rebase onto origin/main, push main, verify remote.
+
 ## File structure (within allowed folders)
 ```
 /app        layout, globals.css, template (route fade), page.tsx, leistungen/, projekte/
@@ -182,10 +206,11 @@ where the testimonials were; `/projekte` renders all three blocks; nav and foote
             marketing/ (Logo, NavBar, Footer, CookieBanner, SquiggleDivider, PricingModel,
                         ArticleCard, ArticleLayout, IntegrationsStrip, Legal, Sticker, Marquee,
                         ProjectCard)
-            screens/ (ThreadFilm scrub intro, HomeScreen + sub-parts: ServicesBento,
+            screens/ (Hero mit KI-Loop, HomeScreen + sub-parts: StoryBeat, ServicesBento,
                       UseCaseTabs, ProjectsSection, StatStrip, WhyAccordion, ChatPreview,
-                      RobotPresenter mit Halte-Moment, MascotRobot, BookingBoard)
-            motion/StoryThread (der Seiten-Faden), marketing/ChapterKicker (Kapitel-Knoten)
+                      RobotPresenter, MascotRobot, BookingBoard)
+            motion/StoryThread (Faden-Linie am linken Rand, einziger Scroll-Scrub),
+            motion/HomeMotion (Section-Reveals der Startseite)
             motion/ (MotionRoot, KineticHeading, FlipWords, ScrambleText, SquiggleDraw,
                      CinematicLayer, gsap setup)
             booking/ (BookingFlow, AppointmentList, TerminManager)
@@ -196,6 +221,6 @@ where the testimonials were; `/projekte` renders all three blocks; nav and foote
 /lib/supabase  server.ts (SSR client), client.ts (browser client), admin.ts (service-role, server-only)
 /supabase   sql migrations for profiles / slots / appointments + RLS policies
 /docs       setup guides (EMAIL-SETUP.md, GOOGLE-KALENDER-SETUP.md)
-/public/assets  logo, stickers, squiggle, thread-film.mp4 (+ poster/ending), night-hero.mp4 (alt, ungenutzt), blog stills
+/public/assets  logo, stickers, squiggle, blog stills; hero/ (KI-Loop 1080/540/portrait, Poster, bar-night Stills)
 /public/projekte  client avatars + Teen Clubbing screenshots (local WebP only)
 ```
