@@ -37,7 +37,7 @@ export function ProjectAvatar({ project, size = 56 }: { project: Project; size?:
     >
       {/* Local files only, fixed size; next/image would add nothing here. */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={src} alt="" width={size} height={size} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+      <img src={src} alt="" width={size} height={size} sizes={`${size}px`} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
     </span>
   );
 }
@@ -60,11 +60,11 @@ export function ProjectLink({ project }: { project: Project }) {
     </>
   );
   return project.link.external ? (
-    <a href={project.link.href} target="_blank" rel="noopener noreferrer" style={style}>
+    <a className="nn-project-link" href={project.link.href} target="_blank" rel="noopener noreferrer" style={style}>
       {inner}
     </a>
   ) : (
-    <Link href={project.link.href} style={style}>
+    <Link className="nn-project-link" href={project.link.href} style={style}>
       {inner}
     </Link>
   );
@@ -91,7 +91,7 @@ export function ProjectCard({ project }: { project: Project }) {
       <p style={{ font: "var(--type-body-md)", color: "var(--on-primary)", margin: 0, flex: 1, lineHeight: 1.55 }}>{project.result}</p>
       <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexWrap: "wrap", gap: "var(--space-xs)" }}>
         {project.chips.map((c) => (
-          <li key={c} style={chipStyle}>
+          <li key={c} className="nn-project-chip" style={chipStyle}>
             {c}
           </li>
         ))}

@@ -39,7 +39,7 @@ Nachtgastronomie baut. Die Seite ist auf Deutsch (lockeres „Du") und enthält 
 | Styling      | Tailwind CSS + Botwerk Design-Tokens (CSS Variablen) |
 | Animation    | GSAP (ScrollTrigger) via `@gsap/react`               |
 | Schriften    | `next/font` — Space Grotesk (Display), Rubik (UI)    |
-| Intro-Film   | Higgsfield-generierter Scroll-Scrub-Take (`public/assets/thread-film.mp4`) |
+| Hero-Loop    | Higgsfield-generierter Ruhe-Loop (`public/assets/hero/`, Poster zuerst, Video nur ohne Reduced-Motion/Save-Data) |
 | Auth & DB    | Supabase (Auth + Postgres, RLS auf jeder Tabelle)    |
 | Mailversand  | nodemailer über reines SMTP                          |
 | Termine      | Google Kalender API (OAuth)                          |
@@ -105,7 +105,7 @@ components/        Wiederverwendbare Bausteine
   ├─ forms/          Formularelemente
   ├─ booking/        Slot-Auswahl, Terminlisten
   ├─ marketing/      NavBar, Footer, Preise, Artikel-Karten, CookieBanner …
-  ├─ screens/        Seiten-Abschnitte (ThreadFilm, Bento, Tabs …)
+  ├─ screens/        Seiten-Abschnitte (Hero, Bento, Tabs …)
   └─ motion/         GSAP-Animationslogik
 lib/              Inhalts- & Konfigurationsdaten, Supabase-Clients, Mailversand,
                   Google-Kalender-Anbindung

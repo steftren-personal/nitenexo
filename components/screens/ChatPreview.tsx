@@ -30,7 +30,7 @@ function Bubble({ r }: { r: Row }) {
         }}
       >
         <span>{r.text}</span>
-        <span style={{ font: "var(--type-code)", fontSize: 10, opacity: 0.55, whiteSpace: "nowrap", transform: "translateY(1px)" }}>
+        <span className="nn-chat-time" style={{ font: "var(--type-code)", fontSize: 10, opacity: 0.55, whiteSpace: "nowrap", transform: "translateY(1px)" }}>
           {r.t}
         </span>
       </div>
@@ -195,7 +195,7 @@ export function ChatPreview({ revealed, typing: typingProp }: { revealed?: numbe
         }}
       >
         <span style={{ font: "var(--type-caption)", color: "var(--on-dark-faint)", flex: 1 }}>Nachricht schreiben…</span>
-        <span style={{ font: "var(--type-code)", fontSize: 13, color: "var(--color-accent-violet-mid)" }}>23:41</span>
+        <span className="nn-chat-time" style={{ font: "var(--type-code)", fontSize: 13, color: "var(--color-accent-violet-mid)" }}>23:41</span>
       </div>
     </div>
   );
