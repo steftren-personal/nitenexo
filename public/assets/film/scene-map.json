@@ -1,0 +1,55 @@
+{
+  "fps": 24,
+  "crossfade": 0.6,
+  "total": 27.25,
+  "scenes": [
+    {
+      "scene": "01_hero",
+      "page": "Hero: Bar von außen, Tür offen",
+      "start": 0.0,
+      "end": 5.042,
+      "stable_from": 0.0,
+      "stable_to": 4.442
+    },
+    {
+      "scene": "05_morgen",
+      "page": "Kapitel 1 · Der Morgen danach",
+      "start": 4.442,
+      "end": 9.484,
+      "stable_from": 5.042,
+      "stable_to": 8.884
+    },
+    {
+      "scene": "06_faden",
+      "page": "Kapitel 2 · Über NiteNexo (der Faden)",
+      "start": 8.883,
+      "end": 13.925,
+      "stable_from": 9.483,
+      "stable_to": 13.325
+    },
+    {
+      "scene": "04_club",
+      "page": "Kapitel 3 · Für deine Art von Laden",
+      "start": 13.325,
+      "end": 18.367,
+      "stable_from": 13.925,
+      "stable_to": 17.767
+    },
+    {
+      "scene": "03_website",
+      "page": "Kapitel 4 · Was wir bauen",
+      "start": 17.767,
+      "end": 22.809,
+      "stable_from": 18.367,
+      "stable_to": 22.209
+    },
+    {
+      "scene": "02_tresen",
+      "page": "Kapitel 5/6 · Dein Assistent + Dein Zug (Handy leuchtet)",
+      "start": 22.208,
+      "end": 27.25,
+      "stable_from": 22.808,
+      "stable_to": 26.65
+    }
+  ]
+}

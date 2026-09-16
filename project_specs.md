@@ -196,6 +196,38 @@ where the testimonials were; `/projekte` renders all three blocks; nav and foote
 /lib/supabase  server.ts (SSR client), client.ts (browser client), admin.ts (service-role, server-only)
 /supabase   sql migrations for profiles / slots / appointments + RLS policies
 /docs       setup guides (EMAIL-SETUP.md, GOOGLE-KALENDER-SETUP.md)
-/public/assets  logo, stickers, squiggle, thread-film.mp4 (+ poster/ending), night-hero.mp4 (alt, ungenutzt), blog stills
+/public/assets  logo, stickers, squiggle, film/ (film-desktop.mp4, film-mobile.mp4, posters, scene-map.json), thread-ending.jpg (thread-env), night-hero.mp4 (alt, ungenutzt), blog stills
 /public/projekte  client avatars + Teen Clubbing screenshots (local WebP only)
 ```
+
+## Film „Eine Nacht, ein Take" 09/2026 — Kapitel laufen in den Szenen (approved via docs/FELIX_FILM.md, 2026-09-16)
+
+**Why:** the 15 s „Der Faden" take is replaced by a photoreal 27.25 s KI film cut from six
+scenes. The page mechanics stay exactly as they are (ThreadFilm scrubbing, caption bands,
+StoryBeats, buttons, chat preview, robots); only the film and its time map change.
+
+**Assets** (`public/assets/film/`, copied from `assets/film/`): `film-desktop.mp4` 1600x900,
+`film-mobile.mp4` 540x960 portrait crop with the same timeline, `film-poster.webp`,
+`film-poster-mobile.webp`, `scene-map.json` (six scenes with `start`/`end`/`stable_from`/
+`stable_to`, 0.6 s crossfades, page order: Hero → Morgen → Faden → Club → Website → Tresen).
+
+**Time map** (`lib/film-timeline.ts`, pure, tested by `lib/film-timeline.test.ts`):
+- Hero region (800vh sticky stage) scrubs scene 1's stable range 0 → 4.44 s with the five bands.
+- Every StoryBeat below binds to the next scene: while the beat scrolls into the viewport the
+  film scrubs the crossfade (previous `stable_to` → own `stable_from`), then the scene's stable
+  range plays across the chapter until the next beat starts entering. Chapters 5 and 6 share the
+  last scene (Tresen, phone lights up); the page end maps to the film end so the tail stands still.
+- Piecewise-linear scroll → time keyframes, rebuilt on every ScrollTrigger refresh (one trigger
+  per beat, `start`/`end` used as the scroll anchors). Same rAF lerp, seek gating and delta-gated
+  writes as before. Film stays `position: fixed` behind everything, dim `DIM_MAX` unchanged.
+
+**Mobile:** the four layout gates (≤720 px, portrait tablet, portrait coarse, short landscape)
+no longer show the static hero; they scrub `film-mobile.mp4` with the mobile poster. Static
+hero stays for reduced motion, Save-Data and no-JS; a failed video keeps the poster
+(`tf--video-failed`). No autoplay, no audio, no new dependency, no external request.
+
+**Removed:** `thread-film.mp4`, `thread-poster.jpg` (unreferenced). `thread-ending.jpg` stays,
+it is the page-wide `thread-env` fallback world.
+
+**Done means:** build, lint, `npm test` green; desktop 1440x900 and mobile 390x844 screenshots at
+0/12/30/50/70/90 % scroll show the matching scene behind each chapter; mobile scrubs.
