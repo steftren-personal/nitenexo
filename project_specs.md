@@ -2,11 +2,11 @@
 
 ## What the app does and who uses it
 Marketing website for **NiteNexo Solutions** (Stefan Trendafilov, Wien) — a small digital
-workshop building **chatbots (specialised in WhatsApp), websites and custom digital assistants**
-for hospitality, bars and clubs. Chatbots are the core product on any channel — WhatsApp is the
-declared specialty, Instagram and on-site web widgets are offered too; copy must not narrow the
-offering to WhatsApp alone. Visitors are venue owners — little time, non-technical, high
-WhatsApp/Instagram volume. German copy, informal "Du".
+workshop building **websites and KI-Integration** for hospitality, events and nightlife
+(see "Rebranding 09/2026" below). Website-Creation and KI-Integration are the core; chatbots
+(WhatsApp first, Instagram and on-site widgets too) are one building block inside KI-Integration.
+Visitors are venue and event owners — little time, non-technical, high WhatsApp/Instagram
+volume. German copy, informal "Du".
 
 In addition to the public marketing pages, registered users (prospective/existing clients) can
 **log in and book a consultation appointment** with NiteNexo directly through the site — no more
@@ -41,10 +41,11 @@ is only the underlying component library.
 ### Public
 - `/` **Start** (dark): hero (aurora bg, kinetic headline w/ lime keyword, animated WhatsApp chat
   mockup, count-up stat strip) → marquee → About (code block + plug sticker) → industries pills →
-  services grid (6, one spotlight) → pricing tiers → "Warum NiteNexo" accordion + code block →
-  testimonials → blog teasers → big kinetic CTA → footer.
-- `/leistungen` **Leistungen** (dark): hero + 5 alternating detail rows (text ↔ checklist card) + CTA.
-- `/preise` **Preise** (dark): 3 pricing tiers (Pro featured/inverted) + Kleinunternehmer note + FAQ.
+  services grid (6, one spotlight) → pricing panels → "Warum NiteNexo" accordion + code block →
+  Projekte grid („Umgesetzt für") → blog teasers → big kinetic CTA → footer.
+- `/leistungen` **Leistungen** (dark): hero + 3 alternating detail rows (text ↔ checklist card) + CTA.
+- `/projekte` **Projekte** (dark): hero + one long-form block per reference project + CTA.
+- `/preise` **Preise** (dark): 3 pricing panels (KI-Integration featured) + Kleinunternehmer note + FAQ.
 - `/kontakt` **Kontakt** (dark): 2-col form (with DSGVO consent checkbox ) + contact column.
 - `/impressum` **Impressum** (dark): § 5 ECG / § 25 MedienG disclosure.
 - `/datenschutz` **Datenschutz** (dark): DSGVO privacy policy.
@@ -113,9 +114,63 @@ gracefully. Additionally for the booking feature:
 - Two browser tabs booking the same slot at the same time: exactly one succeeds, the other gets a
   clear "already booked" error and the slot list refreshes.
 
+## Rebranding 09/2026 — Websites & KI-Integration als Kern (approved by Stefan, 2026-09-16)
+
+**Why:** the old positioning ("Digitale Assistenten für Gastro & Clubs", chatbots at the centre)
+no longer matches what NiteNexo sells. Websites and KI-Integration are the core now; chatbots
+are one building block inside KI-Integration. Spec source: `docs/FELIX_REBRAND.md`.
+
+**Tagline everywhere** (meta title, ThreadFilm static hero subline, footer, OpenGraph):
+„Websites & KI-Integration für Gastro, Events und Nachtleben".
+**Meta description:** „NiteNexo Solutions aus Wien baut Websites, die verkaufen, und KI, die
+mitarbeitet: Event-Seiten, Bar- und Club-Websites, Automatisierung und Assistenten.
+DSGVO-tauglich, in Tagen live."
+
+**Copy changes (no structural change to the ThreadFilm/StoryBeat choreography):**
+- Hero (ThreadFilm bands + settle hero): first promise = a website that sells at 23:40, second =
+  KI that takes over the workflow, chatbot as the example inside the KI line. Settle headline
+  „Websites, die verkaufen. KI, die mitarbeitet." CTA „Projekt starten" unchanged.
+- `/leistungen`: three services in this order: 1) **Website-Creation** (event pages, bar/club
+  sites, landing pages; DSGVO without cookie banner, ticket/reservation links, live in days),
+  2) **KI-Integration** (assistants + automation: WhatsApp/reservation chatbots, guest lists,
+  bookkeeping and social-media workflows; „Beratung & Setup" merged in), 3) **Hosting & Wartung**
+  (monthly: hosting, updates, security, support). Chatbot copy shortened, not deleted.
+  Each row has an anchor id (`website-creation`, `ki-integration`, `hosting-wartung`).
+- `/preise`: one panel per service. Existing figures only: Website-Creation €500 – €3.000 (the
+  range main already carried for „Website"), KI-Integration shows €300 – €4.000 as the example
+  position „Chatbot-Einrichtung" with other automation quoted by scope; Hosting & Wartung is the
+  monthly retainer. No new number was invented.
+- Homepage: services bento reordered to the three core services + three building blocks
+  (Chatbots, Automatisierung, Anbindungen); About, flip-words band and pricing subline reworded.
+- Contact form service select uses the three new service names.
+- Voice: `nitenexo-brand-voice` skill (Du-Form, concrete, no em-dashes in new copy, no AI jargon).
+- Untouched on purpose: auth, konto, termine, admin, Supabase, middleware, e-mail, Impressum,
+  Datenschutz (no new third-party service was added).
+
+**Clients Highlight („Projekte"):** the testimonial marquee contained invented quotes, which is
+not defensible (UWG, no fake reviews). It is removed and replaced by:
+- `lib/projects.ts` — typed data for three reference projects (facts only, no invented numbers,
+  no person names for Sorry Not Sorry): Teen Clubbing Wien (website), Sorry Not Sorry Event
+  (KI-Integration: WhatsApp guest-list chatbot), NiteNexo itself (one human, five KI agents).
+  Guarded by `lib/projects.test.ts` (`npm test`, Node's built-in runner, no new dependency).
+- Homepage section „Umgesetzt für" / „Echte Projekte, echte Zahlen." — 3-card grid (stacked on
+  mobile): avatar, name, category badge (Website / KI-Integration), one result sentence, three
+  fact chips, link. Component: `components/screens/ProjectsSection.tsx` +
+  `components/marketing/ProjectCard.tsx`.
+- `/projekte` — long form, one block per project: Teen Clubbing with real screenshots of the live
+  site (captured headless, stored as WebP under `public/projekte/`), Sorry Not Sorry with a static
+  chat mock, NiteNexo with an agents graphic built from the robot mark. Reveal animations via the
+  existing `data-reveal` mechanism (reduced motion respected by MotionRoot).
+- Navigation: „Projekte" sits between Leistungen and Preise; „Werkstatt" stays.
+- Assets: `public/projekte/` holds local WebP avatars + screenshots only (no external requests).
+
+**Done means:** `npm run build`, `npm run lint`, `npm test` green; homepage shows the Projekte grid
+where the testimonials were; `/projekte` renders all three blocks; nav and footer link to it.
+
 ## File structure (within allowed folders)
 ```
-/app        layout, globals.css, template (route fade), page.tsx, leistungen/, preise/,
+/app        layout, globals.css, template (route fade), page.tsx, leistungen/, projekte/
+            (+ ChatMock, AgentsGraphic), preise/,
             werkstatt/ (+ 3 article routes), kontakt/, impressum/, datenschutz/, login/,
             registrieren/ (+ bestaetigen/), passwort-vergessen/, passwort-neu/, termine/,
             konto/, admin/termine/ (Stefan & Theodor only), coming-soon/
@@ -125,19 +180,22 @@ gracefully. Additionally for the booking feature:
                  BackgroundGradientAnimation)
             forms/ (Field, Input, Select)
             marketing/ (Logo, NavBar, Footer, CookieBanner, SquiggleDivider, PricingModel,
-                        ArticleCard, ArticleLayout, IntegrationsStrip, Legal, Sticker, Marquee)
+                        ArticleCard, ArticleLayout, IntegrationsStrip, Legal, Sticker, Marquee,
+                        ProjectCard)
             screens/ (ThreadFilm scrub intro, HomeScreen + sub-parts: ServicesBento,
-                      UseCaseTabs, TestimonialsMarquee, StatStrip, WhyAccordion, ChatPreview,
+                      UseCaseTabs, ProjectsSection, StatStrip, WhyAccordion, ChatPreview,
                       RobotPresenter mit Halte-Moment, MascotRobot, BookingBoard)
             motion/StoryThread (der Seiten-Faden), marketing/ChapterKicker (Kapitel-Knoten)
             motion/ (MotionRoot, KineticHeading, FlipWords, ScrambleText, SquiggleDraw,
                      CinematicLayer, gsap setup)
             booking/ (BookingFlow, AppointmentList, TerminManager)
-/lib        site nav config, pricing/content data, werkstatt article data, admin-emails,
+/lib        site nav config, pricing/content data, projects data (+ test), werkstatt article
+            data, admin-emails,
             availability + booking-config, mailer/email/email-template (SMTP),
             google-calendar (OAuth)
 /lib/supabase  server.ts (SSR client), client.ts (browser client), admin.ts (service-role, server-only)
 /supabase   sql migrations for profiles / slots / appointments + RLS policies
 /docs       setup guides (EMAIL-SETUP.md, GOOGLE-KALENDER-SETUP.md)
 /public/assets  logo, stickers, squiggle, thread-film.mp4 (+ poster/ending), night-hero.mp4 (alt, ungenutzt), blog stills
+/public/projekte  client avatars + Teen Clubbing screenshots (local WebP only)
 ```

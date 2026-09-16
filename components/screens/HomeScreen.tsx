@@ -21,7 +21,7 @@ import { StoryBeat } from "./StoryBeat";
 import { BookingBoard } from "./BookingBoard";
 import { StoryThread } from "@/components/motion/StoryThread";
 import { IntegrationsStrip } from "@/components/marketing/IntegrationsStrip";
-import { TestimonialsMarquee } from "./TestimonialsMarquee";
+import { ProjectsSection } from "./ProjectsSection";
 import { UseCaseTabs } from "./UseCaseTabs";
 
 const sectionStyle: React.CSSProperties = {
@@ -62,7 +62,7 @@ export function HomeScreen() {
         <div className="bw-container" style={{ padding: "var(--space-xxl) var(--space-xl)", textAlign: "center" }}>
           <span className="thread-pulse" data-thread-pulse aria-hidden="true" style={{ display: "block", margin: "0 auto var(--space-md)" }} />
           <p style={{ font: "var(--type-display-large)", fontSize: "clamp(22px, 3.2vw, 38px)", margin: 0, color: "var(--on-primary)", lineHeight: 1.3 }}>
-            NiteNexo baut dir <FlipWords words={["den Chatbot", "die Website", "die KI-Abläufe", "die Gästeliste", "den Newsletter"]} />.
+            NiteNexo baut dir <FlipWords words={["die Website", "die KI-Abläufe", "den Chatbot", "die Gästeliste", "die Buchhaltung"]} />.
           </p>
         </div>
       </div>
@@ -79,11 +79,11 @@ export function HomeScreen() {
           <div style={{ position: "relative", display: "flex", justifyContent: "center" }} data-reveal>
             <Card variant="spotlight-violet" style={{ width: "100%", maxWidth: 420 }}>
               <CodeBlock>
-                <span style={{ color: "var(--color-accent-pink)" }}>$</span> nitenexo init <strong>--branche gastro</strong>{"\n"}
-                <span style={{ color: "var(--on-dark-muted)" }}>✓ Speisekarte verknüpft</span>{"\n"}
-                <span style={{ color: "var(--on-dark-muted)" }}>✓ Reservierungen aktiv</span>{"\n"}
-                <span style={{ color: "var(--on-dark-muted)" }}>✓ Gästeliste verbunden</span>{"\n"}
-                <span style={{ color: "var(--color-accent-violet-mid)" }}>→ live auf +43…</span>
+                <span style={{ color: "var(--color-accent-pink)" }}>$</span> nitenexo init <strong>--branche event</strong>{"\n"}
+                <span style={{ color: "var(--on-dark-muted)" }}>✓ Website gebaut, Tickets verlinkt</span>{"\n"}
+                <span style={{ color: "var(--on-dark-muted)" }}>✓ Gästelisten-Chatbot verbunden</span>{"\n"}
+                <span style={{ color: "var(--on-dark-muted)" }}>✓ Hosting und Wartung aktiv</span>{"\n"}
+                <span style={{ color: "var(--color-accent-violet-mid)" }}>→ live in 4 Tagen</span>
                 <span className="bw-caret" aria-hidden="true" />
               </CodeBlock>
             </Card>
@@ -93,17 +93,16 @@ export function HomeScreen() {
           </div>
           <div data-reveal>
             <h2 style={{ font: "var(--type-display-large)", fontSize: "clamp(30px, 4vw, 48px)", margin: "0 0 var(--space-lg)", maxWidth: 520 }}>
-              Ein digitaler Mitarbeiter, der nie Pause macht.
+              Websites, die verkaufen. KI, die mitarbeitet.
             </h2>
             <p style={{ font: "var(--type-body-lg)", color: "var(--on-dark-muted)", margin: 0, maxWidth: 520 }}>
-              NiteNexo Solutions ist eine kleine Digital-Werkstatt aus Wien. Wir bauen Chatbots,
-              Websites und maßgeschneiderte Automatisierungen für Gastronomie, Bars und Clubs — für
-              Betriebe mit wenig Zeit und viel Andrang über WhatsApp und Instagram. Unsere
-              Spezialität ist WhatsApp, weil dort die meisten Anfragen landen.
+              NiteNexo Solutions ist eine kleine Digital-Werkstatt aus Wien. Wir bauen Websites für
+              Gastro, Events und Nachtleben, und wir bringen KI in deine Abläufe: vom Chatbot auf
+              WhatsApp bis zur Buchhaltung, die sich selbst vorbereitet.
             </p>
             <p style={{ font: "var(--type-body-lg)", color: "var(--on-dark-muted)", margin: "var(--space-lg) 0 0", maxWidth: 520 }}>
-              Kein Agentur-Sprech, keine Monatsprojekte. Du erklärst uns deinen Ablauf, wir verdrahten
-              den Rest.
+              Kein Agentur-Sprech, keine Monatsprojekte. Du erklärst uns deinen Ablauf, wir bauen
+              den Rest. In Tagen live, nicht in Monaten.
             </p>
             <div style={{ marginTop: "var(--space-xl)" }}>
               <Button variant="inverted" href="/leistungen">
@@ -132,7 +131,7 @@ export function HomeScreen() {
       />
       <section style={{ ...sectionStyle, paddingTop: 0 }}>
         <div style={centerHead} data-reveal>
-          <h2 style={{ ...h2Style, fontSize: "clamp(28px, 4vw, 44px)" }}>Chatbot, Website und KI-Integration für deinen Laden.</h2>
+          <h2 style={{ ...h2Style, fontSize: "clamp(28px, 4vw, 44px)" }}>Website, KI-Integration und Wartung für deinen Laden.</h2>
         </div>
         <ServicesBento />
         <ServicesBentoCta />
@@ -158,10 +157,10 @@ export function HomeScreen() {
           <div style={centerHead} data-reveal>
             <span className="thread-pulse" data-thread-pulse aria-hidden="true" style={{ display: "block", margin: "0 auto var(--space-sm)" }} />
             <Eyebrow polarity="dark">Preise</Eyebrow>
-            <h2 style={{ ...h2Style, fontSize: "clamp(28px, 4vw, 44px)", marginBottom: "var(--space-md)" }}>Jeder Betrieb ist anders — der Preis auch.</h2>
+            <h2 style={{ ...h2Style, fontSize: "clamp(28px, 4vw, 44px)", marginBottom: "var(--space-md)" }}>Jeder Betrieb ist anders. Der Preis auch.</h2>
             <p style={{ font: "var(--type-body-md)", color: "var(--on-dark-muted)", margin: 0 }}>
-              Keine Pakete von der Stange. Ob Chatbot, Website oder KI-Integration: Festpreis für
-              die Einrichtung, dazu eine monatliche Pauschale, die zu deinem Projekt passt.
+              Keine Pakete von der Stange. Festpreis für Website oder KI-Integration, dazu eine
+              monatliche Pauschale für Hosting und Wartung.
             </p>
           </div>
           <PricingModel polarity="dark" />
@@ -193,22 +192,9 @@ export function HomeScreen() {
         </div>
       </section>
 
-      {/* ── Testimonials (full-bleed marquee) ────────────────── */}
-      <div style={{ paddingTop: "var(--space-section)", paddingBottom: "var(--space-section)" }}>
-        <div className="bw-container" style={{ padding: "0 var(--space-xl)" }}>
-          <div style={centerHead} data-reveal>
-            <span className="thread-pulse" data-thread-pulse aria-hidden="true" style={{ display: "block", margin: "0 auto var(--space-sm)" }} />
-            <Eyebrow polarity="dark">Stimmen aus dem Betrieb</Eyebrow>
-            <h2 style={{ ...h2Style, fontSize: "clamp(28px, 4vw, 44px)" }}>Was Betreiber:innen sagen.</h2>
-          </div>
-        </div>
-        <TestimonialsMarquee />
-        <div className="bw-container" style={{ padding: "var(--space-xl) var(--space-xl) 0" }}>
-          <p style={{ textAlign: "center", font: "var(--type-caption)", color: "var(--on-dark-faint)", margin: 0 }}>
-            Beispielstimmen — echte Referenzen geben wir dir gern im Gespräch.
-          </p>
-        </div>
-      </div>
+      {/* ── Projekte (echte Referenzen statt Zitate) ─────────── */}
+      <ProjectsSection />
+
 
       {/* ── Blog ────────────────────────────────────────────── */}
       <section style={sectionStyle}>
@@ -256,8 +242,8 @@ export function HomeScreen() {
             ]}
           />
           <p style={{ font: "var(--type-body-lg)", color: "var(--on-dark-muted)", margin: "var(--space-lg) auto 0", maxWidth: 480 }}>
-            Erzähl uns von deinem Laden. Wir melden uns innerhalb eines Werktags mit einem Vorschlag
-            und einer kurzen Demo.
+            Erzähl uns von deinem Laden oder deinem Event. Wir melden uns innerhalb eines Werktags
+            mit einem Vorschlag und einer kurzen Demo.
           </p>
           <div style={{ display: "flex", gap: "var(--space-md)", justifyContent: "center", marginTop: "var(--space-xl)", flexWrap: "wrap" }}>
             <span data-thread-end style={{ display: "inline-flex" }}>

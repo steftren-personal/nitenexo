@@ -8,16 +8,16 @@ import { PricingModel } from "@/components/marketing/PricingModel";
 export const metadata: Metadata = {
   title: "Preise — NiteNexo Solutions",
   description:
-    "Jedes Projekt wird einzeln kalkuliert: Chatbot €300 bis €4.000, Website €500 bis €3.000, KI-Integration nach Umfang. Dazu eine monatliche Pauschale für Support, Bugfixes und Weiterentwicklung.",
+    "Jedes Projekt wird einzeln kalkuliert: Website-Creation €500 bis €3.000, KI-Integration mit Chatbot-Einrichtung €300 bis €4.000, dazu eine monatliche Pauschale für Hosting und Wartung.",
 };
 
 const FAQ = [
-  { q: "Warum steht hier kein Paketpreis?", a: "Weil kein Betrieb dem anderen gleicht. Ein Assistent, der Öffnungszeiten beantwortet, ist etwas völlig anderes als einer, der Tischplan und Kasse kennt. Wir kalkulieren jeden einzeln — dafür bekommst du einen Festpreis und keine Überraschung." },
-  { q: "Was kostet die Einrichtung?", a: "Ein Chatbot liegt zwischen €300 und €4.000, eine professionelle Website zwischen €500 und €3.000, jeweils einmalig und je nach Umfang. KI-Integration kalkulieren wir nach Umfang der Automatisierungen. Nach einem kurzen Gespräch nennen wir dir den Festpreis für genau deinen Fall." },
-  { q: "Was heißt KI-Integration konkret?", a: "Automatismen in deinem Unternehmen: Die KI verbindet Kasse, Kalender, Newsletter oder Buchhaltung und übernimmt Abläufe, die sonst Handarbeit sind. Vom automatischen Wochenreport bis zur Schicht-Erinnerung. Der Preis hängt davon ab, wie viele solcher Abläufe wir einbauen." },
-  { q: "Wofür ist die monatliche Pauschale?", a: "Für Support im laufenden Betrieb, Bugfixes ohne Extrarechnung und Weiterentwicklung — neue Abläufe, saisonale Aktionen, Anpassungen. Die Höhe hängt vom Umfang deines Assistenten ab und wird gemeinsam mit dem Festpreis vereinbart." },
+  { q: "Warum steht hier kein Paketpreis?", a: "Weil kein Betrieb dem anderen gleicht. Eine Event-Seite mit Ticket-Link ist etwas anderes als eine Club-Website mit Reservierung, und ein Chatbot für Öffnungszeiten etwas anderes als einer, der Tischplan und Kasse kennt. Wir kalkulieren jedes Projekt einzeln. Dafür bekommst du einen Festpreis und keine Überraschung." },
+  { q: "Was kostet eine Website?", a: "Zwischen €500 und €3.000 einmalig, je nach Umfang: Event-Seite, Landing-Page oder komplette Bar- und Club-Website, mit oder ohne Ticket- und Reservierungs-Anbindung. Nach einem kurzen Gespräch nennen wir dir den Festpreis für genau deinen Fall." },
+  { q: "Was kostet die KI-Integration?", a: "Die Einrichtung eines Chatbots liegt zwischen €300 und €4.000 einmalig, je nach Abläufen und Anbindungen. Andere Automatisierungen, etwa für Buchhaltung, Newsletter oder Social Media, kalkulieren wir nach Umfang als Festpreis: Welche Systeme angebunden werden und wie viele Abläufe die KI übernimmt." },
+  { q: "Wofür ist die monatliche Pauschale?", a: "Für Hosting, Updates und Sicherheit, Support im laufenden Betrieb, Bugfixes ohne Extrarechnung und Weiterentwicklung: neue Abläufe, saisonale Aktionen, Anpassungen. Die Höhe hängt vom Umfang ab und wird gemeinsam mit dem Festpreis vereinbart." },
   { q: "Bin ich an eine Laufzeit gebunden?", a: "Nein. Die monatliche Pauschale ist jederzeit zum Monatsende kündbar." },
-  { q: "Brauche ich technisches Wissen?", a: "Nein. Wir richten alles ein und verknüpfen es mit deinem Kanal — meist der WhatsApp-Nummer. Dein Team bekommt eine kurze Einschulung." },
+  { q: "Brauche ich technisches Wissen?", a: "Nein. Wir bauen, richten ein und verknüpfen alles mit deinen Kanälen, etwa der WhatsApp-Nummer oder dem Ticket-Shop. Dein Team bekommt eine kurze Einschulung." },
   { q: "Wem gehören die Gästedaten?", a: "Dir. Wir verarbeiten sie ausschließlich in deinem Auftrag — geregelt in einem Auftragsverarbeitungsvertrag nach Art. 28 DSGVO. Die Datenbank liegt in Frankfurt, und wir erheben nur, was der jeweilige Ablauf wirklich braucht. Details in der Datenschutzerklärung." },
 ];
 
@@ -30,12 +30,11 @@ export default function PreisePage() {
           <div style={{ textAlign: "center", maxWidth: 620, margin: "0 auto var(--space-section)" }}>
             <Eyebrow polarity="dark">Preise</Eyebrow>
             <h1 style={{ font: "var(--type-heading-xl)", fontSize: "clamp(30px, 4.4vw, 48px)", margin: "var(--space-md) 0 var(--space-md)" }}>
-              Jeder Betrieb ist anders — der Preis auch.
+              Jeder Betrieb ist anders. Der Preis auch.
             </h1>
             <p style={{ font: "var(--type-body-md)", color: "var(--on-dark-muted)", margin: 0 }}>
-              Keine Pakete von der Stange. Ob Chatbot, Website oder KI-Integration: Du bekommst
-              einen Festpreis für die Einrichtung und eine monatliche Pauschale, die zu deinem
-              Projekt passt.
+              Keine Pakete von der Stange. Du bekommst einen Festpreis für Website oder
+              KI-Integration und eine monatliche Pauschale für Hosting und Wartung.
             </p>
             <span className="bw-float bw-hide-mobile" style={{ position: "absolute", right: 8, top: -8 }}>
               <Sticker name="plug" size={92} tilt={10} />

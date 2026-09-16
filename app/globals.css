@@ -228,12 +228,6 @@ h1, h2, h3, h4, p, ul, pre {
 .bw-logo-item:hover img { filter: none; }
 .bw-logo-text { color: var(--color-accent-violet-mid); }
 
-/* Testimonials marquee */
-.bw-testi-marquee { overflow: hidden; }
-.bw-testi-track { display: flex; width: max-content; animation: bwMarquee 42s linear infinite; }
-.bw-testi-marquee:hover .bw-testi-track { animation-play-state: paused; }
-.bw-testi-card { flex: 0 0 auto; width: 360px; margin-right: var(--space-lg); white-space: normal; }
-
 /* ── Floating stickers (brand-sanctioned subtle float) ──────────────────── */
 .bw-float { animation: bwFloat 5.5s ease-in-out infinite; will-change: transform; }
 .bw-float-slow { animation-duration: 7.5s; animation-delay: -1.5s; }
@@ -317,11 +311,11 @@ a[href*="spline.design"] { display: none !important; }
 }
 
 /* ── Card hover lift ────────────────────────────────────────────────────── */
-.bw-services-grid > *, .bw-blog-grid > *, .bw-pricing-grid > *, .bw-testi-grid > * {
+.bw-services-grid > *, .bw-blog-grid > *, .bw-pricing-grid > *, .bw-projects-grid > * {
   transition: transform 0.18s ease-out, border-color 0.18s ease-out;
 }
 @media (hover: hover) {
-  .bw-services-grid > *:hover, .bw-blog-grid > *:hover, .bw-pricing-grid > *:hover {
+  .bw-services-grid > *:hover, .bw-blog-grid > *:hover, .bw-pricing-grid > *:hover, .bw-projects-grid > *:hover {
     transform: translateY(-6px);
   }
 }
@@ -370,12 +364,12 @@ html.gsap-enabled [data-reveal] { opacity: 0; transform: translateY(24px); }
     gap: var(--space-xxl) !important;
   }
   .bw-leistung-row > div:first-child { order: -1; }
-  .bw-services-grid, .bw-testi-grid, .bw-pricing-grid, .bw-blog-grid {
+  .bw-services-grid, .bw-projects-grid, .bw-pricing-grid, .bw-blog-grid {
     grid-template-columns: repeat(2, 1fr) !important;
   }
 }
 @media (max-width: 640px) {
-  .bw-services-grid, .bw-testi-grid, .bw-pricing-grid, .bw-blog-grid, .bw-stat-strip {
+  .bw-services-grid, .bw-projects-grid, .bw-pricing-grid, .bw-blog-grid, .bw-stat-strip {
     grid-template-columns: 1fr !important;
   }
   .bw-form-row { grid-template-columns: 1fr !important; }

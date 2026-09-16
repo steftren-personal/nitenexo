@@ -12,15 +12,15 @@ const COLUMNS: { title: string; links: { label: string; href: string }[] }[] = [
   {
     title: "Leistungen",
     links: [
-      { label: "Chatbots", href: "/leistungen" },
-      { label: "Website-Design", href: "/leistungen" },
-      { label: "Digitale Assistenten", href: "/leistungen" },
-      { label: "Beratung & Setup", href: "/leistungen" },
+      { label: "Website-Creation", href: "/leistungen#website-creation" },
+      { label: "KI-Integration", href: "/leistungen#ki-integration" },
+      { label: "Hosting & Wartung", href: "/leistungen#hosting-wartung" },
     ],
   },
   {
     title: "Unternehmen",
     links: [
+      { label: "Projekte", href: "/projekte" },
       { label: "Preise", href: "/preise" },
       { label: "Aus der Werkstatt", href: "/werkstatt" },
       { label: "Kontakt", href: "/kontakt" },
@@ -58,7 +58,7 @@ export function Footer() {
               <Logo polarity="light" />
             </Link>
             <p style={{ font: "var(--type-caption)", color: "var(--color-accent-violet-mid)", margin: 0 }}>
-              Digitale Assistenten für Gastronomie, Bars und Clubs. Weniger tippen, kein Gast wartet.
+              Websites &amp; KI-Integration für Gastro, Events und Nachtleben. Aus Wien, für die Nacht.
             </p>
             <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-xs)" }}>
               <a href={`mailto:${CONTACT.email}`} style={linkStyle}>

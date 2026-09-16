@@ -19,10 +19,20 @@ const rubik = Rubik({
   display: "swap",
 });
 
+const TAGLINE = "Websites & KI-Integration für Gastro, Events und Nachtleben";
+const DESCRIPTION =
+  "NiteNexo Solutions aus Wien baut Websites, die verkaufen, und KI, die mitarbeitet: Event-Seiten, Bar- und Club-Websites, Automatisierung und Assistenten. DSGVO-tauglich, in Tagen live.";
+
 export const metadata: Metadata = {
-  title: "NiteNexo Solutions — Digitale Assistenten für Gastro & Clubs",
-  description:
-    "NiteNexo Solutions baut Chatbots — spezialisiert auf WhatsApp —, Websites und digitale Assistenten für Gastronomie, Bars und Clubs. Reservierungen, Bestellungen und Gästelisten — direkt im Chat.",
+  title: `NiteNexo Solutions: ${TAGLINE}`,
+  description: DESCRIPTION,
+  openGraph: {
+    type: "website",
+    locale: "de_AT",
+    siteName: "NiteNexo Solutions",
+    title: `NiteNexo Solutions: ${TAGLINE}`,
+    description: DESCRIPTION,
+  },
 };
 
 // Adds `gsap-enabled` to <html> before paint, but only when motion is allowed.

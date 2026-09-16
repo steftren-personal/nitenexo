@@ -372,30 +372,30 @@ export function ThreadFilm() {
           <p className="tf-s">Freitagabend. Sie hören nicht auf.</p>
         </div>
 
-        {/* Band 2 — Chatbot (Grid-Snap, rechts) */}
+        {/* Band 2 — Website (Grid-Snap, rechts): das erste Versprechen */}
         <div className="tf-band tf-band--right tf-band--grid">
-          <p className="tf-h" role="presentation">Der Chatbot antwortet.</p>
-          <p className="tf-s">Aufgenommen, bestätigt, eingetragen. Um 23:40.</p>
-        </div>
-
-        {/* Band 3 — Website (Rise, links) */}
-        <div className="tf-band tf-band--left tf-band--rise">
           <p className="tf-h" role="presentation">Die Website verkauft.</p>
-          <p className="tf-s">Speisekarte, Termine, Buchung. Rund um die Uhr.</p>
+          <p className="tf-s">Tickets, Reservierungen, Anfragen. Um 23:40.</p>
         </div>
 
-        {/* Band 4 — KI-Integration (Weave, rechts) */}
+        {/* Band 3 — KI (Rise, links): das zweite Versprechen, Chatbot als Beispiel */}
+        <div className="tf-band tf-band--left tf-band--rise">
+          <p className="tf-h" role="presentation">Die KI übernimmt.</p>
+          <p className="tf-s">Der Chatbot nimmt auf, bestätigt, trägt ein.</p>
+        </div>
+
+        {/* Band 4 — Abläufe (Weave, rechts) */}
         <div className="tf-band tf-band--right tf-band--weave">
-          <p className="tf-h" role="presentation">Die KI verbindet alles.</p>
-          <p className="tf-s">Kasse, Kalender, Abläufe. Läuft von allein.</p>
+          <p className="tf-h" role="presentation">Alles läuft weiter.</p>
+          <p className="tf-s">Gästeliste, Buchhaltung, Hosting. Auch wenn du schläfst.</p>
         </div>
 
         {/* Band 5 — Settle: der Hero */}
         <div className="tf-band tf-band--settle tf-band--rise">
-          <h1 className="tf-h1">Digitale Assistenten, die mitarbeiten.</h1>
+          <h1 className="tf-h1">Websites, die verkaufen. KI, die mitarbeitet.</h1>
           <p className="tf-s tf-s--settle">
-            Chatbot, Website und KI-Integration aus einer Hand. Dein Gast schreibt um 23:40, und
-            dahinter läuft alles von allein.
+            Um 23:40 kauft jemand ein Ticket auf deiner Seite. Um 23:41 trägt dein Chatbot die
+            Reservierung ein. Website und KI, die deine Abläufe übernehmen.
           </p>
           <div className="tf-cta">
             <Button variant="inverted" glow magnetic href="/kontakt">
@@ -416,9 +416,9 @@ export function ThreadFilm() {
       <div className="tf-static">
         <div className="tf-static-scrim" aria-hidden="true" />
         <div className="tf-static-inner">
-          <h1 className="tf-h1">Digitale Assistenten, die mitarbeiten.</h1>
+          <h1 className="tf-h1">Websites, die verkaufen. KI, die mitarbeitet.</h1>
           <p className="tf-s tf-s--settle">
-            Chatbot, Website und KI-Integration aus einer Hand. Im Dienst, auch um 23:40.
+            Websites &amp; KI-Integration für Gastro, Events und Nachtleben. Im Dienst, auch um 23:40.
           </p>
           <div className="tf-cta">
             <Button variant="inverted" glow href="/kontakt">

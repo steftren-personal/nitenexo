@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion, type Variants } from "framer-motion";
-import { MessageCircle, Globe, Bot, Settings, Wrench, Puzzle } from "lucide-react";
+import { Globe, Bot, Server, MessageCircle, Workflow, Puzzle } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 
 type Service = {
@@ -13,20 +13,19 @@ type Service = {
   featured?: boolean;
 };
 
-// The three offerings share the top row with equal weight — deliberately no
-// featured tile, so no Gewerk is crowned above the others.
 const SERVICES: Service[] = [
   {
-    tag: "Chat",
-    title: "Chatbots",
-    desc: "Reservierungen, Bestellungen, Gästelisten und FAQ — direkt im Chat, rund um die Uhr. Unsere Spezialität ist WhatsApp.",
-    icon: <MessageCircle strokeWidth={2} />,
+    tag: "Kern",
+    title: "Website-Creation",
+    desc: "Event-Seiten, Bar- und Club-Websites, Landing-Pages. DSGVO ohne Cookie-Banner, Ticket-Shop und Reservierung angebunden, am Handy in Sekunden geladen. In Tagen live, nicht in Monaten.",
+    icon: <Globe strokeWidth={2} />,
+    featured: true,
   },
-  { tag: "Web", title: "Website-Design", desc: "Professionelle Seiten für deinen Betrieb: Speisekarte, Galerie, Buchung. Mobile-first und blitzschnell.", icon: <Globe strokeWidth={2} /> },
-  { tag: "KI", title: "KI-Integration", desc: "Automatismen in deinem Unternehmen: Die KI verbindet Kasse, Kalender und Newsletter und übernimmt Abläufe von allein.", icon: <Bot strokeWidth={2} /> },
-  { tag: "Setup", title: "Beratung & Setup", desc: "Wir analysieren deinen Ablauf und verdrahten alles mit deinen Kanälen.", icon: <Settings strokeWidth={2} /> },
-  { tag: "Support", title: "Wartung & Support", desc: "Updates, Monitoring und schnelle Hilfe, wenn der Laden voll ist.", icon: <Wrench strokeWidth={2} /> },
-  { tag: "Schnittstellen", title: "Integrationen", desc: "Kasse, Tischplan, Kalender und Newsletter sauber miteinander verbunden.", icon: <Puzzle strokeWidth={2} /> },
+  { tag: "Kern", title: "KI-Integration", desc: "Assistenten und Automatisierung: Chatbot auf WhatsApp, Gästelisten, Buchhaltungs- und Social-Media-Workflows.", icon: <Bot strokeWidth={2} /> },
+  { tag: "Laufend", title: "Hosting & Wartung", desc: "Monatlich: Hosting, Updates, Sicherheit und Support, wenn der Laden voll ist.", icon: <Server strokeWidth={2} /> },
+  { tag: "Baustein", title: "Chatbots", desc: "Reservierungen, Gästelisten und FAQ direkt im Chat, rund um die Uhr. WhatsApp zuerst, auf Wunsch Instagram oder Website.", icon: <MessageCircle strokeWidth={2} /> },
+  { tag: "Baustein", title: "Automatisierung", desc: "Buchhaltung vorbereiten, Social-Media-Entwürfe schreiben, das Team erinnern. Was sich wiederholt, läuft von allein.", icon: <Workflow strokeWidth={2} /> },
+  { tag: "Baustein", title: "Anbindungen", desc: "Ticket-Shop, Reservierung, Kasse und Kalender sauber miteinander verbunden.", icon: <Puzzle strokeWidth={2} /> },
 ];
 
 const container: Variants = {
@@ -86,13 +85,6 @@ function Tile({ s }: { s: Service }) {
         {s.desc}
       </p>
 
-      {s.featured && (
-        <div style={{ marginTop: "var(--space-xl)" }}>
-          <Button variant="inverted" href="/leistungen">
-            Mehr erfahren
-          </Button>
-        </div>
-      )}
     </motion.div>
   );
 }
@@ -114,7 +106,7 @@ export function ServicesBento() {
   );
 }
 
-/** Centered link under the grid, replacing the old featured-tile button. */
+/** Centered link under the grid; the featured tile carries no button of its own. */
 export function ServicesBentoCta() {
   return (
     <div style={{ textAlign: "center", marginTop: "var(--space-xl)" }}>
