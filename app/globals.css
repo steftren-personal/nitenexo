@@ -407,26 +407,33 @@ html.gsap-enabled [data-reveal] { opacity: 0; transform: translateY(24px); }
 }
 
 /* ════════════════════════════════════════════════════════════════════
-   ThreadFilm — »Der Faden« (scrub hero; spec: .story-work/DESIGN-PACKAGE.md)
+   ThreadFilm — »Eine Nacht, ein Take« (scrub film; spec: docs/FELIX_FILM.md)
    ════════════════════════════════════════════════════════════════════ */
 :root {
   --tf-tshadow: 0 1px 2px rgba(5, 5, 10, 0.95), 0 3px 12px rgba(5, 5, 10, 0.78), 0 10px 44px rgba(5, 5, 10, 0.8);
 }
 
-/* Default = static hero (also the no-JS state). JS arms .tf--scrub.
-   With motion available (html.gsap-enabled, set by the inline head script)
-   the pre-hydration state is the film's first frame as a CSS background, so
-   nothing flashes and phones (gate block below) never download it. */
+/* Default = static hero (also the no-JS state). JS arms .tf--scrub, or
+   .tf--static for Save-Data. With motion available (html.gsap-enabled, set by
+   the inline head script) the pre-hydration state is the film's first frame
+   as a CSS background, so nothing flashes; phones get the portrait poster. */
 .tf { position: relative; height: auto; }
 .tf--scrub { height: 800vh; }
 html.gsap-enabled .tf {
   min-height: 100vh;
-  background: var(--color-primary) url("/assets/thread-poster.jpg") 50% 50% / cover no-repeat;
+  background: var(--color-primary) url("/assets/film/film-poster.webp") 50% 50% / cover no-repeat;
+}
+/* portrait cut poster — same four layout gates as MOBILE_GATES in ThreadFilm.tsx */
+@media (max-width: 720px), (orientation: portrait) and (max-width: 1024px), (orientation: portrait) and (pointer: coarse), (orientation: landscape) and (pointer: coarse) and (max-height: 560px) {
+  html.gsap-enabled .tf { background-image: url("/assets/film/film-poster-mobile.webp"); }
 }
 /* armed: the section must be fully transparent (no color, no image) or it
    covers the fixed film layer behind it for the whole hero */
 html.gsap-enabled .tf--scrub { background: none; }
 html.gsap-enabled .tf-static { display: none; }
+/* JS decided against the film (Save-Data): the designed static hero, no poster */
+html.gsap-enabled .tf--static { min-height: 0; background: none; }
+html.gsap-enabled .tf--static .tf-static { display: flex; }
 .tf-stage { display: none; }
 .tf--scrub .tf-stage {
   display: block; position: sticky; top: 0; height: 100vh; overflow: hidden;
@@ -563,8 +570,17 @@ html.gsap-enabled .tf-static { display: none; }
 .tf-static-inner .tf-h1 { font-size: clamp(34px, 9vw, 56px); }
 .tf-static-inner .tf-s--settle { margin-top: var(--space-md); }
 
-/* ── THE FIVE GATES — character-identical to GATES in ThreadFilm.tsx ── */
-@media (max-width: 720px), (orientation: portrait) and (max-width: 1024px), (orientation: portrait) and (pointer: coarse), (orientation: landscape) and (pointer: coarse) and (max-height: 560px), (prefers-reduced-motion: reduce) {
+/* ── narrow screens scrub the portrait cut: bands use the full width ── */
+@media (max-width: 720px) {
+  .tf-band { width: min(84vw, 460px); }
+  .tf-band--left { left: 24px; }
+  .tf-band--right { right: 24px; }
+  .tf-band--settle { top: 10%; }
+  .tf-ringwrap { right: 18px; top: 18px; width: 28px; height: 28px; }
+}
+
+/* ── THE STATIC GATE — character-identical to STATIC_GATES in ThreadFilm.tsx ── */
+@media (prefers-reduced-motion: reduce) {
   .tf, .tf--scrub { height: auto !important; min-height: 0 !important; background: none !important; }
   .tf-stage { display: none !important; }
   .tf-film { display: none !important; }

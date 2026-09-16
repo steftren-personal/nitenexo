@@ -4,30 +4,35 @@ import React, { useEffect, useRef } from "react";
 import { Button } from "@/components/ui/Button";
 import { splitChars } from "@/components/motion/splitChars";
 import { ScrollTrigger } from "@/components/motion/gsap";
+import { buildKeyframes, timeAt, type BeatRange, type Keyframe, type SceneMap } from "@/lib/film-timeline";
+import sceneMapJson from "@/public/assets/film/scene-map.json";
 
 /**
- * ThreadFilm — »Der Faden«: ONE continuous 15-second shot carries the whole
- * page. The video sits FIXED behind everything; the first 800vh (the hero
- * region) scrub its main journey (0 → T_SETTLE) with free scrolling, caption
- * bands and the settle hero. Below that the film never cuts away: its calm
- * final seconds keep scrubbing ultra-slowly behind every chapter down to the
- * CTA — the whole page is one take. Copy, band map, pacing and every
- * engineering rule come from .story-work/DESIGN-PACKAGE.md (lines verbatim).
+ * ThreadFilm — »Eine Nacht, ein Take«: ONE continuous 27-second take carries
+ * the whole page. The video sits FIXED behind everything; the first 800vh (the
+ * hero region) scrub scene 1 (the bar from outside, door open) with free
+ * scrolling, caption bands and the settle hero. Below that every chapter is
+ * bound to its own scene: while a StoryBeat scrolls in, the film scrubs the
+ * 0.6 s crossfade, then the scene's stable frames are spread across the
+ * chapter (lib/film-timeline.ts, fed by scene-map.json). The last scene (the
+ * counter at 23:40, the phone lighting up) stands almost still to the CTA.
+ * Copy, band map and pacing come from .story-work/DESIGN-PACKAGE.md.
  *
- * Static-image hero (same copy, ending frame) for phones, portrait tablets,
- * coarse-pointer portrait, short landscape phones and reduced motion — the
- * five gates live in CSS AND here, character-identical, re-evaluated live.
+ * Phones, portrait tablets, coarse-pointer portrait and short landscape
+ * phones scrub the portrait cut (film-mobile.mp4, same timeline). The static
+ * hero (same copy) remains for reduced motion, Save-Data and no-JS; a video
+ * that fails to load keeps the poster behind the scrub (tf--video-failed).
  */
 
-const VIDEO_URL = "/assets/thread-film.mp4";
-const POSTER_URL = "/assets/thread-poster.jpg"; // start frame (scrub poster)
-// Real byte size of the encoded video — fallback when Content-Length is
-// missing. Updated after the final encode.
-const VIDEO_BYTES = 6873187;
+type Variant = "desktop" | "mobile";
+const SOURCES: Record<Variant, { video: string; poster: string; bytes: number }> = {
+  // byte sizes are the real encoded sizes (stat) — fallback when
+  // Content-Length is missing, so the loading ring stays honest
+  desktop: { video: "/assets/film/film-desktop.mp4", poster: "/assets/film/film-poster.webp", bytes: 7603370 },
+  mobile: { video: "/assets/film/film-mobile.mp4", poster: "/assets/film/film-poster-mobile.webp", bytes: 2343855 },
+};
+const SCENE_MAP = sceneMapJson as SceneMap;
 
-// The hero region ends here in video time; the remaining tail (T_SETTLE →
-// duration) is spread across the rest of the page as a breathing background.
-const T_SETTLE = 13.0;
 // Below-page dim over the film so chapter content reads (delta-gated write).
 const DIM_MAX = 0.58;
 
@@ -43,15 +48,21 @@ const BANDS: BandDef[] = [
   { a: 0.74, b: 1.0, entrance: "rise" },
 ];
 
-// The five static-hero gates — MUST stay character-identical to the CSS
-// media queries in globals.css (.tf gate block).
-const GATES = [
+// The four layout gates pick the portrait cut (they used to force the static
+// hero). Keep them character-identical to the poster media query in
+// globals.css (.tf gate block).
+const MOBILE_GATES = [
   "(max-width: 720px)",
   "(orientation: portrait) and (max-width: 1024px)",
   "(orientation: portrait) and (pointer: coarse)",
   "(orientation: landscape) and (pointer: coarse) and (max-height: 560px)",
-  "(prefers-reduced-motion: reduce)",
 ];
+// Static hero, no film at all — CSS mirrors this one (.tf gate block).
+const STATIC_GATES = ["(prefers-reduced-motion: reduce)"];
+const GATES = [...MOBILE_GATES, ...STATIC_GATES];
+
+const saveData = () =>
+  Boolean((navigator as Navigator & { connection?: { saveData?: boolean } }).connection?.saveData);
 
 const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
 const smoothstep = (p: number, e0: number, e1: number) => {
@@ -98,14 +109,34 @@ export function ThreadFilm() {
     const heroRange = () => Math.max(1, el.offsetHeight - window.innerHeight);
     const pageMax = () =>
       Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-    // scrollY → video time: hero region plays 0..T_SETTLE, the rest of the
-    // page spreads the calm tail T_SETTLE..duration. One take, no cut.
-    const timeFor = (y: number, dur: number) => {
-      const hr = heroRange();
-      if (y <= hr) return (y / hr) * Math.min(T_SETTLE, dur);
-      const rest = Math.max(1, pageMax() - hr);
-      return Math.min(dur, Math.min(T_SETTLE, dur) + ((y - hr) / rest) * (dur - Math.min(T_SETTLE, dur)));
+
+    // ── scrollY → film time: the scene map spread over the whole page ─────
+    // One ScrollTrigger per StoryBeat measures where the beat starts entering
+    // (start) and where it is settled (end); the keyframes are rebuilt after
+    // every ScrollTrigger refresh, so layout changes never desync the film.
+    const beatEls = Array.from(document.querySelectorAll<HTMLElement>(".sb"));
+    let beatTriggers: ScrollTrigger[] = [];
+    let beatsArmed = false;
+    let frames: Keyframe[] = buildKeyframes(SCENE_MAP, { heroRange: heroRange(), pageMax: pageMax(), beats: [] });
+    const rebuildFrames = () => {
+      const beats: BeatRange[] = beatTriggers.map((st) => ({ start: st.start, end: st.end }));
+      frames = buildKeyframes(SCENE_MAP, { heroRange: heroRange(), pageMax: pageMax(), beats });
     };
+    const armBeats = () => {
+      if (beatsArmed) return;
+      beatsArmed = true;
+      beatTriggers = beatEls.map((sb) => ScrollTrigger.create({ trigger: sb, start: "top bottom", end: "top 20%" }));
+      ScrollTrigger.addEventListener("refresh", rebuildFrames);
+      rebuildFrames();
+    };
+    const disarmBeats = () => {
+      if (!beatsArmed) return;
+      beatsArmed = false;
+      ScrollTrigger.removeEventListener("refresh", rebuildFrames);
+      beatTriggers.forEach((st) => st.kill());
+      beatTriggers = [];
+    };
+    const timeFor = (y: number, dur: number) => Math.min(dur, timeAt(frames, y));
 
     // ── seek gating (deadlock-safe) ───────────────────────────────────────
     let seekBusy = false;
@@ -220,20 +251,41 @@ export function ThreadFilm() {
     };
 
     // ── blob loader: poster wins the bandwidth race, ring is honest ───────
-    let started = false;
-    let initDone = false;
+    // Keyed by variant: flipping a gate (rotating a tablet) swaps the cut and
+    // reloads; a stale fetch is aborted and its result dropped (generation).
+    let loadedVariant: Variant | null = null;
+    let generation = 0;
+    let inflight: AbortController | null = null;
+    let objectUrl: string | null = null;
+    let posterTimer: number | null = null;
     const failVideo = () => {
       if (ringWrap) ringWrap.classList.add("tf-ring--done");
       stg.classList.add("tf--video-failed");
       film.classList.add("tf--video-failed");
     };
-    async function loadHeroBlob() {
+    const resetVideo = () => {
+      if (inflight) inflight.abort();
+      inflight = null;
+      if (posterTimer !== null) window.clearTimeout(posterTimer);
+      posterTimer = null;
+      seekBusy = false;
+      pendingTime = null;
+      stg.classList.remove("tf--video-ready", "tf--video-failed");
+      flm.classList.remove("tf--video-ready", "tf--video-failed");
+      if (ringWrap) ringWrap.classList.remove("tf-ring--done");
+      if (ring) ring.style.strokeDashoffset = "126";
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
+      objectUrl = null;
+      vid.removeAttribute("src");
+    };
+    async function loadFilmBlob(src: (typeof SOURCES)[Variant], gen: number) {
       const ctrl = new AbortController();
+      inflight = ctrl;
       let watchdog = window.setTimeout(() => ctrl.abort(), 20000);
       try {
-        const res = await fetch(VIDEO_URL, { priority: "low", signal: ctrl.signal } as RequestInit);
+        const res = await fetch(src.video, { priority: "low", signal: ctrl.signal } as RequestInit);
         if (!res.ok || !res.body) throw new Error(`http ${res.status}`);
-        const total = Number(res.headers.get("Content-Length")) || VIDEO_BYTES;
+        const total = Number(res.headers.get("Content-Length")) || src.bytes;
         const reader = res.body.getReader();
         const chunks: Uint8Array[] = [];
         let got = 0;
@@ -253,13 +305,17 @@ export function ThreadFilm() {
           }
         }
         window.clearTimeout(watchdog);
+        if (gen !== generation) return; // the cut changed meanwhile
+        inflight = null;
         if (ring) ring.style.strokeDashoffset = "0";
         if (ringWrap) ringWrap.classList.add("tf-ring--done");
-        vid.src = URL.createObjectURL(new Blob(chunks as BlobPart[], { type: "video/mp4" }));
+        objectUrl = URL.createObjectURL(new Blob(chunks as BlobPart[], { type: "video/mp4" }));
+        vid.src = objectUrl;
         vid.load();
         vid.addEventListener(
           "canplay",
           () => {
+            if (gen !== generation) return;
             requestSeek(timeFor(window.scrollY, vid.duration || 0));
             stg.classList.add("tf--video-ready");
             flm.classList.add("tf--video-ready");
@@ -268,32 +324,44 @@ export function ThreadFilm() {
         );
       } catch {
         window.clearTimeout(watchdog);
+        if (gen !== generation) return;
+        inflight = null;
         failVideo();
       }
     }
-    const initHeroOnce = () => {
-      if (initDone) return;
-      initDone = true;
-      posterLayer.style.backgroundImage = `url('${POSTER_URL}')`;
+    const initFilm = (variant: Variant) => {
+      if (loadedVariant === variant) return;
+      loadedVariant = variant;
+      generation += 1;
+      const gen = generation;
+      const src = SOURCES[variant];
+      resetVideo();
+      posterLayer.style.backgroundImage = `url('${src.poster}')`;
+      let started = false;
       const startBlobFetch = () => {
-        if (started) return;
+        if (started || gen !== generation) return;
         started = true;
-        void loadHeroBlob();
+        void loadFilmBlob(src, gen);
       };
       const posterImg = new Image();
       posterImg.onload = startBlobFetch;
       posterImg.onerror = startBlobFetch;
-      posterImg.src = POSTER_URL;
-      window.setTimeout(startBlobFetch, 4000);
+      posterImg.src = src.poster;
+      posterTimer = window.setTimeout(startBlobFetch, 4000);
     };
 
     // ── the live gate: arm/disarm the scrub on every query flip ───────────
     let scrubOn = false;
-    const enableScrub = () => {
-      if (scrubOn) return;
+    const enableScrub = (variant: Variant) => {
+      if (scrubOn) {
+        initFilm(variant); // gate flipped between the two cuts
+        return;
+      }
       scrubOn = true;
       el.classList.add("tf--scrub");
-      initHeroOnce();
+      el.classList.remove("tf--static");
+      initFilm(variant);
+      armBeats();
       window.addEventListener("scroll", onScroll, { passive: true });
       bandState.forEach((s) => {
         s.op = -1;
@@ -310,25 +378,27 @@ export function ThreadFilm() {
       requestAnimationFrame(ramp);
       updateCaptions(window.scrollY, performance.now());
       onScroll();
-      // arming grows .tf from ~100vh to 600vh — every ScrollTrigger below
-      // (reveals, the CTA KineticHeading) must re-measure or it fires ~500vh
-      // early and the visitor arrives at an already-finished animation
+      // arming grows .tf from ~100vh to 800vh — every ScrollTrigger below
+      // (reveals, the CTA KineticHeading, the beat anchors of the time map)
+      // must re-measure or it fires ~700vh early
       requestAnimationFrame(() => ScrollTrigger.refresh());
     };
     const disableScrub = () => {
       if (!scrubOn) return;
       scrubOn = false;
       el.classList.remove("tf--scrub");
+      el.classList.add("tf--static");
       window.removeEventListener("scroll", onScroll);
       if (rafId !== null) {
         cancelAnimationFrame(rafId);
         rafId = null;
       }
+      disarmBeats();
       requestAnimationFrame(() => ScrollTrigger.refresh());
     };
     const applyHeroMode = () => {
-      if (GATES.some((q) => window.matchMedia(q).matches)) disableScrub();
-      else enableScrub();
+      if (STATIC_GATES.some((q) => window.matchMedia(q).matches) || saveData()) disableScrub();
+      else enableScrub(MOBILE_GATES.some((q) => window.matchMedia(q).matches) ? "mobile" : "desktop");
     };
     const MQLS = GATES.map((q) => window.matchMedia(q));
     const onMqChange = () => applyHeroMode();
@@ -340,6 +410,8 @@ export function ThreadFilm() {
 
     return () => {
       disableScrub();
+      generation += 1;
+      resetVideo();
       MQLS.forEach((m) => m.removeEventListener("change", onMqChange));
       window.removeEventListener("resize", onMqChange);
       vid.removeEventListener("seeked", onSeeked);
@@ -410,7 +482,7 @@ export function ThreadFilm() {
         <span className="tf-hint" aria-hidden="true">Scrollen</span>
       </div>
 
-      {/* ── static hero (phones, portrait, reduced motion, no-JS) — sits
+      {/* ── static hero (reduced motion, Save-Data, no-JS) — sits
            transparently on the page-wide thread-env world, so it never shows
            a cropped image edge against the rest of the page ── */}
       <div className="tf-static">

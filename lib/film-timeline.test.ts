@@ -50,7 +50,8 @@ test("a StoryBeat entering the viewport scrubs the crossfade into its scene", ()
 });
 
 test("each chapter plays its scene's stable range until the next beat starts", () => {
-  for (let i = 1; i <= 5; i++) {
+  // scenes 2..5 (chapters 1..4); the last scene runs to the page end, see below
+  for (let i = 1; i <= 4; i++) {
     const own = layout.beats[i - 1];
     const next = layout.beats[i];
     const s = map.scenes[i];
