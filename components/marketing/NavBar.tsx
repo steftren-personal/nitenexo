@@ -128,9 +128,6 @@ export function NavBar({ polarity = "dark" }: { polarity?: "dark" | "light" }) {
         </div>
 
         <div className="bw-nav-cta" style={{ display: "flex", alignItems: "center", gap: "var(--space-md)" }}>
-          <Button variant={dark ? "ghost-on-dark" : "primary"} href={CTA_HREF}>
-            Demo
-          </Button>
           <Button variant={dark ? "inverted" : "primary"} href={CTA_HREF}>
             Projekt starten
           </Button>

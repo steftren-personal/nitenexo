@@ -39,3 +39,7 @@ next-env.d.ts
 # scroll-film build intermediates (raw clips, keyframes, jobs ledger — 100MB+; only extracted frames ship)
 /.film-work/
 .story-work/
+
+# Arbeitsstand des Startseiten-Redesigns: Notizen und Rohmaterial
+# (Film-Clips, Keyframes). Gehoert nicht ins Deployment.
+/.redesign/

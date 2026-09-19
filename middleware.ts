@@ -6,7 +6,11 @@ import { isAdminEmail } from "@/lib/admin-emails";
 // §5 ECG; Datenschutzerklärung wegen Cookie-Banner/DSGVO).
 const COMING_SOON_ALLOWED = ["/coming-soon", "/impressum", "/datenschutz"];
 
-const PROTECTED_PREFIXES = ["/termine", "/konto", "/admin"];
+// /kontakt ist bewusst dabei: Eine Anfrage soll aus einem Konto kommen, damit
+// die Daten stimmen und die Konversation eine Adresse hat. Der Klick auf einen
+// Kontakt-Link wird schon vorher im Fenster abgefangen (components/auth/
+// KontaktGate.tsx) — diese Zeile deckt den direkten Aufruf der URL ab.
+const PROTECTED_PREFIXES = ["/termine", "/konto", "/admin", "/kontakt"];
 
 export async function middleware(request: NextRequest) {
   // Coming-soon gate runs first: while it is on nothing else is reachable

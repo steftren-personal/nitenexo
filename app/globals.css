@@ -713,3 +713,602 @@ html.gsap-enabled .tf--static .tf-static { display: flex; }
 @media (prefers-reduced-motion: reduce) {
   .rp-spark { animation: none; opacity: 0.7; }
 }
+
+/* ════════════════════════════════════════════════════════════════════════
+   WERKBANK — Design-Ebene der neuen Startseite (»Dein Samstag«)
+   Richtung eingefroren in .redesign/DESIGN.md. Alles hier ist mit `nx-`
+   benannt und kollidiert deshalb nicht mit den Botwerk-Tokens der
+   Unterseiten. Tiefe kommt aus Haarlinien, nicht aus Schatten.
+   ════════════════════════════════════════════════════════════════════════ */
+:root {
+  /* Violett-Skala — dieselbe Welt wie die Unterseiten. Kein Verlauf:
+     flaches Mitternachts-Violett, Lime als einziger Akzent, Pink nur
+     als Signalfarbe in der Samstag-Sektion. */
+  --nx-void: #150f23;          /* = --surface-night der Unterseiten */
+  --nx-surface: #1f1633;       /* = --surface-canvas-dark */
+  --nx-surface-2: #2a1f47;
+  --nx-line: #362d59;          /* = --hairline-violet */
+  --nx-line-hi: #4a3d78;
+  --nx-ink: #ffffff;
+  --nx-ink-2: rgba(255, 255, 255, 0.72);
+  --nx-ink-3: #9c8cb8;
+  --nx-lime: #c2ef4e;
+  --nx-lime-ink: #16200a;
+  --nx-lime-dim: rgba(194, 239, 78, 0.18);
+  --nx-pink: #fa7faa;
+  /* Die frueher hellen Kapitel werden zu erhabenen Violett-Flaechen,
+     damit die Seite nirgends nach Weiss/Schwarz kippt. */
+  --nx-paper: #241a3f;
+  --nx-paper-ink: #ffffff;
+  --nx-paper-ink-2: rgba(255, 255, 255, 0.72);
+  --nx-paper-line: #3f3466;
+
+  /* Typo — Archivo (wght+wdth) trägt Display und Fließtext, Plex Mono die Daten */
+  --nx-display: var(--font-archivo), "Helvetica Neue", Arial, sans-serif;
+  --nx-mono: var(--font-plex-mono), ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Radien — abgestuft, nicht eine Größe für alles */
+  --nx-r-xs: 2px;
+  --nx-r-sm: 4px;
+  --nx-r-md: 8px;
+  --nx-r-lg: 14px;
+
+  /* Raster */
+  --nx-gutter: clamp(20px, 4vw, 64px);
+  --nx-max: 1240px;
+
+  /* Bewegung — zwei Kurven, überall dieselben */
+  --nx-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --nx-ease-io: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* ── Grundfläche ───────────────────────────────────────────────────── */
+.nx { background: var(--nx-void); color: var(--nx-ink); font-family: var(--nx-display); }
+.nx ::selection { background: var(--nx-lime); color: var(--nx-lime-ink); }
+.nx-wrap { max-width: var(--nx-max); margin: 0 auto; padding-inline: var(--nx-gutter); }
+
+/* ── Typo-Skala ────────────────────────────────────────────────────── */
+.nx-display {
+  font-family: var(--nx-display);
+  font-weight: 700;
+  font-variation-settings: "wdth" 118;
+  letter-spacing: -0.025em;
+  line-height: 0.98;
+  margin: 0;
+  text-wrap: balance;
+}
+.nx-d1 { font-size: clamp(38px, 7.2vw, 92px); }
+.nx-d2 { font-size: clamp(30px, 4.6vw, 58px); }
+.nx-d3 { font-size: clamp(22px, 2.6vw, 34px); font-variation-settings: "wdth" 110; letter-spacing: -0.015em; }
+.nx-body {
+  font-family: var(--nx-display);
+  font-weight: 400;
+  font-variation-settings: "wdth" 100;
+  font-size: clamp(15px, 1.05vw, 17px);
+  line-height: 1.62;
+  color: var(--nx-ink-2);
+  margin: 0;
+  max-width: 62ch;
+}
+.nx-lead { font-size: clamp(17px, 1.4vw, 20px); line-height: 1.55; color: var(--nx-ink-2); }
+
+/* Mono trägt alle Daten, Labels und Indizes */
+.nx-mono {
+  font-family: var(--nx-mono);
+  font-weight: 400;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--nx-ink-3);
+  font-variant-numeric: tabular-nums;
+}
+.nx-tag {
+  font-family: var(--nx-mono);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  color: var(--nx-lime);
+  border: 1px solid var(--nx-lime-dim);
+  border-radius: var(--nx-r-xs);
+  padding: 2px 6px;
+  white-space: nowrap;
+}
+
+/* ── DAS Layout-Primitiv: die geführte Zeile ───────────────────────── */
+.nx-rows { border-top: 1px solid var(--nx-line); }
+.nx-row {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr) minmax(0, auto);
+  gap: clamp(16px, 3vw, 48px);
+  align-items: start;
+  padding: clamp(22px, 3vw, 38px) 0;
+  border-bottom: 1px solid var(--nx-line);
+  position: relative;
+}
+.nx-row__idx { font-family: var(--nx-mono); font-size: 12px; color: var(--nx-ink-3); padding-top: 6px; font-variant-numeric: tabular-nums; }
+.nx-row__val { text-align: right; font-family: var(--nx-mono); font-size: 13px; color: var(--nx-ink-2); padding-top: 4px; font-variant-numeric: tabular-nums; }
+.nx-row__title { display: block; font-family: var(--nx-display); font-weight: 650; font-variation-settings: "wdth" 108; font-size: clamp(19px, 2vw, 26px); letter-spacing: -0.015em; margin: 0 0 8px; color: var(--nx-ink); }
+@media (max-width: 720px) {
+  .nx-row { grid-template-columns: 1fr; gap: 10px; }
+  .nx-row__val { text-align: left; padding-top: 0; }
+}
+
+/* Interaktive Zeile: die Kante reagiert, kein Karten-Hover-Gewackel */
+.nx-row--link { transition: background 0.35s var(--nx-ease); }
+@media (hover: hover) {
+  .nx-row--link:hover { background: linear-gradient(90deg, var(--nx-surface), transparent 72%); }
+  .nx-row--link:hover .nx-row__idx { color: var(--nx-lime); }
+}
+
+/* ── Abschnitts-Kopf ───────────────────────────────────────────────── */
+.nx-head { display: flex; align-items: baseline; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: clamp(24px, 3vw, 44px); }
+.nx-section { padding-block: clamp(64px, 9vw, 132px); }
+
+/* ── Buttons ───────────────────────────────────────────────────────── */
+.nx-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  font-family: var(--nx-display); font-weight: 600; font-variation-settings: "wdth" 104;
+  font-size: 15px; letter-spacing: -0.005em;
+  padding: 14px 24px; border-radius: 999px; border: 1px solid transparent;
+  cursor: pointer; text-decoration: none; white-space: nowrap;
+  transition: transform 0.25s var(--nx-ease), background 0.25s var(--nx-ease), border-color 0.25s var(--nx-ease), color 0.25s var(--nx-ease);
+}
+.nx-btn--primary { background: var(--nx-lime); color: var(--nx-lime-ink); box-shadow: 0 0 0 rgba(194, 239, 78, 0); }
+.nx-btn--ghost { background: transparent; color: var(--nx-ink); border-color: var(--nx-line-hi); }
+@media (hover: hover) {
+  .nx-btn--primary:hover { box-shadow: 0 10px 40px -12px rgba(194, 239, 78, 0.55); }
+  .nx-btn--ghost:hover { border-color: var(--nx-ink-3); background: var(--nx-surface); }
+}
+.nx-btn:focus-visible { outline: 2px solid var(--nx-lime); outline-offset: 3px; }
+@media (pointer: coarse) { .nx-btn { min-height: 48px; } }
+
+/* ── Helles Kapitel (Beweis/Projekte) ──────────────────────────────── */
+.nx-paper { background: var(--nx-paper); color: var(--nx-paper-ink); }
+.nx-paper .nx-body, .nx-paper .nx-lead { color: var(--nx-paper-ink-2); }
+.nx-paper .nx-mono, .nx-paper .nx-row__idx, .nx-paper .nx-row__val { color: var(--nx-paper-ink-2); }
+.nx-paper .nx-row, .nx-paper .nx-rows { border-color: var(--nx-paper-line); }
+.nx-paper .nx-row__title { color: var(--nx-paper-ink); }
+
+/* ── Reveal: clip-path von unten, Text bewegt sich nicht beim Lesen ── */
+html.gsap-enabled .nx [data-nx-reveal] { clip-path: inset(0 0 100% 0); opacity: 0; will-change: clip-path, opacity; }
+@media (prefers-reduced-motion: reduce) {
+  html.gsap-enabled .nx [data-nx-reveal] { clip-path: none !important; opacity: 1 !important; transform: none !important; }
+}
+
+/* ── Hero ──────────────────────────────────────────────────────────── */
+.nx-hero { padding-block: clamp(56px, 12vh, 132px) clamp(48px, 8vh, 96px); border-bottom: 1px solid var(--nx-line); }
+.nx-hero__grid { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 0.85fr); gap: clamp(32px, 6vw, 96px); align-items: start; }
+.nx-hero__eyebrow { margin: 0 0 clamp(20px, 3vw, 34px); }
+.nx-hero__h1 { margin: 0 0 clamp(20px, 2.6vw, 30px); }
+.nx-hero__lead { margin: 0 0 clamp(22px, 3vw, 32px); max-width: 46ch; }
+.nx-hero__prices { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; color: var(--nx-ink-2); margin-bottom: clamp(24px, 3vw, 34px); }
+.nx-hero__sep { width: 4px; height: 4px; border-radius: 50%; background: var(--nx-lime); display: inline-block; }
+.nx-hero__cta { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: clamp(26px, 3vw, 36px); }
+.nx-hero__proof { font-size: 14px; color: var(--nx-ink-3); display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; margin: 0; }
+.nx-hero__proof-link { color: var(--nx-ink); text-decoration: none; border-bottom: 1px solid var(--nx-lime); padding-bottom: 1px; transition: color 0.25s var(--nx-ease); }
+.nx-hero__proof-link:hover { color: var(--nx-lime); }
+.nx-hero__proof-note { color: var(--nx-ink-3); }
+
+/* Datenblatt — dieselbe gefuehrte Zeile, schon im Hero */
+.nx-hero__sheet { border-top: 1px solid var(--nx-line); }
+.nx-sheet__row { display: grid; grid-template-columns: 96px 1fr; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--nx-line); align-items: baseline; }
+.nx-sheet__k { color: var(--nx-ink-3); }
+.nx-sheet__v { font-size: 14.5px; color: var(--nx-ink); font-variation-settings: "wdth" 100; }
+
+@media (max-width: 960px) {
+  .nx-hero__grid { grid-template-columns: 1fr; gap: 40px; }
+  .nx-hero__sheet { max-width: 520px; }
+}
+
+/* ── Tabs mit gleitender Pille (ohne framer-motion) ────────────────── */
+.nx-tabs { position: relative; display: inline-flex; gap: 2px; padding: 4px; margin-bottom: clamp(28px, 4vw, 44px); border: 1px solid var(--nx-line); border-radius: 999px; background: var(--nx-surface); max-width: 100%; overflow-x: auto; scrollbar-width: none; }
+.nx-tabs::-webkit-scrollbar { display: none; }
+.nx-tabs__pill { position: absolute; top: 4px; bottom: 4px; left: 0; border-radius: 999px; background: var(--nx-lime); transition: transform 0.45s var(--nx-ease), width 0.45s var(--nx-ease); will-change: transform; }
+.nx-tabs__btn { position: relative; z-index: 1; appearance: none; background: none; border: 0; cursor: pointer; padding: 10px 18px; border-radius: 999px; font-family: var(--nx-display); font-weight: 550; font-size: 14px; color: var(--nx-ink-2); white-space: nowrap; transition: color 0.3s var(--nx-ease); }
+.nx-tabs__btn.is-on { color: var(--nx-lime-ink); }
+.nx-tabs__btn:focus-visible { outline: 2px solid var(--nx-lime); outline-offset: 2px; }
+@media (pointer: coarse) { .nx-tabs__btn { min-height: 44px; } }
+
+/* ── Dein Samstag ──────────────────────────────────────────────────── */
+.nx-samstag__h2 { margin-top: 6px; }
+.nx-samstag__intro { max-width: 38ch; }
+.nx-sams__grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(20px, 4vw, 56px); align-items: start; }
+.nx-sams__col { min-width: 0; }
+.nx-sams__colhead { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--nx-line); margin-bottom: 18px; }
+.nx-sams__count { color: var(--nx-ink-2); }
+.nx-sams__count b { font-weight: 500; color: var(--nx-ink); font-variant-numeric: tabular-nums; }
+.nx-sams__list { list-style: none; margin: 0; padding: 0; }
+
+/* Links: wie es ankommt — dicht, versetzt, unruhig */
+.nx-sams__col--roh .nx-sams__msg {
+  position: relative;
+  font-family: var(--nx-display); font-variation-settings: "wdth" 100; font-weight: 400;
+  font-size: clamp(14px, 1.15vw, 16px); line-height: 1.35; color: var(--nx-ink-2);
+  background: var(--nx-surface); border: 1px solid var(--nx-line); border-radius: var(--nx-r-md);
+  border-left: 2px solid var(--nx-pink);
+  padding: 11px 14px; margin-bottom: 7px;
+  margin-left: calc(var(--drift, 0) * 10px);
+  opacity: 0; transform: translateY(10px);
+}
+.nx-run .nx-sams__col--roh .nx-sams__msg {
+  animation: nxDrop 0.5s var(--nx-ease) forwards;
+  animation-delay: calc(var(--i) * 0.07s);
+}
+@keyframes nxDrop { to { opacity: 1; transform: translateY(0); } }
+
+/* Rechts: abgearbeitet — strenges Raster, der Strich zieht durch */
+.nx-sams__col--klar .nx-sams__msg {
+  position: relative; display: flex; align-items: baseline; justify-content: space-between; gap: 14px;
+  font-family: var(--nx-display); font-variation-settings: "wdth" 100; font-weight: 400;
+  font-size: clamp(14px, 1.15vw, 16px); line-height: 1.35;
+  padding: 13px 0; border-bottom: 1px solid var(--nx-line);
+  opacity: 0;
+}
+.nx-run .nx-sams__col--klar .nx-sams__msg {
+  animation: nxFade 0.45s var(--nx-ease) forwards;
+  animation-delay: calc(var(--i) * 0.07s + 0.28s);
+}
+@keyframes nxFade { to { opacity: 1; } }
+.nx-sams__txt { position: relative; color: var(--nx-ink-3); min-width: 0; }
+.nx-sams__txt::after {
+  content: ""; position: absolute; left: 0; right: 0; top: 52%; height: 1.5px;
+  background: var(--nx-lime); transform: scaleX(0); transform-origin: left;
+}
+.nx-run .nx-sams__col--klar .nx-sams__msg:not(.is-mine) .nx-sams__txt::after {
+  animation: nxStrike 0.5s var(--nx-ease) forwards;
+  animation-delay: calc(var(--i) * 0.07s + 0.5s);
+}
+@keyframes nxStrike { to { transform: scaleX(1); } }
+/* Die zwei offenen Zeilen bleiben stehen — nichts wird schoengerechnet. */
+.nx-sams__msg.is-mine .nx-sams__txt { color: var(--nx-ink); }
+.nx-sams__by {
+  flex: 0 0 auto; font-family: var(--nx-mono); font-size: 10.5px; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--nx-ink-3);
+  border: 1px solid var(--nx-line-hi); border-radius: var(--nx-r-xs); padding: 2px 6px;
+}
+.nx-sams__by--website, .nx-sams__by--ki, .nx-sams__by--hosting { color: var(--nx-lime); border-color: var(--nx-lime-dim); }
+.nx-sams__by--du { color: var(--nx-ink-3); }
+.nx-sams__fazit { margin-top: clamp(28px, 4vw, 44px); padding-top: clamp(20px, 3vw, 28px); border-top: 1px solid var(--nx-line); color: var(--nx-ink); }
+
+/* Am Handy: nacheinander statt nebeneinander — erst der eigene Abend,
+   dann derselbe Abend abgearbeitet. Liest sich wie ein Sperrbildschirm. */
+@media (max-width: 860px) {
+  .nx-sams__grid { grid-template-columns: 1fr; gap: 36px; }
+  .nx-sams__col--roh .nx-sams__msg { margin-left: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nx-sams__msg { opacity: 1 !important; transform: none !important; animation: none !important; }
+  .nx-sams__txt::after { transform: scaleX(1) !important; animation: none !important; }
+  .nx-tabs__pill { transition: none !important; }
+}
+
+/* Auf der Werkbank-Startseite bleiben Fortschrittsbalken und Film-Grain aus —
+   beide gehoeren zur "Atmosphaere", die bewusst gestrichen wurde. */
+body:has(.nx) .bw-progress, body:has(.nx) .bw-grain { display: none !important; }
+
+/* ── Leistungen ────────────────────────────────────────────────────── */
+.nx-leist__intro, .nx-zusagen__intro, .nx-preise__intro, .nx-projekte__intro, .nx-beweis__intro { max-width: 34ch; }
+.nx-leist__row { text-decoration: none; color: inherit; }
+.nx-leist__body { display: block; }
+.nx-leist__text { display: block; margin-bottom: 12px; max-width: 54ch; }
+.nx-leist__punkte { display: flex; flex-wrap: wrap; gap: 6px 18px; }
+.nx-leist__punkt { position: relative; padding-left: 14px; font-size: 13.5px; color: var(--nx-ink-3); font-variation-settings: "wdth" 100; }
+.nx-leist__punkt::before { content: ""; position: absolute; left: 0; top: 0.62em; width: 6px; height: 1px; background: var(--nx-lime); }
+.nx-leist__preis { font-size: 15px; color: var(--nx-ink); }
+
+/* ── Preise ────────────────────────────────────────────────────────── */
+.nx-preis__lead { display: block; max-width: 52ch; margin-bottom: 10px; }
+.nx-preis__note { display: block; color: var(--nx-ink-3); text-transform: none; letter-spacing: 0.02em; font-size: 11.5px; max-width: 52ch; line-height: 1.5; }
+.nx-preis__amount { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; text-align: right; }
+.nx-preis__zahl { font-size: clamp(20px, 2.1vw, 28px); font-weight: 650; font-variation-settings: "wdth" 106; letter-spacing: -0.015em; color: var(--nx-ink); white-space: nowrap; }
+.nx-preis__cap { text-transform: none; letter-spacing: 0.02em; font-size: 11.5px; max-width: 22ch; text-align: right; line-height: 1.45; }
+.nx-preise__foot { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; margin-top: clamp(24px, 3vw, 36px); }
+.nx-preise__ust { text-transform: none; letter-spacing: 0.02em; font-size: 11.5px; color: var(--nx-ink-3); max-width: 46ch; }
+@media (max-width: 720px) {
+  /* Am Handy steht der Betrag in voller Breite. Die 22ch-Begrenzung stammt aus
+     der rechten Spalte des Desktops und riss die Bildunterschrift dort in drei
+     Stummel. */
+  .nx-preis__amount { align-items: flex-start; text-align: left; }
+  .nx-preis__cap { text-align: left; max-width: none; }
+  .nx-preis__zahl { font-size: 26px; }
+}
+
+/* ── Beweis (helles Kapitel) ───────────────────────────────────────── */
+.nx-beweis__h2 { margin-top: 6px; }
+.nx-beweis__figure { position: relative; margin: 0 0 clamp(28px, 4vw, 44px); transform-style: preserve-3d; }
+.nx-beweis__shot { width: 100%; height: auto; border-radius: var(--nx-r-lg); border: 1px solid var(--nx-paper-line); display: block; box-shadow: 0 34px 80px -40px rgba(0, 0, 0, 0.85); }
+.nx-beweis__phone { position: absolute; right: -8px; bottom: -34px; width: clamp(96px, 13vw, 168px); height: auto; border-radius: var(--nx-r-md); border: 1px solid var(--nx-paper-line); box-shadow: 0 24px 50px -24px rgba(0, 0, 0, 0.8); }
+.nx-beweis__facts { display: flex; flex-wrap: wrap; align-items: center; gap: clamp(20px, 4vw, 56px); border-top: 1px solid var(--nx-paper-line); padding-top: 22px; }
+.nx-beweis__fact { display: flex; flex-direction: column; gap: 4px; }
+.nx-beweis__val { font-size: clamp(20px, 2.2vw, 30px); font-weight: 650; font-variation-settings: "wdth" 108; letter-spacing: -0.015em; }
+.nx-beweis__link { margin-left: auto; }
+.nx-paper .nx-btn--ghost { border-color: var(--nx-paper-line); color: var(--nx-paper-ink); }
+@media (hover: hover) { .nx-paper .nx-btn--ghost:hover { border-color: var(--nx-lime); background: rgba(255,255,255,0.05); } }
+@media (max-width: 720px) { .nx-beweis__phone { right: 0; bottom: -22px; } .nx-beweis__link { margin-left: 0; } }
+
+/* ── Projekte ──────────────────────────────────────────────────────── */
+.nx-proj__row { text-decoration: none; color: inherit; }
+.nx-proj__meta { display: block; margin-bottom: 6px; }
+.nx-proj__result { display: block; max-width: 54ch; margin-bottom: 12px; }
+.nx-proj__chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.nx-paper .nx-tag { color: var(--nx-lime); border-color: var(--nx-lime-dim); background: rgba(194, 239, 78, 0.10); }
+.nx-proj__go { white-space: nowrap; }
+
+/* ── Zusagen ───────────────────────────────────────────────────────── */
+.nx-zusagen .nx-row__val { color: var(--nx-lime); font-size: 16px; }
+
+/* ── Person ────────────────────────────────────────────────────────── */
+.nx-person__grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr); gap: clamp(28px, 5vw, 72px); align-items: center; }
+.nx-person__h2 { margin: 10px 0 18px; }
+.nx-person__text { margin-bottom: 26px; max-width: 46ch; }
+.nx-person__kontakt { display: flex; gap: 12px; flex-wrap: wrap; }
+.nx-person__figure { margin: 0; }
+.nx-person__img { width: 100%; height: auto; max-width: 380px; border-radius: var(--nx-r-lg); border: 1px solid var(--nx-line); display: block; filter: grayscale(0.16) contrast(1.03); }
+.nx-person__cap { display: flex; flex-direction: column; gap: 3px; margin-top: 14px; }
+.nx-person__name { font-weight: 600; font-variation-settings: "wdth" 104; }
+@media (max-width: 860px) { .nx-person__grid { grid-template-columns: 1fr; } }
+
+/* ── Schluss ───────────────────────────────────────────────────────── */
+.nx-schluss { border-top: 1px solid var(--nx-line); }
+.nx-schluss__inner { max-width: 760px; }
+.nx-schluss__h2 { margin-bottom: 20px; }
+.nx-schluss__lead { margin-bottom: 30px; max-width: 52ch; }
+.nx-schluss__cta { display: flex; gap: 12px; flex-wrap: wrap; }
+
+/* ── Footer auf der Werkbank-Seite ─────────────────────────────────────
+   Die NavBar bleibt bewusst UNVERAENDERT: Sie soll auf der Startseite genau
+   so aussehen wie auf allen anderen Seiten. Nur der Footer uebernimmt den
+   Papierton der Seite. */
+
+/* Footer: bleibt hell, uebernimmt aber Papierton und Typo der Seite,
+   damit er als drittes helles Kapitel liest und nicht als Fremdkoerper. */
+body:has(.nx) footer { background: var(--nx-surface) !important; color: var(--nx-ink) !important; }
+body:has(.nx) footer a { color: var(--nx-ink-2) !important; }
+body:has(.nx) footer a:hover { color: var(--nx-lime) !important; }
+body:has(.nx) footer a, body:has(.nx) footer p, body:has(.nx) footer div, body:has(.nx) footer span { font-family: var(--nx-display); }
+
+/* Der Lime-Schnoerkel ueber dem Footer gehoert zur alten Bildsprache — auf der
+   Werkbank endet die Seite auf einer Linie, nicht auf einer Welle. */
+body:has(.nx) footer > div:first-child { display: none; }
+
+/* Die Wortmarke im Footer steht dort in Licht-Polaritaet: auf dem dunklen
+   Violett waere "Nite" unsichtbar. */
+body:has(.nx) footer img[src="/assets/logo-mark.svg"] + span { color: var(--nx-ink) !important; }
+body:has(.nx) footer img[src="/assets/logo-mark.svg"] + span > span { color: var(--nx-lime) !important; }
+
+/* Kein seitliches Verschieben der Seite — `hidden` allein laesst sich per Code
+   immer noch scrollen, `clip` nicht. Beide Elemente, hidden als Rueckfall. */
+html.nx-home, html.nx-home body { overflow-x: hidden; overflow-x: clip; }
+
+/* ── Wort-Maske ────────────────────────────────────────────────────────
+   Jedes Wort sitzt in seiner eigenen Blende und faehrt daraus hoch.
+   Mechanik uebernommen aus »Text Reveal (Mask)« (21st.dev/soralabs) und auf
+   GSAP portiert — die Startseite soll ohne framer-motion auskommen.
+
+   Der Startzustand haengt an `html.nx-home`, das erst per JavaScript gesetzt
+   wird: Ohne JavaScript bleibt der Text sichtbar statt unsichtbar. */
+html.nx-home [data-nx-rise] { opacity: 0; }
+.nx-rise__mask {
+  display: inline-block; overflow: hidden; vertical-align: bottom;
+  /* Ohne den Ausgleich schneidet die Blendenkante Unterlaengen ab (g, j, p) */
+  padding-bottom: 0.16em; margin-bottom: -0.16em;
+}
+.nx-rise__w { display: inline-block; will-change: transform; }
+@media (prefers-reduced-motion: reduce) { html.nx-home [data-nx-rise] { opacity: 1; } }
+
+/* ── Assistent: Chat-Fenster + drei Schritte ───────────────────────── */
+/* Das Laufband schliesst die Sektion ab — es braucht darunter keinen zweiten
+   vollen Sektionsabstand. */
+.nx-assistent { padding-bottom: clamp(36px, 4vw, 60px); }
+.nx-assistent__grid { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); gap: clamp(28px, 5vw, 76px); align-items: center; }
+.nx-assistent__chat { display: flex; justify-content: center; position: relative; }
+.nx-assistent__chat::before {
+  content: ""; position: absolute; inset: -12%; pointer-events: none;
+  background: radial-gradient(circle, rgba(194,239,78,0.14), rgba(122,63,240,0.16) 45%, transparent 70%);
+  filter: blur(46px);
+}
+.nx-assistent__h2 { margin: 10px 0 clamp(22px, 3vw, 34px); }
+.nx-assistent__schritte { display: flex; flex-direction: column; gap: 0; border-top: 1px solid var(--nx-line); }
+.nx-assistent__schritt { display: grid; grid-template-columns: 56px 1fr; gap: 18px; padding: 18px 0; border-bottom: 1px solid var(--nx-line); align-items: start; }
+.nx-assistent__idx { padding-top: 4px; }
+.nx-assistent__titel { display: block; font-weight: 620; font-variation-settings: "wdth" 104; font-size: 17px; color: var(--nx-ink); margin-bottom: 5px; }
+@media (max-width: 900px) {
+  .nx-assistent__grid { grid-template-columns: 1fr; }
+  .nx-assistent__schritt { grid-template-columns: 40px 1fr; gap: 12px; }
+}
+
+/* Kanal-Laufband unter dem Chat-Fenster: eine Zeile, links verankert,
+   an beiden Raendern weggeblendet statt hart abgeschnitten. */
+.nx-kan {
+  max-width: var(--nx-max); margin: clamp(44px, 5vw, 72px) auto 0;
+  padding-inline: var(--nx-gutter);
+}
+.nx-kan__label { padding-bottom: 14px; border-bottom: 1px solid var(--nx-line); }
+.nx-kan__viewport {
+  overflow: hidden; contain: paint; padding-block: 22px;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
+}
+.nx-kan__track { display: flex; width: max-content; will-change: transform; }
+.nx-kan__group { display: flex; align-items: center; }
+.nx-kan__item {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding-right: clamp(34px, 4vw, 58px); white-space: nowrap;
+  font-family: var(--nx-display); font-size: 17px; font-weight: 560;
+  font-variation-settings: "wdth" 102; color: var(--nx-ink-3);
+  transition: color 0.3s ease;
+}
+.nx-kan__item--logo { color: var(--nx-ink-2); }
+.nx-kan__item img { width: 22px; height: 22px; object-fit: contain; opacity: 0.9; }
+.nx-kan__item:hover { color: var(--nx-ink); }
+
+/* ── Morph-Galerie im Beweis-Kapitel ───────────────────────────────────
+   Vier Ansichten derselben gebauten Seite, die sich ineinander aufloesen.
+   Das Canvas traegt Rahmen und Schatten des frueheren Standbilds, damit der
+   Effekt die Komposition uebernimmt statt sie zu ersetzen. */
+.nxm { position: relative; }
+.nxm__stage {
+  position: relative; overflow: hidden; background: var(--nx-void);
+  border-radius: var(--nx-r-lg); border: 1px solid var(--nx-paper-line);
+  box-shadow: 0 34px 80px -40px rgba(0, 0, 0, 0.85);
+  outline: none; touch-action: pan-y;
+}
+.nxm__stage:focus-visible { border-color: var(--nx-lime); }
+.nxm__canvas { display: block; width: 100%; height: 100%; transition: opacity 400ms ease; }
+.nxm__fallback {
+  position: absolute; inset: 0; display: block; width: 100%; height: 100%;
+  object-fit: cover; max-width: none; transition: opacity 700ms ease;
+}
+.nxm__bar {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; padding-top: 12px;
+}
+.nxm__label { color: var(--nx-ink-3); }
+.nxm__dots { display: flex; gap: 7px; }
+.nxm__dot {
+  width: 26px; height: 3px; padding: 0; border: 0; cursor: pointer;
+  border-radius: 2px; background: var(--nx-paper-line);
+  transition: background 240ms ease, width 240ms ease;
+}
+.nxm__dot.is-on { background: var(--nx-lime); width: 40px; }
+.nxm__sr {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+}
+@media (prefers-reduced-motion: reduce) {
+  .nxm__fallback, .nxm__canvas { transition: none; }
+}
+
+/* ── Korridor im Projekte-Kapitel ──────────────────────────────────────
+   Gebaute Bildschirme fahren aus der Tiefe auf den Betrachter zu. Die
+   Buehne ist randlos, der Text liegt darueber — deshalb die Vignette, die
+   den Korridor an den Raendern und hinter der Schrift abdunkelt. */
+.nx-projekte { padding-block: 0 clamp(64px, 9vw, 132px); }
+.nx-proj__stream {
+  position: relative; overflow: hidden; container-type: inline-size;
+  height: clamp(380px, 46vw, 560px);
+  background: var(--nx-void);
+  border-bottom: 1px solid var(--nx-line);
+  margin-bottom: clamp(44px, 6vw, 80px);
+}
+.nxs__space { position: absolute; inset: 0; pointer-events: none; }
+.nxs__world { position: absolute; inset: 0; transform-style: preserve-3d; }
+.nxs__card {
+  position: absolute; left: 50%; overflow: hidden;
+  backface-visibility: hidden;
+  border: 1px solid rgba(154, 130, 220, 0.34);
+  box-shadow: 0 2cqw 6cqw -3cqw rgba(0, 0, 0, 0.9);
+}
+.nxs__card img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  /* Wir zeigen dunkle Seiten auf dunklem Grund. Ohne den Hub verschwinden
+     die Karten im Hintergrund, statt sich davon abzuheben. */
+  filter: brightness(1.28) contrast(1.06) saturate(1.06);
+}
+/* Vignette: aussen dunkel, damit die Karten nicht am Rand abgeschnitten
+   wirken, und ein Verlauf nach unten, auf dem der Text sicher steht. */
+.nx-proj__stream::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 76% 70% at 50% 44%, transparent 0%, rgba(21, 15, 35, 0.2) 58%, rgba(21, 15, 35, 0.88) 100%),
+    linear-gradient(to bottom, rgba(21, 15, 35, 0.6) 0%, transparent 22%, transparent 48%, rgba(21, 15, 35, 0.94) 100%);
+}
+.nx-proj__over {
+  position: absolute; inset: auto 0 0 0; z-index: 2;
+  padding-bottom: clamp(26px, 4vw, 46px);
+}
+.nx-proj__over .nx-mono { margin-bottom: 8px; }
+.nx-proj__over .nx-projekte__intro { margin-top: 12px; }
+@media (max-width: 720px) {
+  /* Am Handy sitzt das Band hoeher und die Buehne ist flacher — sonst steht
+     ueber dem Korridor ein halber Bildschirm Leere. */
+  .nx-proj__stream { height: clamp(300px, 74vw, 400px); }
+}
+
+/* ── Kontakt-Tor ───────────────────────────────────────────────────────
+   Das Anmelde-Fenster vor dem Kontaktformular. Liegt ueber Navigation (40)
+   und Cookie-Hinweis (60) und gilt auf allen Seiten, nicht nur auf der
+   Startseite — deshalb die Botwerk-Token statt der nx-Variablen. */
+.nxg {
+  position: fixed; inset: 0; z-index: 90;
+  display: grid; place-items: center; padding: 20px;
+  background: rgba(8, 5, 16, 0.72);
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  animation: nxg-in 220ms ease both;
+}
+.nxg__panel {
+  position: relative; width: min(460px, 100%);
+  max-height: calc(100vh - 40px); overflow-y: auto;
+  background: var(--surface-night); border: 1px solid var(--hairline-violet);
+  border-radius: var(--rounded-xl); box-shadow: var(--shadow-2);
+  padding: clamp(24px, 4vw, 36px);
+  animation: nxg-rise 280ms cubic-bezier(0.19, 1, 0.22, 1) both;
+}
+.nxg__x {
+  position: absolute; top: 12px; right: 12px;
+  /* Die Seite setzt global eine helle Knopf-Flaeche — hier gewinnt sonst
+     Weiss auf Weiss. */
+  background: transparent !important;
+  width: 34px; height: 34px; display: grid; place-items: center;
+  border: 1px solid var(--hairline-violet); border-radius: 999px;
+  background: transparent; color: var(--on-primary); font-size: 20px; line-height: 1;
+  cursor: pointer; transition: background 160ms ease, border-color 160ms ease;
+}
+.nxg__x:hover { background: rgba(255, 255, 255, 0.08); border-color: var(--color-accent-lime); }
+.nxg__eyebrow {
+  margin: 0 0 8px; font-family: var(--font-code); font-size: 11px;
+  letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-accent-lime);
+}
+.nxg__h {
+  margin: 0 0 10px; font-family: var(--font-display); font-weight: 700;
+  font-size: clamp(21px, 2.4vw, 26px); line-height: 1.15; letter-spacing: -0.015em;
+  color: var(--on-primary);
+}
+.nxg__lead {
+  margin: 0 0 22px; font-family: var(--font-ui); font-size: 14px; font-weight: 400; line-height: 1.55;
+  color: rgba(255, 255, 255, 0.7);
+}
+.nxg__tabs {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-bottom: 20px;
+  padding: 4px; border: 1px solid var(--hairline-violet); border-radius: 999px;
+}
+.nxg__tab {
+  padding: 9px 12px; border: 0; border-radius: 999px; cursor: pointer;
+  background: transparent; color: rgba(255, 255, 255, 0.66);
+  font-family: var(--font-display); font-size: 14px; font-weight: 600;
+  transition: background 200ms ease, color 200ms ease;
+}
+.nxg__tab.is-on { background: var(--color-accent-lime); color: var(--color-primary); }
+.nxg__form { display: flex; flex-direction: column; gap: 14px; }
+.nxg__field { display: flex; flex-direction: column; gap: 6px; }
+.nxg__field span {
+  font-family: var(--font-ui); font-size: 13px; color: rgba(255, 255, 255, 0.78);
+}
+.nxg__field input {
+  width: 100%; padding: 11px 13px;
+  background: var(--surface-canvas-dark); color: var(--on-primary);
+  border: 1px solid var(--hairline-violet); border-radius: var(--rounded-sm);
+  font-family: var(--font-ui); font-size: 15px; outline: none;
+  transition: border-color 160ms ease;
+}
+.nxg__field input:focus-visible { border-color: var(--color-accent-lime); }
+.nxg__fehler {
+  margin: 0; font-family: var(--font-ui); font-size: 13px; color: var(--color-accent-pink);
+}
+.nxg__btn {
+  margin-top: 4px; padding: 12px 18px; border: 0; border-radius: 999px; cursor: pointer;
+  background: var(--color-accent-lime); color: var(--color-primary);
+  font-family: var(--font-display); font-size: 15px; font-weight: 700;
+  transition: filter 160ms ease;
+}
+.nxg__btn:hover { filter: brightness(1.06); }
+.nxg__btn[disabled] { opacity: 0.6; cursor: default; }
+.nxg__fuss {
+  margin: 18px 0 0; font-family: var(--font-ui); font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+}
+.nxg__fuss a { color: var(--color-accent-lime); }
+@keyframes nxg-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes nxg-rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .nxg, .nxg__panel { animation: none; }
+}

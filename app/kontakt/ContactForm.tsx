@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useGSAP } from "@gsap/react";
 import { gsap, prefersReducedMotion } from "@/components/motion/gsap";
@@ -13,7 +13,21 @@ import { Button } from "@/components/ui/Button";
  * Contact form panel — posts to /api/contact which sends the enquiry via SMTP.
  * Requires DSGVO consent before sending. Fields stagger in on mount and the
  * success state crossfades.
+ *
+ * Die Seite ist angemeldeten Besuchern vorbehalten (middleware.ts), deshalb
+ * werden Name und E-Mail aus dem eigenen Konto vorbelegt — abtippen, was das
+ * Konto schon weiss, ist verlorene Zeit. Die Felder bleiben aenderbar: Wer im
+ * Namen eines Betriebs schreibt, hat oft eine andere Adresse als im Konto.
  */
+type Konto = { fullName?: string; email?: string };
+
+/** "Maria Keller" → ["Maria", "Keller"]; alles ab dem zweiten Wort ist Nachname. */
+function teileNamen(voll: string): [string, string] {
+  const teile = voll.trim().split(/\s+/).filter(Boolean);
+  if (teile.length === 0) return ["", ""];
+  if (teile.length === 1) return [teile[0], ""];
+  return [teile[0], teile.slice(1).join(" ")];
+}
 export function ContactForm() {
   const root = useRef<HTMLDivElement>(null);
   const [sent, setSent] = useState(false);
@@ -21,6 +35,22 @@ export function ContactForm() {
   const [error, setError] = useState<string | null>(null);
   const [consent, setConsent] = useState(false);
   const [tried, setTried] = useState(false);
+  const [konto, setKonto] = useState<Konto | null>(null);
+
+  useEffect(() => {
+    let alive = true;
+    fetch("/api/me")
+      .then((r) => r.json())
+      .then((b) => {
+        if (alive && b?.loggedIn) setKonto({ fullName: b.fullName, email: b.email });
+      })
+      .catch(() => {});
+    return () => {
+      alive = false;
+    };
+  }, []);
+
+  const [vorname, nachname] = teileNamen(konto?.fullName ?? "");
 
   useGSAP(
     () => {
@@ -109,14 +139,36 @@ export function ContactForm() {
         <form onSubmit={submit} style={{ display: "flex", flexDirection: "column", gap: "var(--space-lg)" }}>
           <div className="kt-field anim-fade-up bw-form-row" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-lg)" }}>
             <Field label="Vorname" polarity="dark">
-              <Input polarity="dark" name="firstName" placeholder="Maria" required />
+              <Input
+                key={"v" + vorname}
+                polarity="dark"
+                name="firstName"
+                placeholder="Maria"
+                defaultValue={vorname}
+                required
+              />
             </Field>
             <Field label="Nachname" polarity="dark">
-              <Input polarity="dark" name="lastName" placeholder="Keller" required />
+              <Input
+                key={"n" + nachname}
+                polarity="dark"
+                name="lastName"
+                placeholder="Keller"
+                defaultValue={nachname}
+                required
+              />
             </Field>
           </div>
           <Field className="kt-field anim-fade-up" label="E-Mail" polarity="dark">
-            <Input polarity="dark" name="email" type="email" placeholder="maria@club.at" required />
+            <Input
+              key={"e" + (konto?.email ?? "")}
+              polarity="dark"
+              name="email"
+              type="email"
+              placeholder="maria@club.at"
+              defaultValue={konto?.email ?? ""}
+              required
+            />
           </Field>
           <Field className="kt-field anim-fade-up" label="Betrieb" polarity="dark">
             <Input polarity="dark" name="company" placeholder="Club Nachtschicht, Wien" />

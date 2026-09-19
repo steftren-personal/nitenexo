@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Rubik } from "next/font/google";
+import { Space_Grotesk, Rubik, Archivo, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import { MotionRoot } from "@/components/motion/MotionRoot";
 import { CinematicLayer } from "@/components/motion/CinematicLayer";
 import { CookieBanner } from "@/components/marketing/CookieBanner";
+import { KontaktGate } from "@/components/auth/KontaktGate";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -16,6 +17,24 @@ const rubik = Rubik({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-rubik",
+  display: "swap",
+});
+
+// Werkbank-Schriften der neuen Startseite. Archivo traegt Display UND Fliesstext
+// ueber seine Breitenachse (wdth) — der Charakter kommt aus der Achse, nicht aus
+// einer dritten Familie. Plex Mono traegt alle Daten, Labels und Zaehler.
+// Beide self-hosted ueber next/font: keine Fremd-Requests.
+const archivo = Archivo({
+  subsets: ["latin"],
+  axes: ["wdth"],
+  variable: "--font-archivo",
+  display: "swap",
+});
+
+const plexMono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-plex-mono",
   display: "swap",
 });
 
@@ -42,7 +61,7 @@ const MOTION_GATE = `try{if(!matchMedia('(prefers-reduced-motion: reduce)').matc
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="de" className={`${spaceGrotesk.variable} ${rubik.variable}`} suppressHydrationWarning>
+    <html lang="de" className={`${spaceGrotesk.variable} ${rubik.variable} ${archivo.variable} ${plexMono.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: MOTION_GATE }} />
       </head>
@@ -51,6 +70,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <CinematicLayer />
         {children}
         <CookieBanner />
+        <KontaktGate />
         <div className="bw-grain" aria-hidden="true" />
       </body>
     </html>
